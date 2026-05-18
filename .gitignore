@@ -1,0 +1,8 @@
+.DS_Store
+.vscode/
+.idea/
+*.log
+*.bak
+node_modules/
+.env
+.env.local
