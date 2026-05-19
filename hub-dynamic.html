@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Hub (Live) | Primax Group DTO</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* 同 hub.html 補充樣式（複製，部署時可合併 style.css） */
+.hub-section { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem 1.8rem; margin: 1.5rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.hub-section-head { display: flex; align-items: center; gap: 0.8rem; border-bottom: 2px solid var(--teal-bg); padding-bottom: 0.7rem; margin-bottom: 1rem; }
+.hub-section-head .num { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--teal), var(--navy)); color: white; font-weight: bold; font-size: 1.05rem; display: flex; align-items: center; justify-content: center; font-family: 'Century Gothic', sans-serif; }
+.hub-section-head h2 { font-size: 1.25rem; color: var(--navy); margin: 0; }
+.hub-section-head .lead { color: var(--gray); font-size: 0.85rem; margin: 0; }
+.hub-section-head .right { margin-left: auto; }
+
+.stage-pipeline { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 0.6rem; align-items: stretch; margin: 1rem 0 1.5rem; }
+.stage-box { border-radius: 12px; padding: 1rem 1.1rem; border: 2px solid var(--border); background: var(--white); cursor: pointer; transition: all 0.2s; position: relative; }
+.stage-box:hover { transform: translateY(-2px); }
+.stage-box.proto { border-color: var(--gold); background: linear-gradient(180deg, var(--gold-bg) 0%, var(--white) 100%); }
+.stage-box.dev { border-color: var(--purple); background: linear-gradient(180deg, var(--purple-bg) 0%, var(--white) 100%); }
+.stage-box.deploy { border-color: var(--green); background: linear-gradient(180deg, var(--green-bg) 0%, var(--white) 100%); }
+.stage-box.active { box-shadow: 0 0 0 3px rgba(0,140,154,0.18); transform: translateY(-2px); }
+.stage-box .stage-tag { display: inline-block; padding: 0.15rem 0.55rem; border-radius: 6px; font-size: 0.7rem; font-weight: bold; font-family: 'Century Gothic', sans-serif; letter-spacing: 0.5px; margin-bottom: 0.4rem; }
+.stage-box.proto .stage-tag { background: var(--gold); color: white; }
+.stage-box.dev .stage-tag { background: var(--purple); color: white; }
+.stage-box.deploy .stage-tag { background: var(--green); color: white; }
+.stage-box h3 { font-size: 1rem; color: var(--navy); margin-bottom: 0.25rem; }
+.stage-box p { font-size: 0.78rem; color: var(--gray); line-height: 1.5; margin-bottom: 0.5rem; }
+.stage-box .stage-count { font-size: 1.6rem; font-weight: bold; font-family: 'Century Gothic', sans-serif; color: var(--navy); }
+.stage-box .stage-count small { font-size: 0.75rem; color: var(--gray); font-weight: normal; }
+.stage-arrow { display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--gray); user-select: none; }
+
+.dept-filter { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0.7rem 0 1rem; }
+.dept-chip { padding: 0.3rem 0.8rem; border: 1px solid var(--border); border-radius: 16px; background: var(--white); cursor: pointer; font-size: 0.78rem; color: var(--gray); transition: all 0.15s; font-family: inherit; }
+.dept-chip:hover { border-color: var(--teal); color: var(--teal); }
+.dept-chip.active { border-color: var(--teal); background: var(--teal); color: white; }
+
+.card { position: relative; }
+.card .stage-badge { position: absolute; top: 1rem; right: 1rem; font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 4px; font-weight: bold; letter-spacing: 0.5px; font-family: 'Century Gothic', sans-serif; }
+.card .stage-badge.proto { background: var(--gold-bg); color: var(--gold); }
+.card .stage-badge.dev { background: var(--purple-bg); color: var(--purple); }
+.card .stage-badge.deploy { background: var(--green-bg); color: var(--green); }
+
+.prompt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 1rem; }
+.prompt-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem; transition: all 0.2s; display: flex; flex-direction: column; }
+.prompt-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+.prompt-card-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; gap: 0.6rem; }
+.prompt-card-head h4 { font-size: 0.95rem; color: var(--navy); margin: 0; flex: 1; }
+.prompt-card .dept-tag { font-size: 0.7rem; padding: 0.12rem 0.5rem; border-radius: 5px; font-weight: bold; white-space: nowrap; }
+.prompt-card .use-case { font-size: 0.8rem; color: var(--gray); margin-bottom: 0.6rem; }
+.prompt-card .prompt-body { background: #0F172A; color: #E2E8F0; border-radius: 8px; padding: 0.8rem 0.9rem; font-family: 'Consolas', 'Monaco', monospace; font-size: 0.78rem; line-height: 1.55; white-space: pre-wrap; word-break: break-word; max-height: 240px; overflow-y: auto; position: relative; flex: 1; }
+.prompt-card .copy-btn { position: absolute; top: 0.5rem; right: 0.5rem; background: rgba(255,255,255,0.1); color: #94A3B8; border: 1px solid rgba(255,255,255,0.15); border-radius: 5px; padding: 0.2rem 0.5rem; font-size: 0.7rem; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+.prompt-card .copy-btn:hover { background: var(--teal); color: white; border-color: var(--teal); }
+.prompt-card .copy-btn.copied { background: var(--green); color: white; border-color: var(--green); }
+.prompt-card .prompt-meta { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--gray); margin-top: 0.6rem; padding-top: 0.5rem; border-top: 1px solid var(--border); }
+.prompt-card .tools { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+.prompt-card .tool-pill { background: var(--light); color: var(--dark); padding: 0.1rem 0.45rem; border-radius: 4px; font-size: 0.7rem; }
+
+.timeline { position: relative; padding-left: 2.2rem; margin: 1rem 0; }
+.timeline::before { content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0; width: 2px; background: var(--teal-bg); }
+.timeline-month { position: relative; margin-bottom: 1.5rem; }
+.timeline-month::before { content: ''; position: absolute; left: -2rem; top: 0.3rem; width: 14px; height: 14px; border-radius: 50%; background: var(--teal); border: 3px solid var(--white); box-shadow: 0 0 0 2px var(--teal-bg); }
+.timeline-month-title { font-size: 0.95rem; color: var(--navy); font-family: 'Century Gothic', sans-serif; font-weight: bold; margin-bottom: 0.6rem; letter-spacing: 0.5px; }
+.event-card { background: var(--white); border: 1px solid var(--border); border-left: 4px solid var(--teal); border-radius: 10px; padding: 1rem 1.1rem; margin-bottom: 0.7rem; transition: all 0.2s; }
+.event-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); border-left-color: var(--gold); }
+.event-card-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.4rem; }
+.event-card h4 { font-size: 1rem; color: var(--navy); margin: 0; }
+.event-card .event-date { font-size: 0.78rem; color: var(--teal); font-family: 'Century Gothic', sans-serif; font-weight: bold; }
+.event-card .host { font-size: 0.78rem; color: var(--gray); margin-bottom: 0.4rem; }
+.event-card .host strong { color: var(--dark); }
+.event-card .highlights { font-size: 0.82rem; color: var(--dark); background: var(--light); border-radius: 6px; padding: 0.6rem 0.8rem; margin: 0.5rem 0; }
+.event-card .highlights ul { padding-left: 1.1rem; margin: 0; }
+.event-card .highlights li { margin-bottom: 0.2rem; }
+.event-card .resources { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+.event-card .resources a { font-size: 0.78rem; color: var(--teal); text-decoration: none; padding: 0.3rem 0.7rem; border: 1px solid var(--teal-bg); border-radius: 6px; transition: all 0.15s; }
+.event-card .resources a:hover { background: var(--teal); color: white; border-color: var(--teal); }
+.event-card .resources a.disabled { color: var(--gray); border-color: var(--border); pointer-events: none; opacity: 0.5; }
+
+.section-anchors { display: flex; gap: 0.5rem; margin: 1rem 0; flex-wrap: wrap; }
+.section-anchors a { text-decoration: none; padding: 0.5rem 1rem; border-radius: 20px; background: var(--white); color: var(--gray); border: 1px solid var(--border); font-size: 0.82rem; transition: all 0.15s; }
+.section-anchors a:hover { border-color: var(--teal); color: var(--teal); }
+
+.dept-hr { background: #FEE2E2; color: #B91C1C; }
+.dept-it { background: #DBEAFE; color: #1E40AF; }
+.dept-fa { background: #FEF3C7; color: #92400E; }
+.dept-rd { background: #E0E7FF; color: #4338CA; }
+.dept-mfg { background: var(--teal-bg); color: var(--teal); }
+.dept-esg { background: var(--green-bg); color: var(--green); }
+.dept-general { background: var(--gold-bg); color: var(--gold); }
+
+/* ====== LIVE 版專屬樣式 ====== */
+
+/* 資料來源狀態指示 */
+.data-source-banner {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.5rem 0.9rem; border-radius: 8px;
+  font-size: 0.8rem; margin-bottom: 0.8rem;
+}
+.data-source-banner.live { background: var(--green-bg); color: var(--green); }
+.data-source-banner.fallback { background: var(--gold-bg); color: var(--gold); }
+.data-source-banner.error { background: #FEE2E2; color: #B91C1C; }
+.data-source-banner .dot { width: 8px; height: 8px; border-radius: 50%; }
+.data-source-banner.live .dot { background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
+.data-source-banner.fallback .dot { background: var(--gold); }
+.data-source-banner.error .dot { background: #B91C1C; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* Loading skeleton */
+.skeleton { background: linear-gradient(90deg, #F0F4F8 25%, #E2E8F0 50%, #F0F4F8 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+.skeleton-card { height: 200px; margin-bottom: 1rem; }
+
+/* Submit Prompt Button */
+.btn-primary {
+  background: var(--teal); color: white; border: none;
+  padding: 0.5rem 1.1rem; border-radius: 8px;
+  font-size: 0.85rem; cursor: pointer;
+  font-family: inherit; transition: all 0.15s;
+  font-weight: 600;
+}
+.btn-primary:hover { background: var(--navy); }
+.btn-primary[disabled] { opacity: 0.5; cursor: not-allowed; }
+
+/* Modal */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  z-index: 1000; align-items: flex-start; justify-content: center;
+  padding: 4rem 1rem 1rem; overflow-y: auto;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: var(--white); border-radius: 14px;
+  width: 100%; max-width: 620px;
+  padding: 1.5rem 1.8rem;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.modal-head {
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.7rem; margin-bottom: 1rem;
+}
+.modal-head h3 { color: var(--navy); font-size: 1.15rem; margin: 0; }
+.modal-close {
+  background: transparent; border: none; cursor: pointer;
+  font-size: 1.4rem; color: var(--gray); line-height: 1;
+}
+.modal-close:hover { color: var(--navy); }
+.form-row { margin-bottom: 0.9rem; }
+.form-row label {
+  display: block; font-size: 0.8rem; color: var(--dark);
+  margin-bottom: 0.3rem; font-weight: 600;
+}
+.form-row label .required { color: #B91C1C; }
+.form-row input, .form-row select, .form-row textarea {
+  width: 100%; padding: 0.55rem 0.7rem;
+  border: 1px solid var(--border); border-radius: 7px;
+  font-family: inherit; font-size: 0.85rem;
+  color: var(--dark); background: var(--white);
+  transition: border-color 0.15s;
+}
+.form-row input:focus, .form-row select:focus, .form-row textarea:focus {
+  outline: none; border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(0,140,154,0.15);
+}
+.form-row textarea {
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.82rem; min-height: 140px; resize: vertical;
+}
+.form-row .hint { font-size: 0.72rem; color: var(--gray); margin-top: 0.2rem; }
+.form-actions {
+  display: flex; justify-content: flex-end; gap: 0.5rem;
+  border-top: 1px solid var(--border); padding-top: 0.8rem; margin-top: 1rem;
+}
+.btn-secondary {
+  background: var(--white); color: var(--gray);
+  border: 1px solid var(--border); padding: 0.5rem 1.1rem;
+  border-radius: 8px; font-size: 0.85rem; cursor: pointer;
+  font-family: inherit; transition: all 0.15s;
+}
+.btn-secondary:hover { border-color: var(--gray); color: var(--dark); }
+.form-status {
+  padding: 0.6rem 0.8rem; border-radius: 7px;
+  font-size: 0.82rem; margin-top: 0.8rem;
+  display: none;
+}
+.form-status.show { display: block; }
+.form-status.success { background: var(--green-bg); color: var(--green); }
+.form-status.error { background: #FEE2E2; color: #B91C1C; }
+.form-status.loading { background: var(--teal-bg); color: var(--teal); }
+
+@media (max-width: 768px) {
+  .stage-pipeline { grid-template-columns: 1fr; }
+  .stage-arrow { transform: rotate(90deg); padding: 0.2rem 0; }
+  .prompt-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1><a href="index.html">AI <span>Hub</span></a></h1>
+    <div class="subtitle">Primax Group Digital Transformation Office</div>
+  </div>
+  <nav>
+    <a href="index.html">首頁</a>
+    <a href="hub.html">AI Hub (Static)</a>
+    <a href="hub-dynamic.html" class="active">AI Hub (Live)</a>
+    <a href="cases.html">案例庫</a>
+    <a href="about.html">關於</a>
+  </nav>
+  <div style="display:flex;align-items:center;gap:0.8rem;">
+    <div class="badge">SharePoint Live</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="page-title">
+    <h2>AI Hub — 即時資料版</h2>
+    <p>資料由 SharePoint List 即時讀取／提交。離線狀態下顯示種子內容</p>
+  </div>
+
+  <div id="data-source-banner" class="data-source-banner fallback">
+    <span class="dot"></span>
+    <span id="data-source-text">初始化中…</span>
+  </div>
+
+  <div class="section-anchors">
+    <a href="#section-cases">① Best Practice 案例</a>
+    <a href="#section-prompts">② 好用 Prompt 分享</a>
+    <a href="#section-events">③ AI 交流會活動</a>
+  </div>
+
+  <!-- ================================================== -->
+  <!-- SECTION 1: 案例 — 三階段                            -->
+  <!-- ================================================== -->
+  <section class="hub-section" id="section-cases">
+    <div class="hub-section-head">
+      <div class="num">1</div>
+      <div>
+        <h2>Best Practice 案例</h2>
+        <p class="lead">Prototype → Development → Deploy 三階段</p>
+      </div>
+    </div>
+
+    <div class="stage-pipeline">
+      <div class="stage-box proto active" data-stage="Prototype" onclick="filterStage('Prototype', this)">
+        <div class="stage-tag">PROTOTYPE</div>
+        <h3>概念驗證</h3>
+        <p>已建模驗證可行，但尚未持續使用</p>
+        <div class="stage-count" id="count-proto">- <small>案例</small></div>
+      </div>
+      <div class="stage-arrow">→</div>
+      <div class="stage-box dev" data-stage="Development" onclick="filterStage('Development', this)">
+        <div class="stage-tag">DEVELOPMENT</div>
+        <h3>開發中 / MVP</h3>
+        <p>部門自行調校或 MVP 完成，等待擴散</p>
+        <div class="stage-count" id="count-dev">- <small>案例</small></div>
+      </div>
+      <div class="stage-arrow">→</div>
+      <div class="stage-box deploy" data-stage="Deploy" onclick="filterStage('Deploy', this)">
+        <div class="stage-tag">DEPLOY</div>
+        <h3>已上線運行</h3>
+        <p>持續使用中，產生實質效益</p>
+        <div class="stage-count" id="count-deploy">- <small>案例</small></div>
+      </div>
+    </div>
+
+    <div class="dept-filter" id="case-dept-filter">
+      <button class="dept-chip active" data-dept="all" onclick="filterDept('all', this)">全部部門</button>
+      <!-- 部門 chips 動態插入 -->
+    </div>
+
+    <div class="card-grid" id="case-grid">
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+    </div>
+  </section>
+
+
+  <!-- ================================================== -->
+  <!-- SECTION 2: Prompt 分享                              -->
+  <!-- ================================================== -->
+  <section class="hub-section" id="section-prompts">
+    <div class="hub-section-head">
+      <div class="num">2</div>
+      <div>
+        <h2>各單位分享好用的 Prompt</h2>
+        <p class="lead">同事們實際使用、有效的 Prompt 範本</p>
+      </div>
+      <div class="right">
+        <button class="btn-primary" onclick="openSubmitModal()">+ 投稿 Prompt</button>
+      </div>
+    </div>
+
+    <div class="dept-filter" id="prompt-dept-filter">
+      <button class="dept-chip active" data-pdept="all" onclick="filterPromptDept('all', this)">全部</button>
+      <!-- 動態插入 -->
+    </div>
+
+    <div class="prompt-grid" id="prompt-grid">
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+    </div>
+  </section>
+
+
+  <!-- ================================================== -->
+  <!-- SECTION 3: AI 交流會活動                            -->
+  <!-- ================================================== -->
+  <section class="hub-section" id="section-events">
+    <div class="hub-section-head">
+      <div class="num">3</div>
+      <div>
+        <h2>AI 交流會活動分享</h2>
+        <p class="lead">集團 AI 共學、座談會、工作坊紀錄</p>
+      </div>
+    </div>
+
+    <div class="timeline" id="event-timeline">
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ================================================== -->
+<!-- Prompt 投稿 Modal                                   -->
+<!-- ================================================== -->
+<div class="modal-overlay" id="submit-modal" onclick="if(event.target===this)closeSubmitModal()">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>+ 投稿好用的 Prompt</h3>
+      <button class="modal-close" onclick="closeSubmitModal()">×</button>
+    </div>
+
+    <form id="prompt-form" onsubmit="submitPrompt(event)">
+      <div class="form-row">
+        <label>標題 <span class="required">*</span></label>
+        <input type="text" name="title" required maxlength="80"
+               placeholder="例：產線異常根因排查 — 5 Why × Fishbone">
+        <div class="hint">簡短說明 Prompt 用途（≤80 字）</div>
+      </div>
+
+      <div class="form-row">
+        <label>所屬部門 <span class="required">*</span></label>
+        <select name="department" required>
+          <option value="">-- 請選擇 --</option>
+          <option value="HR">HR 人資</option>
+          <option value="IT">IT 資訊</option>
+          <option value="FA">F&amp;A 財務</option>
+          <option value="RD">研發 / SAE</option>
+          <option value="MFG">製造 / iIBG / ISB / CMBU</option>
+          <option value="ESG">ESG</option>
+          <option value="GEN">通用 / 跨部門</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label>適用場景 <span class="required">*</span></label>
+        <input type="text" name="useCase" required maxlength="120"
+               placeholder="例：產線發生品質異常時，引導工程師結構化分析">
+      </div>
+
+      <div class="form-row">
+        <label>Prompt 內容 <span class="required">*</span></label>
+        <textarea name="promptBody" required maxlength="3000"
+                  placeholder="貼上完整 Prompt 內容，可包含 {變數} 佔位符"></textarea>
+        <div class="hint">建議結構：角色設定 → 任務說明 → 輸出格式 → 輸入欄位</div>
+      </div>
+
+      <div class="form-row">
+        <label>適用工具（多選用逗號分隔）</label>
+        <input type="text" name="tools" maxlength="120"
+               placeholder="例：Claude, ChatGPT, Copilot">
+      </div>
+
+      <div class="form-row">
+        <label>分享者（姓名或部門代號）</label>
+        <input type="text" name="author" maxlength="40"
+               placeholder="例：Glen / DTO Office">
+        <div class="hint">留空則使用您的 SharePoint 登入身份</div>
+      </div>
+
+      <div id="form-status" class="form-status"></div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" onclick="closeSubmitModal()">取消</button>
+        <button type="submit" class="btn-primary" id="submit-btn">送出投稿</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<div class="footer">
+  <p>Primax Group AI Hub Live | 致伸集團數位轉型辦公室 | 2026-05 SharePoint v1.0</p>
+</div>
+
+<script>
+/* ============================================================
+   SP REST API 設定
+   ============================================================
+   ⚠️ 部署前必須驗證 InternalName。執行以下 URL 取得欄位對照：
+     /_api/web/lists/getbytitle('AI案例庫')/fields?$select=Title,InternalName,TypeAsString&$filter=Hidden eq false
+   ↓ 注意：中文欄位名稱會被編碼，例如「公司」→ _x516c__x53f8_
+     寫入 MERGE body 時必須加 OData__ 前綴（已驗證於 2026-05-11 thinking-log）
+============================================================ */
+
+const SP_CONFIG = {
+  // 自動偵測 SharePoint 站台 URL（在 SP 環境內由 _spPageContextInfo 提供）
+  webUrl: (typeof _spPageContextInfo !== 'undefined' && _spPageContextInfo.webAbsoluteUrl)
+          ? _spPageContextInfo.webAbsoluteUrl
+          : '', // 本機測試時為空 → 觸發 fallback 種子資料
+
+  lists: {
+    cases: {
+      title: 'AI案例庫',
+      // ⚠️ 以下 InternalName 需依實際 SP List 調整（建議全英文新建以避免編碼）
+      fields: {
+        title: 'Title',
+        summary: 'Summary',          // 摘要（建議英文新欄位）
+        painPoint: 'OData__x75db__x9ede_',  // 痛點（已驗證）
+        input: 'InputData',
+        process: 'ProcessSteps',
+        output: 'OutputResult',
+        benefit: 'BenefitNote',
+        company: 'OData__x516c__x53f8_',     // 公司（已驗證）
+        unit: 'BusinessUnit',                 // 單位（建議英文新欄位）
+        aiType: 'AI_Type',
+        stage: 'Stage',                       // Choice: Prototype/Development/Deploy
+        source: 'SourceNote',
+        insight: 'Insight'
+      }
+    },
+    prompts: {
+      title: 'AI_Prompts',
+      // 建議新建 list（全英文欄位）：
+      // - Title (Single line)
+      // - Department (Choice: HR/IT/FA/RD/MFG/ESG/GEN)
+      // - UseCase (Single line)
+      // - PromptBody (Multiple lines, plain text)
+      // - Tools (Single line)
+      // - Author (Single line)
+      fields: {
+        title: 'Title',
+        department: 'Department',
+        useCase: 'UseCase',
+        promptBody: 'PromptBody',
+        tools: 'Tools',
+        author: 'Author'
+      }
+    },
+    events: {
+      title: 'AI_Events',
+      // 建議新建 list：
+      // - Title / EventDate (Date) / Host / Audience / Highlights (Multi-line)
+      // - SlidesUrl / VideoUrl / DocumentUrl (Hyperlink)
+      fields: {
+        title: 'Title',
+        eventDate: 'EventDate',
+        host: 'Host',
+        audience: 'Audience',
+        highlights: 'Highlights',
+        slidesUrl: 'SlidesUrl',
+        videoUrl: 'VideoUrl',
+        documentUrl: 'DocumentUrl'
+      }
+    }
+  }
+};
+
+/* ============================================================
+   全域狀態
+   ============================================================ */
+let STATE = {
+  cases: [],
+  prompts: [],
+  events: [],
+  currentStage: 'Prototype',
+  currentDept: 'all',
+  currentPromptDept: 'all',
+  dataSource: 'pending' // 'live' | 'fallback' | 'error' | 'pending'
+};
+
+/* ============================================================
+   SP REST 通用 fetch（GET）
+   ============================================================ */
+function spGet(listTitle, selectFields, orderBy) {
+  if (!SP_CONFIG.webUrl) {
+    return Promise.reject(new Error('Not in SP context'));
+  }
+  let url = SP_CONFIG.webUrl
+    + "/_api/web/lists/getbytitle('" + encodeURIComponent(listTitle) + "')/items"
+    + "?$top=200";
+  if (selectFields && selectFields.length) {
+    url += "&$select=" + selectFields.join(',');
+  }
+  if (orderBy) {
+    url += "&$orderby=" + orderBy;
+  }
+  return fetch(url, {
+    headers: { 'Accept': 'application/json;odata=nometadata' },
+    credentials: 'include'
+  }).then(r => {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(json => json.value || []);
+}
+
+/* ============================================================
+   SP REST POST — 需 RequestDigest
+   ============================================================ */
+function getRequestDigest() {
+  // 優先取頁面內 _spPageContextInfo（modern SP page 不一定提供）
+  if (typeof _spPageContextInfo !== 'undefined' && _spPageContextInfo.formDigestValue) {
+    return Promise.resolve(_spPageContextInfo.formDigestValue);
+  }
+  // Fallback：呼叫 contextinfo endpoint
+  return fetch(SP_CONFIG.webUrl + "/_api/contextinfo", {
+    method: 'POST',
+    headers: { 'Accept': 'application/json;odata=nometadata' },
+    credentials: 'include'
+  }).then(r => r.json()).then(j => j.FormDigestValue);
+}
+
+function spPost(listTitle, payload) {
+  return getRequestDigest().then(digest => {
+    return fetch(SP_CONFIG.webUrl + "/_api/web/lists/getbytitle('"
+                 + encodeURIComponent(listTitle) + "')/items", {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json;odata=nometadata',
+        'Content-Type': 'application/json;odata=verbose',
+        'X-RequestDigest': digest
+      },
+      credentials: 'include',
+      body: JSON.stringify(payload)
+    });
+  }).then(r => {
+    if (!r.ok) {
+      return r.text().then(t => { throw new Error('POST failed: ' + r.status + ' — ' + t); });
+    }
+    return r.json();
+  });
+}
+
+/* ============================================================
+   資料來源 Banner
+   ============================================================ */
+function setDataSource(state, msg) {
+  STATE.dataSource = state;
+  const banner = document.getElementById('data-source-banner');
+  const text = document.getElementById('data-source-text');
+  banner.className = 'data-source-banner ' + state;
+  text.textContent = msg;
+}
+
+/* ============================================================
+   階段標準化（容錯 — 處理中英文混用）
+   ============================================================ */
+function normalizeStage(raw) {
+  if (!raw) return 'Prototype';
+  const s = String(raw).toLowerCase().trim();
+  if (s.includes('deploy') || s.includes('上線') || s.includes('運行')) return 'Deploy';
+  if (s.includes('develop') || s.includes('開發') || s.includes('mvp')) return 'Development';
+  return 'Prototype';
+}
+
+/* ============================================================
+   渲染 — Section 1: 案例卡片
+   ============================================================ */
+function renderCases() {
+  const grid = document.getElementById('case-grid');
+  const filtered = STATE.cases.filter(c => {
+    const stageMatch = !STATE.currentStage || c.stage === STATE.currentStage;
+    const deptMatch = STATE.currentDept === 'all' || c.unit === STATE.currentDept;
+    return stageMatch && deptMatch;
+  });
+
+  // 計數
+  const counts = STATE.cases.reduce((acc, c) => {
+    acc[c.stage] = (acc[c.stage] || 0) + 1;
+    return acc;
+  }, {});
+  document.getElementById('count-proto').innerHTML = (counts['Prototype']||0) + ' <small>案例</small>';
+  document.getElementById('count-dev').innerHTML = (counts['Development']||0) + ' <small>案例</small>';
+  document.getElementById('count-deploy').innerHTML = (counts['Deploy']||0) + ' <small>案例</small>';
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<p style="color:var(--gray);grid-column:1/-1;text-align:center;padding:2rem;">此階段＋部門組合無案例</p>';
+    return;
+  }
+
+  const stageClass = { 'Prototype': 'proto', 'Development': 'dev', 'Deploy': 'deploy' };
+  grid.innerHTML = filtered.map(c => `
+    <div class="card" onclick="this.classList.toggle('expanded')">
+      <span class="stage-badge ${stageClass[c.stage]}">${c.stage.toUpperCase()}</span>
+      <span class="tag tag-${c.unit === 'iIBG' || c.unit === 'ISB' || c.unit === 'CMBU' ? 'mfg' : 'ent'}">${c.unit || ''}</span>
+      <h4>${escapeHtml(c.title)}</h4>
+      <p>${escapeHtml(c.summary || '')}</p>
+      ${c.insight ? `<div class="relevance"><strong>啟示：</strong>${escapeHtml(c.insight)}</div>` : ''}
+      <div class="detail"><div class="detail-content">
+        ${c.painPoint ? `<h5>痛點</h5><p>${escapeHtml(c.painPoint)}</p>` : ''}
+        ${c.input ? `<h5>INPUT</h5><p>${escapeHtml(c.input)}</p>` : ''}
+        ${c.process ? `<h5>PROCESS</h5><p>${escapeHtml(c.process)}</p>` : ''}
+        ${c.output ? `<h5>OUTPUT</h5><p>${escapeHtml(c.output)}</p>` : ''}
+        ${c.benefit ? `<h5>效益評估</h5><p>${escapeHtml(c.benefit)}</p>` : ''}
+        ${c.source ? `<p class="source">${escapeHtml(c.source)}</p>` : ''}
+      </div></div>
+      <div class="expand-hint">▼ 點擊展開詳情</div>
+      <div class="meta"><span>${escapeHtml(c.aiType||'')}</span><span>${escapeHtml(c.company||'')}</span><span>${escapeHtml(c.unit||'')}</span></div>
+    </div>
+  `).join('');
+}
+
+function renderCaseDeptChips() {
+  const wrap = document.getElementById('case-dept-filter');
+  const depts = Array.from(new Set(STATE.cases.map(c => c.unit).filter(Boolean))).sort();
+  wrap.innerHTML = '<button class="dept-chip active" data-dept="all" onclick="filterDept(\'all\', this)">全部部門</button>'
+    + depts.map(d =>
+        `<button class="dept-chip" data-dept="${escapeAttr(d)}" onclick="filterDept('${escapeAttr(d)}', this)">${escapeHtml(d)}</button>`
+      ).join('');
+}
+
+function filterStage(stage, el) {
+  document.querySelectorAll('.stage-box').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  STATE.currentStage = stage;
+  renderCases();
+}
+function filterDept(dept, el) {
+  document.querySelectorAll('#case-dept-filter button').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  STATE.currentDept = dept;
+  renderCases();
+}
+
+/* ============================================================
+   渲染 — Section 2: Prompt 卡片
+   ============================================================ */
+function renderPrompts() {
+  const grid = document.getElementById('prompt-grid');
+  const filtered = STATE.prompts.filter(p =>
+    STATE.currentPromptDept === 'all' || p.department === STATE.currentPromptDept
+  );
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<p style="color:var(--gray);grid-column:1/-1;text-align:center;padding:2rem;">尚無此部門的 Prompt — 點右上「+ 投稿」貢獻第一個</p>';
+    return;
+  }
+
+  const deptClassMap = {
+    HR: 'dept-hr', IT: 'dept-it', FA: 'dept-fa',
+    RD: 'dept-rd', MFG: 'dept-mfg', ESG: 'dept-esg', GEN: 'dept-general'
+  };
+  const deptLabelMap = {
+    HR: 'HR', IT: 'IT', FA: 'F&A', RD: 'RD', MFG: 'MFG', ESG: 'ESG', GEN: '通用'
+  };
+
+  grid.innerHTML = filtered.map(p => `
+    <div class="prompt-card">
+      <div class="prompt-card-head">
+        <h4>${escapeHtml(p.title)}</h4>
+        <span class="dept-tag ${deptClassMap[p.department]||'dept-general'}">${deptLabelMap[p.department]||p.department}</span>
+      </div>
+      <div class="use-case">用途：${escapeHtml(p.useCase||'')}</div>
+      <div class="prompt-body">${escapeHtml(p.promptBody||'')}<button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-meta">
+        <div class="tools">
+          ${(p.tools||'').split(/[,，、]/).filter(Boolean).map(t => `<span class="tool-pill">${escapeHtml(t.trim())}</span>`).join('')}
+        </div>
+        <span>分享者：${escapeHtml(p.author||'-')}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderPromptDeptChips() {
+  const wrap = document.getElementById('prompt-dept-filter');
+  const order = ['HR','IT','FA','RD','MFG','ESG','GEN'];
+  const labels = {HR:'HR 人資', IT:'IT 資訊', FA:'F&A 財務', RD:'研發', MFG:'製造', ESG:'ESG', GEN:'通用'};
+  const present = new Set(STATE.prompts.map(p => p.department));
+  wrap.innerHTML = '<button class="dept-chip active" data-pdept="all" onclick="filterPromptDept(\'all\', this)">全部</button>'
+    + order.filter(d => present.has(d)).map(d =>
+        `<button class="dept-chip" data-pdept="${d}" onclick="filterPromptDept('${d}', this)">${labels[d]}</button>`
+      ).join('');
+}
+
+function filterPromptDept(dept, el) {
+  document.querySelectorAll('#prompt-dept-filter button').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  STATE.currentPromptDept = dept;
+  renderPrompts();
+}
+
+function copyPrompt(btn) {
+  const body = btn.parentElement;
+  const text = Array.from(body.childNodes)
+    .filter(n => n.nodeType === Node.TEXT_NODE || (n.nodeType === Node.ELEMENT_NODE && n.tagName !== 'BUTTON'))
+    .map(n => n.textContent).join('');
+  navigator.clipboard.writeText(text.trim()).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ 已複製';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1800);
+  }).catch(() => alert('複製失敗'));
+}
+
+/* ============================================================
+   渲染 — Section 3: 活動 Timeline
+   ============================================================ */
+function renderEvents() {
+  const tl = document.getElementById('event-timeline');
+  if (STATE.events.length === 0) {
+    tl.innerHTML = '<p style="color:var(--gray);padding:2rem;text-align:center;">尚無活動紀錄</p>';
+    return;
+  }
+  // 按月分組（YYYY/MM）
+  const byMonth = {};
+  STATE.events.forEach(e => {
+    const m = (e.eventDate || '').substring(0,7).replace('-','/');
+    (byMonth[m] = byMonth[m] || []).push(e);
+  });
+  const months = Object.keys(byMonth).sort().reverse();
+
+  tl.innerHTML = months.map(m => `
+    <div class="timeline-month">
+      <div class="timeline-month-title">${m}</div>
+      ${byMonth[m].map(e => `
+        <div class="event-card">
+          <div class="event-card-head">
+            <h4>${escapeHtml(e.title)}</h4>
+            <span class="event-date">${escapeHtml(e.eventDate||'')}</span>
+          </div>
+          ${e.host || e.audience ? `<div class="host">
+            ${e.host ? `<strong>主講/主持：</strong>${escapeHtml(e.host)}　` : ''}
+            ${e.audience ? `<strong>受眾：</strong>${escapeHtml(e.audience)}` : ''}
+          </div>` : ''}
+          ${e.highlights ? `<div class="highlights">${formatHighlights(e.highlights)}</div>` : ''}
+          <div class="resources">
+            ${e.documentUrl ? `<a href="${escapeAttr(e.documentUrl)}" target="_blank">📄 完整紀錄</a>` : ''}
+            ${e.slidesUrl ? `<a href="${escapeAttr(e.slidesUrl)}" target="_blank">🎯 簡報</a>` : ''}
+            ${e.videoUrl ? `<a href="${escapeAttr(e.videoUrl)}" target="_blank">🎬 錄影</a>` : ''}
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+function formatHighlights(text) {
+  // 簡易：若多行則轉 ul，否則 p
+  const lines = String(text).split(/\n+/).map(l => l.trim()).filter(Boolean);
+  if (lines.length <= 1) return `<p>${escapeHtml(text)}</p>`;
+  return '<ul>' + lines.map(l => `<li>${escapeHtml(l.replace(/^[-•·]\s*/, ''))}</li>`).join('') + '</ul>';
+}
+
+/* ============================================================
+   投稿 Modal
+   ============================================================ */
+function openSubmitModal() {
+  document.getElementById('submit-modal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeSubmitModal() {
+  document.getElementById('submit-modal').classList.remove('show');
+  document.body.style.overflow = '';
+  document.getElementById('prompt-form').reset();
+  document.getElementById('form-status').className = 'form-status';
+}
+function setFormStatus(state, msg) {
+  const el = document.getElementById('form-status');
+  el.className = 'form-status show ' + state;
+  el.textContent = msg;
+}
+
+function submitPrompt(e) {
+  e.preventDefault();
+  const form = e.target;
+  const data = new FormData(form);
+  const f = SP_CONFIG.lists.prompts.fields;
+
+  const payload = {
+    __metadata: { type: getEntityType('AI_Prompts') }
+  };
+  payload[f.title] = data.get('title');
+  payload[f.department] = data.get('department');
+  payload[f.useCase] = data.get('useCase');
+  payload[f.promptBody] = data.get('promptBody');
+  payload[f.tools] = data.get('tools');
+  payload[f.author] = data.get('author');
+
+  if (!SP_CONFIG.webUrl) {
+    setFormStatus('error', '⚠️ 本機測試環境無法寫入 SharePoint。請於 SP 站台部署後再投稿');
+    return;
+  }
+
+  document.getElementById('submit-btn').disabled = true;
+  setFormStatus('loading', '送出中…');
+
+  spPost(SP_CONFIG.lists.prompts.title, payload)
+    .then(() => {
+      setFormStatus('success', '✓ 投稿成功！感謝您的貢獻');
+      setTimeout(() => {
+        closeSubmitModal();
+        loadPrompts(); // refresh
+      }, 1500);
+    })
+    .catch(err => {
+      console.error(err);
+      setFormStatus('error', '✗ 送出失敗：' + err.message + ' — 請確認 AI_Prompts list 已建立且您有寫入權限');
+    })
+    .finally(() => {
+      document.getElementById('submit-btn').disabled = false;
+    });
+}
+
+// 對 SP entity type 名稱的簡易推測（List title → ListItem entity）
+// 規則：移除非英數字符後加 ListItem
+function getEntityType(listTitle) {
+  const clean = listTitle.replace(/[^A-Za-z0-9]/g, '_');
+  return 'SP.Data.' + clean + 'ListItem';
+}
+
+/* ============================================================
+   主載入流程
+   ============================================================ */
+function loadCases() {
+  if (!SP_CONFIG.webUrl) {
+    STATE.cases = SEED_CASES;
+    return Promise.resolve('seed');
+  }
+  const f = SP_CONFIG.lists.cases.fields;
+  return spGet(
+    SP_CONFIG.lists.cases.title,
+    [f.title, f.summary, f.painPoint, f.input, f.process, f.output,
+     f.benefit, f.company, f.unit, f.aiType, f.stage, f.source, f.insight]
+  ).then(items => {
+    STATE.cases = items.map(item => ({
+      title: item[f.title] || '',
+      summary: item[f.summary] || '',
+      painPoint: item[f.painPoint] || '',
+      input: item[f.input] || '',
+      process: item[f.process] || '',
+      output: item[f.output] || '',
+      benefit: item[f.benefit] || '',
+      company: item[f.company] || '',
+      unit: item[f.unit] || '',
+      aiType: item[f.aiType] || '',
+      stage: normalizeStage(item[f.stage]),
+      source: item[f.source] || '',
+      insight: item[f.insight] || ''
+    }));
+    return 'live';
+  });
+}
+
+function loadPrompts() {
+  if (!SP_CONFIG.webUrl) {
+    STATE.prompts = SEED_PROMPTS;
+    renderPromptDeptChips();
+    renderPrompts();
+    return Promise.resolve('seed');
+  }
+  const f = SP_CONFIG.lists.prompts.fields;
+  return spGet(
+    SP_CONFIG.lists.prompts.title,
+    [f.title, f.department, f.useCase, f.promptBody, f.tools, f.author],
+    'Created desc'
+  ).then(items => {
+    STATE.prompts = items.map(item => ({
+      title: item[f.title] || '',
+      department: item[f.department] || 'GEN',
+      useCase: item[f.useCase] || '',
+      promptBody: item[f.promptBody] || '',
+      tools: item[f.tools] || '',
+      author: item[f.author] || ''
+    }));
+    if (STATE.prompts.length === 0) STATE.prompts = SEED_PROMPTS; // 空清單時顯示種子
+    renderPromptDeptChips();
+    renderPrompts();
+    return 'live';
+  }).catch(err => {
+    console.warn('Prompts fetch failed, using seed:', err);
+    STATE.prompts = SEED_PROMPTS;
+    renderPromptDeptChips();
+    renderPrompts();
+    return 'fallback';
+  });
+}
+
+function loadEvents() {
+  if (!SP_CONFIG.webUrl) {
+    STATE.events = SEED_EVENTS;
+    renderEvents();
+    return Promise.resolve('seed');
+  }
+  const f = SP_CONFIG.lists.events.fields;
+  return spGet(
+    SP_CONFIG.lists.events.title,
+    [f.title, f.eventDate, f.host, f.audience, f.highlights,
+     f.slidesUrl, f.videoUrl, f.documentUrl],
+    f.eventDate + ' desc'
+  ).then(items => {
+    STATE.events = items.map(item => ({
+      title: item[f.title] || '',
+      eventDate: (item[f.eventDate] || '').substring(0, 10),
+      host: item[f.host] || '',
+      audience: item[f.audience] || '',
+      highlights: item[f.highlights] || '',
+      slidesUrl: extractUrl(item[f.slidesUrl]),
+      videoUrl: extractUrl(item[f.videoUrl]),
+      documentUrl: extractUrl(item[f.documentUrl])
+    }));
+    if (STATE.events.length === 0) STATE.events = SEED_EVENTS;
+    renderEvents();
+    return 'live';
+  }).catch(err => {
+    console.warn('Events fetch failed, using seed:', err);
+    STATE.events = SEED_EVENTS;
+    renderEvents();
+    return 'fallback';
+  });
+}
+
+function extractUrl(spHyperlink) {
+  if (!spHyperlink) return '';
+  if (typeof spHyperlink === 'string') return spHyperlink;
+  return spHyperlink.Url || '';
+}
+
+/* ============================================================
+   工具函數
+   ============================================================ */
+function escapeHtml(s) {
+  if (!s) return '';
+  return String(s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function escapeAttr(s) { return escapeHtml(s); }
+
+/* ============================================================
+   啟動
+   ============================================================ */
+window.addEventListener('DOMContentLoaded', () => {
+  if (!SP_CONFIG.webUrl) {
+    setDataSource('fallback', '🔧 本機預覽模式 — 顯示種子資料（SP 部署後將自動切換為即時資料）');
+  } else {
+    setDataSource('pending', '⏳ 連線 SharePoint…');
+  }
+
+  Promise.all([
+    loadCases().then(src => ({type:'cases', src})).catch(e => ({type:'cases', err:e})),
+    loadPrompts().then(src => ({type:'prompts', src})).catch(e => ({type:'prompts', err:e})),
+    loadEvents().then(src => ({type:'events', src})).catch(e => ({type:'events', err:e}))
+  ]).then(results => {
+    renderCaseDeptChips();
+    renderCases();
+
+    if (SP_CONFIG.webUrl) {
+      const errors = results.filter(r => r.err);
+      if (errors.length === 0) {
+        setDataSource('live', '🟢 SharePoint 即時資料 — 載入完成');
+      } else {
+        setDataSource('fallback', '⚠️ 部分資料來源異常（' + errors.map(e=>e.type).join(', ') + '）— 顯示備援種子');
+      }
+    }
+  });
+});
+
+/* ============================================================
+   種子資料（離線 / SP 不可達時的 fallback）
+   ============================================================ */
+const SEED_CASES = [
+  {title:'Force Pad 震動手感優化', summary:'12 參數 Trial & Error 改 AI 建模，省 USD$132 + 9 工作天/專案', painPoint:'震動波形 12 個參數需人工 Trial & Error 反覆調校', input:'60 筆 Haptic Waveform 測試數據；12 個波形參數', process:'Profet AI 無程式碼建模；X 因子 13→20', output:'ΔV 預測 R²=0.90', benefit:'省 USD$132 + 9 工作天/專案，未持續使用', company:'PMX', unit:'iIBG', aiType:'Profet AI AutoML', stage:'Prototype', source:'來源：PMX iIBG 訪談 2026-02', insight:'取代試錯，提供量化調校依據'},
+  {title:'馬達異音檢測', summary:'F1=96.7%，預估省召回 850K RMB/年', painPoint:'仰賴金耳朵聽音判別，標準主觀不一', input:'755 筆馬達音頻；29 聲學特徵', process:'分類建模：MFCC / PSD / 過零率', output:'驗證率 90.5%，F1=96.7%', benefit:'預估省召回 850K RMB/年', company:'PMX', unit:'ISB', aiType:'Profet AI AutoML', stage:'Prototype', source:'來源：PMX ISB 訪談 2026-02', insight:'金耳朵經驗數位化、可追溯'},
+  {title:'AA Offset 參數預測', summary:'省 144 萬 NTD/年，預測誤差 ±1 μm', painPoint:'AA 鏡頭對位製程需大量 DOE 試錯，每次 3-5 天', input:'640 筆 AA 製程數據', process:'關鍵因子分析，主因子為畫膠長度', output:'預測誤差 ±1 μm', benefit:'省 144 萬 NTD/年', company:'PMX', unit:'CMBU', aiType:'Profet AI AutoML', stage:'Prototype', source:'來源：PMX CMBU 訪談 2026-02', insight:'試產前預測取代大量 DOE 試錯'},
+  {title:'離職行為預測', summary:'預估省培訓 64 萬 + 薪資空窗 336 萬/年', painPoint:'HR 無法提前感知員工離職傾向', input:'542 筆員工人事資料', process:'Profet AI 建模；關鍵因子：年資、加班時數', output:'高風險員工早期預警報表', benefit:'未持續使用', company:'PMX', unit:'HR', aiType:'Profet AI AutoML', stage:'Prototype', source:'來源：PMX HR 訪談 2026-02', insight:'關鍵因子為年資與加班'},
+  {title:'揚聲器 T/S 參數推薦', summary:'R²=0.9987，MAE=0.29 dB', painPoint:'提案階段大量試錯反推最佳 T/S 參數', input:'42,336 筆 T/S 參數量測數據', process:'34 個頻率預測子模型', output:'3 組最佳化參數組合；R²=0.9987', benefit:'大幅縮短提案試錯時間', company:'TYM', unit:'SAE', aiType:'Profet AI AutoML', stage:'Prototype', source:'來源：TYM SAE 訪談 2026-03', insight:'高精度預測可延伸至揚聲器系統設計'},
+  {title:'ESG 報告流程標準化', summary:'9 共通步驟、報告耗 6+ 月，決策自建', painPoint:'跨 E/S/G 9 個共通步驟，KPI 定義不一', input:'跨 E/S/G 部門原始數據', process:'9 個步驟抽象化與標準化', output:'標準化 ESG 報告流程', benefit:'流程標準化優先於系統建置', company:'PMX', unit:'ESG', aiType:'2026-02~03', stage:'Prototype', source:'來源：PMX ESG 訪談 2026-02~03', insight:'知識集中個人是最大風險'},
+  {title:'產線影像辨識', summary:'POC 持續微調中', painPoint:'人工目視品管效率低、標準不一', input:'產線即時影像；標準良品影像', process:'AI 視覺模型比對差異區域', output:'瑕疵辨識與標記報告', benefit:'POC 階段，部門自行微調中', company:'PMX', unit:'iIBG', aiType:'Self-built AI', stage:'Development', source:'來源：PMX iIBG 訪談 2026-02', insight:'取代人工目視，即時回饋產線'},
+  {title:'PLM 規格書辨識 + BPM 請假 Agent', summary:'雙 MVP 完成待擴散', painPoint:'PLM 規格書手動匯入耗時；請假流程繁瑣', input:'PLM 規格書 PDF；Teams 對話請假指令', process:'AI OCR 辨識；Agent 解析對話', output:'PLM 自動匯入；請假 Agent 上線', benefit:'集團 AI 落地最成熟的單位', company:'TYM', unit:'IT', aiType:'MVP Done', stage:'Development', source:'來源：TYM IT 訪談 2026-03', insight:'IT 部門具備 AI 落地能力'},
+  {title:'跨單位知識中台 RAG', summary:'運行中，唯一持續使用案例', painPoint:'各單位知識分散、資訊孤島', input:'各單位 SOP 文件；FAQ 知識庫', process:'RAG 向量檢索；LLM + System Prompt', output:'跨單位 AI 知識中台；即時問答介面', benefit:'唯一持續使用中的 AI 案例', company:'PMX', unit:'iIBG', aiType:'Self-built RAG', stage:'Deploy', source:'來源：PMX iIBG 訪談 2026-02', insight:'知識不再孤立，經驗可複製'},
+  {title:'VBA 239 Jobs 自動化', summary:'每月運行省 200-300 人時', painPoint:'VBA 自動化省下大量人時，但停留在原團隊', input:'財務報表原始資料；SAP 匯出數據', process:'VBA 自動化 239 Jobs/月', output:'省 200-300 人時/月', benefit:'推廣機制比開發能力更重要', company:'TYM', unit:'FA', aiType:'VBA / RPA', stage:'Deploy', source:'來源：TYM F&A 訪談 2026-02-09', insight:'現有能力未擴散是最大損失'}
+];
+
+const SEED_PROMPTS = [
+  {title:'履歷快速評分（職能匹配）', department:'HR', useCase:'HRBP 篩選大量履歷時，快速產出職能匹配分數', promptBody:'你是資深 HRBP。我將提供職位 JD 與候選人履歷，請依下列維度評分（0-5 分）：\n1. 核心硬技能匹配度\n2. 產業經驗相關性\n3. 職涯穩定度\n4. 文化適配訊號\n\n請以表格輸出，並列出 3 個面試重點問題。\n\n【JD】\n{貼上}\n\n【履歷】\n{貼上}', tools:'ChatGPT, Claude', author:'HR / 2026-04'},
+  {title:'程式碼 Review：安全 + 效能雙視角', department:'IT', useCase:'上 PR 前自查，避免常見漏洞與效能反模式', promptBody:'你是 senior software engineer，請以下列兩個視角 review 我的程式碼：\n\n【安全】OWASP Top 10、輸入驗證、敏感資料 log\n【效能】N+1 query、記憶體常駐、同步/非同步選擇\n\n請列出問題清單（嚴重等級 P0/P1/P2）並給修改建議。\n\n```\n{貼上}\n```', tools:'Claude Code, Copilot', author:'IT / 2026-05'},
+  {title:'月報異常解析', department:'FA', useCase:'F&A 月底分析 BU 績效異常，快速產出主管簡報重點', promptBody:'你是集團 BCO。我提供本月與上月成本中心數據。請：\n1. 找出變異超過 ±15% 的科目\n2. 對每個異常提出 3 個可能原因（結構性 vs 一次性）\n3. 標示需向 BU Head 確認的 2-3 個關鍵問題\n4. 輸出 3 句簡報用 talking points', tools:'Copilot Excel, ChatGPT', author:'FA / 2026-04'},
+  {title:'DOE 實驗設計建議', department:'RD', useCase:'研發工程師在新製程開案時，規劃實驗變因組合', promptBody:'你是製程實驗設計專家。我要進行 {製程} 的 DOE，目標優化 {KPI}。\n\n請：\n1. 建議 3-5 個應納入的主因子\n2. 推薦最少實驗次數的設計方法\n3. 列出 2-3 個易被忽略的干擾因子\n4. 給出建議的數據紀錄表格欄位', tools:'Claude, Profet AI', author:'SAE / 2026-03'},
+  {title:'產線異常根因排查 — 5 Why × Fishbone', department:'MFG', useCase:'產線發生品質異常時，引導工程師結構化分析', promptBody:'你是資深製造工程師。請依下列步驟協助根因分析：\n\n1. 5 Why 連續追問（至少追到第 4 層）\n2. 用魚骨圖 6M 分類列出可能原因\n3. 標示「最可能 / 中等 / 較不可能」\n4. 給出 3 個短期止血 + 2 個長期預防動作\n\n【異常描述】\n{時間 / 產線 / 機台 / 不良現象}', tools:'ChatGPT, Claude', author:'iIBG / 2026-04'},
+  {title:'ESG 報告章節草稿（含 GRI 對照）', department:'ESG', useCase:'年度報告章節初稿，自動帶入 GRI / SASB', promptBody:'你是 ESG 報告撰寫專家。我提供本年度某項揭露主題的數據與事實，請：\n\n1. 撰寫 250-350 字章節初稿（避免漂綠用語）\n2. 對照標示適用的 GRI 揭露準則編號\n3. 列出 SASB 行業標準對照\n4. 標出 3 個尚待補充的數據缺口', tools:'Claude, Perplexity', author:'ESG / 2026-03'},
+  {title:'會議摘要 → Action Items 結構化', department:'GEN', useCase:'會議結束後將逐字稿轉成可追蹤行動項', promptBody:'你是會議記錄專家。我提供會議逐字稿，請輸出：\n\n【共識決議】3-8 點\n【行動項】表格 # / Action / Owner / Due / 優先級\n【待釐清議題】未拍板的議題 + 卡點\n【主管 1-page 摘要】背景 / 決議 / 下一步\n\n【逐字稿】\n{貼上}', tools:'Claude, ChatGPT', author:'DTO Office / 2026-05'},
+  {title:'對外 Email 三段式潤稿', department:'GEN', useCase:'寄客戶/供應商前，自動改寫成專業版本', promptBody:'你是英文商務溝通顧問。請將中文草稿改寫成英文 Email：\n\n1. Subject 簡潔（≤8 字）含 action verb\n2. 內文三段：Context → Ask → Next Step\n3. 避免冗詞\n4. 結尾留 1 句友善 closing\n\n最後提供繁中對照版本。\n\n【中文草稿】\n{貼上}', tools:'Claude, ChatGPT', author:'DTO Office / 2026-05'}
+];
+
+const SEED_EVENTS = [
+  {title:'集團 AI 應用座談會', eventDate:'2026-05-13', host:'Vicky（人資長）', audience:'Glen / Weiwu（IT 主管） / Kerwin / Alex（MTC） / 各 BU 代表共 11 人', highlights:'C1 AI 工具標準化清單先行\nC2 從示範案例到推廣機制並重\nC3 IT 主導治理，BU 主導場景\nC4 員工 AI 素養培訓分層\nC5 PIPL 跨境合規優先處理\nC6 試點預算集中審批\nC7 知識中台由 DTO Office 主責\nC8 Q3 啟動跨 BU AI 種子社群', slidesUrl:'', videoUrl:'', documentUrl:''},
+  {title:'AI 賦能全員生產力分享會', eventDate:'2026-04-17', host:'Glen（DTO Office）', audience:'全集團員工（線上 + 實體）', highlights:'4 張 Slide 框架：查 / 算 / 想 / 做\n實際示範：履歷 Q&A、Excel 公式生成、會議摘要\n3 個導入禁忌：機密外洩、虛假引用、過度依賴', slidesUrl:'', videoUrl:'', documentUrl:''},
+  {title:'BOX Cloud 知識平台 Architecture Review', eventDate:'2026-04-13', host:'Glen + IT 架構組', audience:'DTO + IT 核心', highlights:'Architecture v1.0 鎖定（Box AI + KG + Supabase pgvector）\nP0 開發已就緒，Day 0 setup + Q3 Supabase 區域待定', slidesUrl:'', videoUrl:'', documentUrl:''},
+  {title:'iIBG AI 試點案例經驗分享', eventDate:'2026-03-25', host:'iIBG AI 種子團隊', audience:'製造線各廠長 + 工程主管', highlights:'分享 3 個 Profet AI 試點案例\n為什麼前 3 個案例未持續使用 — 根因分析\n跨單位 RAG 知識中台 demo', slidesUrl:'', videoUrl:'', documentUrl:''}
+];
+</script>
+</body>
+</html>

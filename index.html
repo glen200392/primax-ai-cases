@@ -20,6 +20,10 @@
     --color-primary-light: #E6F4F5;
     --color-accent: #FF8C42;         /* Benefits highlight */
     --color-accent-light: #FFF1E6;
+    --color-danger: #D14545;
+    --color-danger-light: #FCE9E9;
+    --color-success: #2D9C5A;
+    --color-success-light: #E5F5EC;
 
     --text-primary: #1F2D33;
     --text-secondary: #4F6670;
@@ -100,6 +104,15 @@
     color: var(--color-accent);
     margin-right: 8px;
   }
+  .preview-banner {
+    background: rgba(255, 140, 66, 0.15);
+    border: 1px solid rgba(255, 140, 66, 0.4);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    margin-top: 14px;
+    display: inline-block;
+  }
 
   /* =========================================================
      Filter Bar
@@ -109,14 +122,21 @@
     margin: 0 auto;
     padding: 24px 32px 0;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 12px;
+  }
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     flex-wrap: wrap;
   }
   .filter-bar__label {
     font-size: 13px;
     color: var(--text-secondary);
     font-weight: 600;
+    margin-right: 4px;
+    min-width: 60px;
   }
   .filter-chip {
     padding: 6px 14px;
@@ -162,7 +182,7 @@
     margin: 0 auto;
     padding: 24px 32px 64px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 20px;
   }
   .case-card {
@@ -197,8 +217,9 @@
   .case-card__header {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     margin-bottom: 12px;
+    flex-wrap: wrap;
   }
   .case-card__badge {
     display: inline-block;
@@ -210,16 +231,22 @@
     font-weight: 700;
     letter-spacing: 0.02em;
   }
-  .case-card__id {
+  .stage-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: var(--radius-pill);
     font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 0.04em;
+    font-weight: 600;
   }
+  .stage-badge.stage-live { background: var(--color-success-light); color: var(--color-success); }
+  .stage-badge.stage-mvp { background: var(--color-accent-light); color: var(--color-accent); }
+  .stage-badge.stage-poc { background: #FFF7DB; color: #B58A00; }
+  .stage-badge.stage-other { background: var(--border); color: var(--text-secondary); }
   .case-card__title {
     font-size: 16px;
     font-weight: 700;
     line-height: 1.4;
-    margin: 0 0 16px;
+    margin: 0 0 14px;
     color: var(--text-primary);
     min-height: 44px;
   }
@@ -227,7 +254,7 @@
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     font-size: 13px;
   }
   .case-card__row-label {
@@ -245,10 +272,17 @@
     flex: 1;
     line-height: 1.5;
   }
+  .case-card__owner {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    margin-bottom: 12px;
+  }
+  .case-card__owner::before {
+    content: "👤 ";
+  }
   .case-card__benefits {
     margin-top: auto;
-    padding-top: 16px;
-    border-top: 1px dashed var(--border);
     background: var(--color-accent-light);
     margin-left: -24px;
     margin-right: -24px;
@@ -271,24 +305,9 @@
     font-weight: 500;
     line-height: 1.5;
   }
-  .case-card__cta {
-    position: absolute;
-    bottom: 12px;
-    right: 16px;
-    color: var(--color-primary);
-    font-size: 12px;
-    font-weight: 600;
-    opacity: 0;
-    transform: translateX(-4px);
-    transition: all 0.2s ease;
-  }
-  .case-card:hover .case-card__cta {
-    opacity: 1;
-    transform: translateX(0);
-  }
 
   /* =========================================================
-     Modal (Tier 2 — IPO detail)
+     Modal
      ========================================================= */
   .modal-backdrop {
     position: fixed;
@@ -302,13 +321,11 @@
     padding: 40px 20px;
     backdrop-filter: blur(4px);
   }
-  .modal-backdrop.is-open {
-    display: flex;
-  }
+  .modal-backdrop.is-open { display: flex; }
   .modal {
     background: var(--bg-card);
     border-radius: var(--radius-modal);
-    max-width: 880px;
+    max-width: 960px;
     width: 100%;
     box-shadow: var(--shadow-modal);
     overflow: hidden;
@@ -341,11 +358,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.15s ease;
   }
-  .modal__close:hover {
-    background: rgba(255, 255, 255, 0.28);
-  }
+  .modal__close:hover { background: rgba(255, 255, 255, 0.28); }
+  .modal__badges { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
   .modal__badge {
     display: inline-block;
     padding: 4px 12px;
@@ -354,7 +369,6 @@
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.04em;
-    margin-bottom: 10px;
   }
   .modal__title {
     font-size: 22px;
@@ -363,30 +377,80 @@
     padding-right: 56px;
     line-height: 1.4;
   }
-  .modal__tools {
+  .modal__tools { font-size: 13px; opacity: 0.85; }
+  .modal__tools::before { content: "🛠 "; margin-right: 4px; }
+  .modal__body { padding: 28px 32px 32px; }
+
+  /* Before / After grid */
+  .ba-section { margin-bottom: 28px; }
+  .ba-section__title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .ba-section__title::before {
+    content: "⇄";
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+  .ba-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .ba-col {
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .ba-col--before {
+    background: var(--color-danger-light);
+    border-left: 3px solid var(--color-danger);
+  }
+  .ba-col--after {
+    background: var(--color-success-light);
+    border-left: 3px solid var(--color-success);
+  }
+  .ba-col__label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .ba-col--before .ba-col__label { color: var(--color-danger); }
+  .ba-col--after .ba-col__label { color: var(--color-success); }
+  .ba-col__how {
     font-size: 13px;
-    opacity: 0.85;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    line-height: 1.55;
   }
-  .modal__tools::before {
-    content: "🛠 ";
-    margin-right: 4px;
+  .ba-col__pain, .ba-col__outcome {
+    font-size: 12px;
+    color: var(--text-secondary);
+    padding-top: 10px;
+    border-top: 1px dashed rgba(0,0,0,0.1);
+    line-height: 1.5;
   }
 
-  .modal__body {
-    padding: 28px 32px 32px;
-  }
-
-  .ipo-section {
-    margin-bottom: 24px;
-  }
-  .ipo-section:last-child {
-    margin-bottom: 0;
-  }
+  /* IPO sections */
+  .ipo-section { margin-bottom: 22px; }
   .ipo-section__heading {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
   .ipo-section__icon {
     width: 28px;
@@ -402,7 +466,7 @@
     flex-shrink: 0;
   }
   .ipo-section__title {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--text-primary);
     margin: 0;
@@ -410,21 +474,13 @@
   .ipo-section__body {
     padding-left: 38px;
     color: var(--text-secondary);
-    font-size: 14px;
-    line-height: 1.7;
+    font-size: 13px;
+    line-height: 1.65;
   }
-  .ipo-section__body p {
-    margin: 0 0 8px;
-  }
-  .ipo-section__body ul {
-    margin: 0;
-    padding-left: 18px;
-  }
-  .ipo-section__body li {
-    margin-bottom: 4px;
-  }
+  .ipo-section__body p { margin: 0 0 6px; }
+  .ipo-section__body ul { margin: 0; padding-left: 18px; }
+  .ipo-section__body li { margin-bottom: 3px; }
 
-  /* Benefits section uses accent color */
   .ipo-section--benefits .ipo-section__icon {
     background: var(--color-accent-light);
     color: var(--color-accent);
@@ -432,14 +488,89 @@
   .ipo-section--benefits .ipo-section__body {
     background: var(--color-accent-light);
     margin-left: 38px;
-    padding: 14px 18px;
+    padding: 12px 16px;
     border-radius: 10px;
     border-left: 3px solid var(--color-accent);
     color: var(--text-primary);
     font-weight: 500;
   }
 
-  /* Footer of modal */
+  /* Build Story */
+  .build-story {
+    background: #F0F4F6;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 22px 0;
+  }
+  .build-story__label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-primary);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .build-story__body {
+    font-size: 13px;
+    color: var(--text-primary);
+    line-height: 1.65;
+  }
+
+  /* Owner card + Quote */
+  .owner-card {
+    background: linear-gradient(135deg, #F0F4F6 0%, #E6F4F5 100%);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin: 22px 0;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .owner-card__avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .owner-card__meta { flex: 1; }
+  .owner-card__name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+  .owner-card__role {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .owner-card__bg {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+  .quote-block {
+    background: var(--color-primary-light);
+    border-left: 4px solid var(--color-primary);
+    padding: 14px 18px;
+    margin: 20px 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    font-style: italic;
+    border-radius: 0 8px 8px 0;
+  }
+  .quote-block::before { content: "“"; font-size: 32px; color: var(--color-primary); line-height: 0; vertical-align: -10px; margin-right: 4px; }
+  .quote-block::after { content: "”"; font-size: 32px; color: var(--color-primary); line-height: 0; vertical-align: -10px; margin-left: 4px; }
+
+  /* Modal footer */
   .modal__footer {
     border-top: 1px solid var(--border);
     background: var(--bg-section-alt);
@@ -451,10 +582,9 @@
     flex-wrap: wrap;
     gap: 8px;
   }
+  .modal__footer__src { max-width: 60%; }
 
-  /* =========================================================
-     Empty state
-     ========================================================= */
+  /* Empty state */
   .empty-state {
     grid-column: 1 / -1;
     text-align: center;
@@ -463,24 +593,20 @@
     font-size: 14px;
   }
 
-  /* =========================================================
-     Responsive
-     ========================================================= */
+  /* Responsive */
   @media (max-width: 640px) {
     .page-header { padding: 32px 20px 40px; }
     .page-header__title { font-size: 24px; }
-    .cases-grid { padding: 20px 16px 48px; gap: 16px; }
+    .cases-grid { padding: 20px 16px 48px; gap: 16px; grid-template-columns: 1fr; }
     .filter-bar { padding: 20px 16px 0; }
     .filter-bar__search { width: 100%; margin-left: 0; }
-    .modal { margin-bottom: 20px; }
-    .modal__header { padding: 24px 20px 20px; }
-    .modal__title { font-size: 18px; }
+    .ba-grid { grid-template-columns: 1fr; }
     .modal__body { padding: 20px 20px 24px; }
+    .modal__title { font-size: 18px; }
     .ipo-section__body { padding-left: 0; }
     .ipo-section--benefits .ipo-section__body { margin-left: 0; }
   }
 
-  /* Print styles — for if anyone wants to PDF this */
   @media print {
     .page-header, .filter-bar { background: white; color: black; }
     .case-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
@@ -490,387 +616,195 @@
 </head>
 <body>
 
-<!-- ============================================================
-     PAGE HEADER
-     ============================================================ -->
 <header class="page-header">
   <div class="page-header__inner">
     <span class="page-header__eyebrow">Primax · AI Empowerment</span>
     <h1 class="page-header__title">集團 AI 應用案例庫</h1>
     <p class="page-header__subtitle">
-      Group AI Use Cases — 各部門已落地的 AI 應用，點擊卡片查看完整 IPO（Input · Process · Output）與實際效益。
+      Group AI / RPA Use Cases — 點擊卡片查看完整 Before/After、IPO 流程、Owner 介紹與第一手分享。
     </p>
     <div class="page-header__meta">
       <span id="meta-count">案例總數：—</span>
-      <span>更新日期：2026-05-18</span>
+      <span id="meta-updated">更新日期：—</span>
       <span>維護：DTO Office</span>
+    </div>
+    <div class="preview-banner" id="preview-banner" style="display:none">
+      ⚠️ Internal Preview — 含 Active-Internal 草稿，正式公開請等 Active-Published
     </div>
   </div>
 </header>
 
-<!-- ============================================================
-     FILTER BAR
-     ============================================================ -->
 <div class="filter-bar" id="filter-bar">
-  <span class="filter-bar__label">部門 / BG：</span>
-  <!-- Filter chips injected by JS -->
-  <input type="search" class="filter-bar__search" id="search-input" placeholder="搜尋案例 / 工具 / 效益..." />
+  <div class="filter-row" id="filter-row-bg">
+    <span class="filter-bar__label">部門 / BG：</span>
+  </div>
+  <div class="filter-row" id="filter-row-stage">
+    <span class="filter-bar__label">階段：</span>
+    <input type="search" class="filter-bar__search" id="search-input" placeholder="搜尋案例 / 工具 / 效益 / Owner..." />
+  </div>
 </div>
 
-<!-- ============================================================
-     CARDS GRID
-     ============================================================ -->
 <main class="cases-grid" id="cases-grid">
-  <!-- Cards injected by JS -->
+  <div class="empty-state">載入中…</div>
 </main>
 
-<!-- ============================================================
-     MODAL
-     ============================================================ -->
 <div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
   <div class="modal" id="modal">
     <header class="modal__header">
       <button class="modal__close" id="modal-close" aria-label="關閉">×</button>
-      <span class="modal__badge" id="modal-badge"></span>
+      <div class="modal__badges" id="modal-badges"></div>
       <h2 class="modal__title" id="modal-title"></h2>
       <div class="modal__tools" id="modal-tools"></div>
     </header>
-    <div class="modal__body" id="modal-body">
-      <!-- IPO sections injected by JS -->
-    </div>
+    <div class="modal__body" id="modal-body"></div>
     <footer class="modal__footer">
-      <span>案例編號：<span id="modal-id">—</span></span>
-      <span>如需更新內容，請聯繫該案例負責單位</span>
+      <span class="modal__footer__src">案例編號：<span id="modal-id">—</span> · 來源：<span id="modal-src">—</span></span>
+      <span>最後更新：<span id="modal-updated">—</span></span>
     </footer>
   </div>
 </div>
 
 <script>
 /* =====================================================================
-   CASE DATA — 編輯此區即可更新案例內容，無需修改排版
-   =====================================================================
-   schema:
-     id          : 卡片 URL slug（英文小寫，hash 用）
-     bg          : 部門 / BG（卡片 badge）
-     title       : Use Case 標題（卡片大字）
-     tools       : 工具技術（卡片 + modal 副標）
-     benefitsSummary : 卡片底部一句話效益
-     painPoint   : 痛點與情境（modal 第 1 段）
-     input       : 資料來源與格式（陣列）
-     process     : 處理流程（陣列）
-     output      : 產出形式（陣列）
-     benefits    : 完整效益（陣列）
+   DATA — fetched from cases.json (generated by excel_to_json.py)
    ===================================================================== */
-const CASES = [
-  {
-    id: "fa",
-    bg: "F&A",
-    title: "280+ 財務報表自動化（含 TYM 13 家公司）",
-    tools: "Python 自建 + VBA",
-    benefitsSummary: "月省 200+ 小時，跨國 100% 準確（運行 2 年）",
-    painPoint: "集團跨國 13 家公司每月需手動彙整 280+ 份財務報表，會計同仁加班結帳壓力大；不同子公司 ERP 匯出格式不一致，人工對應科目時容易誤植，月底結帳幾乎沒有 buffer 時間處理例外。",
-    input: [
-      "各子公司 ERP 系統匯出的 Excel / CSV 報表",
-      "總帳明細與會計科目對照表",
-      "銀行對帳檔與匯率資料",
-      "上月底結轉資料"
-    ],
-    process: [
-      "Python 腳本批次讀取多源資料來源",
-      "VBA 巨集進行格式統一與會計科目自動對應",
-      "校驗規則自動檢查（餘額對平、科目完整性、匯率套用）",
-      "例外清單回拋給承辦同仁人工複核",
-      "通過驗證的資料自動產生合併報表"
-    ],
-    output: [
-      "280+ 份標準化財務報表（PDF + Excel）",
-      "多公司合併 BS / IS / CF 報表",
-      "差異分析報告（vs 上月 / vs 預算）",
-      "例外科目清單（待人工確認）"
-    ],
-    benefits: [
-      "月節省人工作業時間 200+ 小時",
-      "跨國 13 家公司資料 100% 準確",
-      "穩定運行 2 年，已成為月結 SOP 一部分",
-      "會計人員從重複作業轉向分析工作"
-    ]
-  },
-  {
-    id: "hr",
-    bg: "HR",
-    title: "25+ 行政流程自動化（派車 / 總務 / 餐費對帳等）",
-    tools: "Power Automate + GenAI 輔助",
-    benefitsSummary: "年省 2000+ 工時，已擴散他廠",
-    painPoint: "派車申請、總務報修、餐費對帳、訪客登記等 25+ 項行政流程，過去依賴紙本表單或散落於各 Email；HR/總務同仁每天追單、提醒、彙整，零碎時間吃光主要工作；跨部門協調延遲影響員工體驗。",
-    input: [
-      "Teams / Microsoft Forms 表單填寫資料",
-      "Email 申請（含附件）",
-      "SAP / 餐廳系統匯出的餐費明細",
-      "員工資料與組織架構 DB"
-    ],
-    process: [
-      "Power Automate 依事件觸發流程（表單送出 / Email 收件）",
-      "GenAI 輔助文字理解（如餐費備註自動分類、申請理由摘要）",
-      "依規則自動分派簽核者 / 通知相關單位",
-      "簽核完成自動回填系統 / 發送結果通知",
-      "對帳類流程：自動比對來源資料、差異標記"
-    ],
-    output: [
-      "流程狀態 Dashboard（即時可視化）",
-      "自動完成的單據（派車單、報修單、報銷單）",
-      "簽核完成 / 待處理通知（Teams + Email）",
-      "月度對帳報表（含異常清單）"
-    ],
-    benefits: [
-      "年節省人工作業 2000+ 工時",
-      "成功模式已擴散至其他廠區複用",
-      "員工申請體驗大幅改善（從等待數天到當日完成）",
-      "HR / 總務人力從事務性轉向人才發展工作"
-    ]
-  },
-  {
-    id: "iibg-rd",
-    bg: "iIBG-RD",
-    title: "RFQ 快速定案 + 自動測試計劃生成",
-    tools: "RAG + 地端 Azure OpenAI",
-    benefitsSummary: "90~95% RFQ 自動對應；80% 測試項自動匹配",
-    painPoint: "RFQ（Request for Quotation）處理高度依賴老手經驗，新案件需翻找過往相似案來估時、報價；測試計劃撰寫需逐項對照產品規格與測試標準，新進工程師容易遺漏項目，影響產品出貨品質與時程。",
-    input: [
-      "客戶 RFQ 文件（PDF / Word，含規格表）",
-      "過往 RFQ 案例庫（已結案的歷史資料）",
-      "產品規格資料庫",
-      "測試標準與規範文件（IEC / IPC / 客戶 spec）"
-    ],
-    process: [
-      "RAG（檢索增強生成）索引歷史 RFQ 與規格庫",
-      "地端 Azure OpenAI 萃取新 RFQ 的關鍵需求要點",
-      "向量比對找出最相似的歷史案例",
-      "依規格與標準自動生成測試項清單",
-      "工程師複核 + 微調，AI 從修正中持續學習"
-    ],
-    output: [
-      "RFQ 對應分析報告（含相似案推薦與差異點）",
-      "自動產出的測試計劃草案（測試項 / 條件 / 判準）",
-      "報價依據建議（基於歷史相似案）",
-      "可追溯的來源引用（哪份歷史案、哪段規格）"
-    ],
-    benefits: [
-      "90~95% RFQ 可自動對應到歷史相似案",
-      "80% 測試項可自動匹配，工程師專注新項目",
-      "新進工程師上手時間縮短",
-      "敏感資料地端處理，符合客戶資安要求"
-    ]
-  },
-  {
-    id: "iibg-mfg",
-    bg: "iIBG-製造",
-    title: "鍵盤多語系印刷驗證 + AI 包裝圖樣檢測 + eBOM→eRFQ",
-    tools: "AI 視覺 + Workflow",
-    benefitsSummary: "取代人工驗收 50~60 語系；防包裝錯誤；流程串接",
-    painPoint: "鍵盤產品需支援 50~60 種語系印刷，過去靠 QC 人員逐顆 key cap 目視比對，眼力負荷大且容易漏檢；包裝圖樣若印錯流向客戶後損失大；eBOM 轉 eRFQ 流程有人為斷層，資料重複輸入。",
-    input: [
-      "鍵盤印刷影像（高解析度產線拍攝）",
-      "包裝圖樣設計檔（AI / PDF）",
-      "標準字典（各語系字元樣本）",
-      "eBOM 結構資料（料件 / 規格 / 數量）"
-    ],
-    process: [
-      "AI 視覺辨識鍵盤每顆字元，與標準字典逐一比對",
-      "包裝圖樣以影像比對演算法檢出版本差異 / 印刷瑕疵",
-      "Workflow 自動串接 eBOM 解析 → 自動填入 eRFQ 欄位",
-      "異常案件自動暫停產線 / 發告警給品保",
-      "人工複判結果回寫，AI 持續學習邊界案"
-    ],
-    output: [
-      "印刷驗證結果（PASS / FAIL + 標註異常字元位置）",
-      "包裝異常告警（含差異視覺對比圖）",
-      "自動生成的 eRFQ 單（從 eBOM 來源完整可追溯）",
-      "品質日報（含各語系良率）"
-    ],
-    benefits: [
-      "取代人工驗收 50~60 語系，QC 改做例外處理",
-      "包裝錯誤流出機率大幅降低",
-      "eBOM → eRFQ 流程無斷層，資料一致性提升",
-      "產線品質數據自動累積，可作為改善依據"
-    ]
-  },
-  {
-    id: "iibg-km",
-    bg: "iIBG-KM",
-    title: "跨單位 KM 系統（儀器借用 / 測試 KM / RD Guideline）+ eRFQ Chatbot",
-    tools: "DB Schema 查詢 + LLM + RAG",
-    benefitsSummary: "4 套系統運行中",
-    painPoint: "儀器借用要打電話問可用性、測試經驗散落於老工程師個人筆記、RD Guideline 散見不同 SharePoint 資料夾、eRFQ 規則需翻多份文件——同樣的問題在不同單位重複被問，知識斷點造成跨單位協作摩擦。",
-    input: [
-      "儀器使用排程資料庫",
-      "測試報告與測試經驗文件（過往案例）",
-      "RD Guideline 設計準則文件（PDF / Word / Wiki）",
-      "eRFQ 規則手冊與更新紀錄"
-    ],
-    process: [
-      "DB Schema 查詢 → 結構化資料以 SQL 直接回應",
-      "LLM 將使用者自然語言問句轉為查詢條件",
-      "RAG 在文件知識庫中檢索相關段落",
-      "Chatbot 統一對話介面，背後自動路由到對應系統",
-      "未解問題自動轉介給領域專家 + 回饋學習"
-    ],
-    output: [
-      "儀器借用平台（即時可用性 + 線上預約）",
-      "測試 KM 系統（自然語言問答 + 引用來源）",
-      "RD Guideline 查詢系統（章節定位 + 摘要）",
-      "eRFQ Chatbot（規則查詢 + 案例推薦）"
-    ],
-    benefits: [
-      "4 套系統穩定運行中",
-      "跨單位重複詢問大幅減少",
-      "新進人員自助查詢，老師傅可專注高價值工作",
-      "知識資產化，不再依賴個人記憶"
-    ]
-  },
-  {
-    id: "mtc",
-    bg: "MTC",
-    title: "模流分析自動化（專利 / 材料 / 聲學 / 測試 / 碳排 / 噸數）",
-    tools: "User-built AI + 地端 LLM + Agent",
-    benefitsSummary: "模流已上線（非專業可用）；6 條 Agent 每日自動運行",
-    painPoint: "模流分析、專利檢索、材料/聲學/測試/碳排/噸數計算長期依賴少數專業人員，知識斷層風險高；6 個專業領域文件量龐大，工程師查找一次資訊耗時，且結果難以重複使用。",
-    input: [
-      "模具設計檔（CAD / STP）",
-      "材料資料庫（物性 / 製程參數）",
-      "專利資料庫（公司內部 + 公開）",
-      "測試報告與聲學測量資料",
-      "碳排放係數表與產品 BOM 噸數資料"
-    ],
-    process: [
-      "User-built AI 介面降低使用門檻（非專業也能操作）",
-      "地端 LLM 處理機密專業文件（不外流）",
-      "6 條 Agent 各司其職：模流 / 專利 / 材料 / 聲學 / 測試 / 碳排",
-      "每日自動執行排程任務（巡檢 / 報告 / 摘要）",
-      "結果寫入共用 KB 供後續案件複用"
-    ],
-    output: [
-      "模流分析結果（含建議優化方向）",
-      "6 條 Agent 每日自動報表",
-      "專利 / 材料 / 聲學等查詢結果（含引用）",
-      "碳排 / 噸數計算試算表"
-    ],
-    benefits: [
-      "模流分析非專業同仁也能上手",
-      "6 條 Agent 每日自動運行，釋出專家時間",
-      "專業知識保留在地端，無外洩風險",
-      "建立可擴展的 Agent 模式，未來可複製到其他領域"
-    ]
-  },
-  {
-    id: "it",
-    bg: "IT",
-    title: "BPM 三套（憑證辨識 + Teams Chatbot 簽核 + 簽核紅綠燈）",
-    tools: "AI + BPM + Teams Bot",
-    benefitsSummary: "Q1 已上線，加速簽核、自動分流、自動標記重要案",
-    painPoint: "發票 / 憑證需人工輸入到簽核系統，鍵入錯誤率高；簽核流程拉長導致請款延遲；主管每天面對大量簽核單，無法快速辨識哪些是高優先級案件，重要案有時被埋沒。",
-    input: [
-      "憑證影像（發票 / 收據掃描 / 拍照）",
-      "Teams 對話訊息（簽核請求 / 詢問）",
-      "簽核單元資料（金額 / 廠商 / 用途 / 緊急程度）",
-      "歷史簽核紀錄（作為紅綠燈判斷依據）"
-    ],
-    process: [
-      "AI OCR 辨識憑證影像 → 自動萃取金額 / 廠商 / 日期等欄位",
-      "Teams Chatbot 接收簽核請求，引導補齊資料",
-      "BPM 引擎依規則路由簽核流程",
-      "紅綠燈 AI 模型評估案件優先級（金額 / 廠商 / 異常度）",
-      "主管 Teams 收到分流後的簽核清單（紅色優先處理）"
-    ],
-    output: [
-      "結構化憑證資料（直接寫入 ERP）",
-      "Teams 內簽核完成通知 / 待辦提醒",
-      "紅綠燈分流 Dashboard（紅 / 黃 / 綠案件數）",
-      "簽核時效統計報表"
-    ],
-    benefits: [
-      "Q1 已上線運行",
-      "簽核流程加速，請款週期縮短",
-      "自動分流讓主管聚焦關鍵案件",
-      "自動標記重要案件，降低漏簽風險"
-    ]
+let ALL_CASES = [];
+let META = {};
+
+const gridEl = document.getElementById("cases-grid");
+const filterRowBg = document.getElementById("filter-row-bg");
+const filterRowStage = document.getElementById("filter-row-stage");
+const searchEl = document.getElementById("search-input");
+const metaCount = document.getElementById("meta-count");
+const metaUpdated = document.getElementById("meta-updated");
+const previewBanner = document.getElementById("preview-banner");
+
+const state = { bg: "ALL", stage: "ALL", search: "" };
+
+async function init() {
+  try {
+    const resp = await fetch("cases.json", { cache: "no-store" });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const payload = await resp.json();
+    META = payload;
+    ALL_CASES = payload.cases || [];
+    metaUpdated.textContent = `更新日期：${payload.generated_at?.slice(0, 10) || "—"}`;
+    if (payload.mode !== "published") {
+      previewBanner.style.display = "inline-block";
+      previewBanner.textContent = `⚠️ ${payload.mode === "internal" ? "Internal Preview" : "Admin Full View"} — ${payload.exported}/${payload.total_in_ssot} 案 (含未公開草稿)`;
+    }
+    renderFilters();
+    renderCards();
+    checkDeepLink();
+  } catch (err) {
+    gridEl.innerHTML = `<div class="empty-state">❌ 載入失敗：${err.message}<br><small>請確認 cases.json 存在</small></div>`;
   }
-];
+}
 
-/* =====================================================================
-   RENDER
-   ===================================================================== */
-const gridEl     = document.getElementById("cases-grid");
-const filterBar  = document.getElementById("filter-bar");
-const searchEl   = document.getElementById("search-input");
-const metaCount  = document.getElementById("meta-count");
+function stageClass(stage) {
+  if (!stage) return "stage-other";
+  if (stage.includes("上線") || stage.includes("穩定運行") || stage.includes("已落地") || stage.includes("Deployment")) return "stage-live";
+  if (stage.includes("MVP")) return "stage-mvp";
+  if (stage.includes("POC") || stage.includes("PoC")) return "stage-poc";
+  return "stage-other";
+}
 
-const state = {
-  filter: "ALL",
-  search: ""
-};
+function stageBucket(stage) {
+  if (!stage) return "其他";
+  if (stage.includes("上線") || stage.includes("穩定運行") || stage.includes("Deployment") || stage.includes("已落地") || stage.includes("已完成")) return "已上線";
+  if (stage.includes("MVP")) return "MVP";
+  if (stage.includes("POC") || stage.includes("PoC") || stage.includes("Pilot")) return "POC";
+  if (stage.includes("結案")) return "結案-未確認";
+  if (stage.includes("規劃") || stage.includes("需求") || stage.includes("評估")) return "規劃/評估";
+  if (stage.includes("卡")) return "卡點";
+  return "其他";
+}
 
-function renderFilterChips() {
-  const bgs = ["ALL", ...new Set(CASES.map(c => c.bg))];
+function renderFilters() {
+  // BG chips
+  const bgs = ["ALL", ...Array.from(new Set(ALL_CASES.map(c => c.bg))).sort()];
   bgs.forEach(bg => {
     const chip = document.createElement("button");
     chip.className = "filter-chip" + (bg === "ALL" ? " is-active" : "");
-    chip.textContent = bg === "ALL" ? "全部" : bg;
+    chip.textContent = bg === "ALL" ? `全部 (${ALL_CASES.length})` : bg;
     chip.dataset.bg = bg;
     chip.onclick = () => {
-      state.filter = bg;
-      document.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("is-active"));
+      state.bg = bg;
+      filterRowBg.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("is-active"));
       chip.classList.add("is-active");
       renderCards();
     };
-    filterBar.insertBefore(chip, searchEl);
+    filterRowBg.appendChild(chip);
+  });
+
+  // Stage chips
+  const buckets = ["ALL", "已上線", "MVP", "POC", "結案-未確認", "規劃/評估", "卡點", "其他"];
+  buckets.forEach(stage => {
+    const count = stage === "ALL" ? ALL_CASES.length : ALL_CASES.filter(c => stageBucket(c.stage) === stage).length;
+    if (stage !== "ALL" && count === 0) return;
+    const chip = document.createElement("button");
+    chip.className = "filter-chip" + (stage === "ALL" ? " is-active" : "");
+    chip.textContent = `${stage === "ALL" ? "全部" : stage} (${count})`;
+    chip.dataset.stage = stage;
+    chip.onclick = () => {
+      state.stage = stage;
+      filterRowStage.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("is-active"));
+      chip.classList.add("is-active");
+      renderCards();
+    };
+    filterRowStage.insertBefore(chip, searchEl);
   });
 }
 
 function matchesFilter(c) {
-  if (state.filter !== "ALL" && c.bg !== state.filter) return false;
+  if (state.bg !== "ALL" && c.bg !== state.bg) return false;
+  if (state.stage !== "ALL" && stageBucket(c.stage) !== state.stage) return false;
   if (state.search) {
     const q = state.search.toLowerCase();
-    const haystack = [c.bg, c.title, c.tools, c.benefitsSummary].join(" ").toLowerCase();
-    if (!haystack.includes(q)) return false;
+    const hay = [c.bg, c.title, c.tools, c.benefits_summary, c.owner_name, c.stage].join(" ").toLowerCase();
+    if (!hay.includes(q)) return false;
   }
   return true;
 }
 
 function renderCards() {
-  const visible = CASES.filter(matchesFilter);
+  const visible = ALL_CASES.filter(matchesFilter);
   gridEl.innerHTML = "";
-
-  metaCount.textContent = `案例總數：${visible.length} / ${CASES.length}`;
-
+  metaCount.textContent = `案例總數：${visible.length} / ${ALL_CASES.length}`;
   if (visible.length === 0) {
     gridEl.innerHTML = '<div class="empty-state">沒有符合條件的案例</div>';
     return;
   }
-
   visible.forEach(c => {
     const card = document.createElement("button");
     card.className = "case-card";
     card.type = "button";
     card.setAttribute("aria-label", `查看 ${c.bg} ${c.title} 詳情`);
+    const ownerHtml = c.owner_name ? `<div class="case-card__owner">${escape(c.owner_name)}${c.owner_dept ? " · " + escape(c.owner_dept) : ""}</div>` : "";
     card.innerHTML = `
       <div class="case-card__header">
-        <span class="case-card__badge">${c.bg}</span>
-        <span class="case-card__id">#${c.id.toUpperCase()}</span>
+        <span class="case-card__badge">${escape(c.bg)}</span>
+        ${c.stage ? `<span class="stage-badge ${stageClass(c.stage)}">${escape(stageBucket(c.stage))}</span>` : ""}
       </div>
-      <h3 class="case-card__title">${c.title}</h3>
+      <h3 class="case-card__title">${escape(c.title)}</h3>
       <div class="case-card__row">
         <span class="case-card__row-label">Tools</span>
-        <span class="case-card__row-value">${c.tools}</span>
+        <span class="case-card__row-value">${escape(c.tools || "—")}</span>
       </div>
+      ${ownerHtml}
       <div class="case-card__benefits">
         <div class="case-card__benefits-label">效益亮點</div>
-        <div class="case-card__benefits-value">${c.benefitsSummary}</div>
+        <div class="case-card__benefits-value">${escape(c.benefits_summary || "—")}</div>
       </div>
-      <span class="case-card__cta">查看完整 IPO →</span>
     `;
     card.onclick = () => openModal(c.id);
     gridEl.appendChild(card);
   });
+}
+
+function escape(s) {
+  if (s === null || s === undefined) return "";
+  return String(s).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch]);
 }
 
 /* =====================================================================
@@ -880,22 +814,82 @@ const backdrop = document.getElementById("modal-backdrop");
 const closeBtn = document.getElementById("modal-close");
 
 function openModal(id) {
-  const c = CASES.find(x => x.id === id);
+  const c = ALL_CASES.find(x => x.id === id);
   if (!c) return;
 
-  document.getElementById("modal-badge").textContent = c.bg;
-  document.getElementById("modal-title").textContent = c.title;
-  document.getElementById("modal-tools").textContent = c.tools;
-  document.getElementById("modal-id").textContent = c.id.toUpperCase();
+  const badges = document.getElementById("modal-badges");
+  badges.innerHTML = `
+    <span class="modal__badge">${escape(c.bg)}</span>
+    ${c.stage ? `<span class="modal__badge">${escape(c.stage)}</span>` : ""}
+    ${c.category_matrix ? `<span class="modal__badge">${escape(c.category_matrix)}</span>` : ""}
+  `;
+  document.getElementById("modal-title").textContent = c.title || "";
+  document.getElementById("modal-tools").textContent = c.tools || "";
+  document.getElementById("modal-id").textContent = (c.id || "—").toUpperCase();
+  document.getElementById("modal-src").textContent = c.source_meeting || "—";
+  document.getElementById("modal-updated").textContent = c.last_updated || "—";
 
   const body = document.getElementById("modal-body");
-  body.innerHTML = `
-    ${renderSection("①", "痛點與情境", `<p>${c.painPoint}</p>`)}
-    ${renderSection("②", "Input · 資料來源與格式", renderList(c.input))}
-    ${renderSection("③", "Process · 處理流程", renderList(c.process))}
-    ${renderSection("④", "Output · 產出形式", renderList(c.output))}
-    ${renderSection("⑤", "Benefits · 實際效益", renderList(c.benefits), "benefits")}
-  `;
+  const parts = [];
+
+  if (c.pain_point) {
+    parts.push(renderSection("①", "痛點與情境", `<p>${escape(c.pain_point)}</p>`));
+  }
+
+  if (c.before_how || c.after_how) {
+    parts.push(`
+      <section class="ba-section">
+        <h4 class="ba-section__title">Before / After 對比</h4>
+        <div class="ba-grid">
+          <div class="ba-col ba-col--before">
+            <div class="ba-col__label">Before · 導入前</div>
+            ${c.before_how ? `<div class="ba-col__how">${escape(c.before_how)}</div>` : ""}
+            ${c.before_pain ? `<div class="ba-col__pain"><strong>痛點：</strong>${escape(c.before_pain)}</div>` : ""}
+          </div>
+          <div class="ba-col ba-col--after">
+            <div class="ba-col__label">After · 導入後</div>
+            ${c.after_how ? `<div class="ba-col__how">${escape(c.after_how)}</div>` : ""}
+            ${c.after_outcome ? `<div class="ba-col__outcome"><strong>結果：</strong>${escape(c.after_outcome)}</div>` : ""}
+          </div>
+        </div>
+      </section>
+    `);
+  }
+
+  if (c.input && c.input.length) parts.push(renderSection("②", "Input · 資料來源", renderList(c.input)));
+  if (c.process && c.process.length) parts.push(renderSection("③", "Process · 處理流程", renderList(c.process)));
+  if (c.output && c.output.length) parts.push(renderSection("④", "Output · 產出形式", renderList(c.output)));
+  if (c.benefits && c.benefits.length) parts.push(renderSection("⑤", "Benefits · 實際效益", renderList(c.benefits), "benefits"));
+
+  if (c.build_story) {
+    parts.push(`
+      <div class="build-story">
+        <div class="build-story__label">⚙ 怎麼做出來的</div>
+        <div class="build-story__body">${escape(c.build_story)}</div>
+      </div>
+    `);
+  }
+
+  if (c.owner_name) {
+    const initials = (c.owner_name || "?").trim().charAt(0).toUpperCase();
+    parts.push(`
+      <div class="owner-card">
+        <div class="owner-card__avatar">${escape(initials)}</div>
+        <div class="owner-card__meta">
+          <div class="owner-card__name">${escape(c.owner_name)}</div>
+          <div class="owner-card__role">${escape(c.owner_role || "—")}${c.owner_dept ? " · " + escape(c.owner_dept) : ""}</div>
+          ${c.owner_background ? `<div class="owner-card__bg">${escape(c.owner_background)}</div>` : ""}
+          ${c.owner_email ? `<div class="owner-card__bg">📧 ${escape(c.owner_email)}</div>` : ""}
+        </div>
+      </div>
+    `);
+  }
+
+  if (c.quote) {
+    parts.push(`<div class="quote-block">${escape(c.quote)}</div>`);
+  }
+
+  body.innerHTML = parts.join("");
 
   backdrop.classList.add("is-open");
   document.body.style.overflow = "hidden";
@@ -915,7 +909,8 @@ function renderSection(icon, title, content, variant = "") {
 }
 
 function renderList(items) {
-  return "<ul>" + items.map(i => `<li>${i}</li>`).join("") + "</ul>";
+  if (typeof items === "string") return `<p>${escape(items)}</p>`;
+  return "<ul>" + items.map(i => `<li>${escape(i)}</li>`).join("") + "</ul>";
 }
 
 function closeModal() {
@@ -930,28 +925,17 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape" && backdrop.classList.contains("is-open")) closeModal();
 });
 
-/* =====================================================================
-   SEARCH
-   ===================================================================== */
 searchEl.addEventListener("input", () => {
   state.search = searchEl.value.trim();
   renderCards();
 });
 
-/* =====================================================================
-   DEEP LINK (?case=hr or #case=hr)
-   ===================================================================== */
 function checkDeepLink() {
   const hash = window.location.hash.match(/case=([\w-]+)/);
   if (hash) openModal(hash[1]);
 }
 
-/* =====================================================================
-   INIT
-   ===================================================================== */
-renderFilterChips();
-renderCards();
-checkDeepLink();
+init();
 </script>
 
 </body>

@@ -3,6 +3,18 @@
 .idea/
 *.log
 *.bak
+*.tmp
+*.tmp.html
 node_modules/
 .env
 .env.local
+__pycache__/
+*.pyc
+.venv/
+venv/
+bash.exe.stackdump
+# OneDrive sync residue
+~$*
+
+# local-only previews
+preview-data/*.local.json
