@@ -45,7 +45,8 @@ function showToast(msg) {
 
 /* ---------- data fetch ---------- */
 async function fetchData() {
-  const resp = await fetch("../cases.json", { cache: "no-store" });
+  // Cache-bust query so CDN edge cache + browser cache always re-fetch.
+  const resp = await fetch("../cases.json?v=" + Date.now(), { cache: "no-store" });
   if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
   const payload = await resp.json();
   META = payload;
