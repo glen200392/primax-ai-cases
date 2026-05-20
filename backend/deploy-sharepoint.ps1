@@ -7,9 +7,11 @@
 
 # ====== 設定區（執行前必須確認/修改）======
 $SiteUrl       = "https://primaxgroup.sharepoint.com/sites/DTO-Office"  # ⚠️ 改成正確 URL
-$LocalHtmlDir  = "C:\Users\glen.ho\Projects\knowledge-hub-prototype"
-$FilesToUpload = @("hub-dynamic.html", "style.css")
-$CaseListTitle = "AI案例庫"   # 既有 list 名稱（若你已改名，這裡同步調整）
+$LocalHtmlDir  = "C:\Users\glen.ho\Projects\primax-ai-cases"
+$FilesToUpload = @("hub-dynamic.html", "style.css", "index.html")
+# Canonical list name (DP-1 lock 2026-05-19): AICases_v2 為新建乾淨 schema list
+# 若選擇直接覆蓋既有 AI案例庫 (Migration Option A 砍重建)，改成 "AI案例庫"
+$CaseListTitle = "AICases_v2"
 # PnP Management Shell 官方 ClientId（若你的 IT 已封鎖此 app，需註冊自己的 Entra app 並換成新 ID）
 $PnPClientId   = "31359c7f-bd7e-475c-86db-fdb8c937548e"
 # =========================================
@@ -135,27 +137,100 @@ if (-not $eventList) {
 
 
 # =====================================================================
-# Step 5: 給既有 AI案例庫 加 Stage Choice 欄
+# Step 5: 建立 AICases_v2 list (canonical 38-col schema, 2026-05-19 DP-1 lock)
+# 若要用既有 list 而非新建，把 $CaseListTitle 改成既有 list 名稱
 # =====================================================================
-Write-Step 5 "為 $CaseListTitle 加 Stage 欄位"
+Write-Step 5 "建立 / 補欄 $CaseListTitle (canonical 38 cols)"
 
 $caseList = Get-PnPList -Identity $CaseListTitle -ErrorAction SilentlyContinue
-if ($caseList) {
-    $stageField = Get-PnPField -List $CaseListTitle -Identity "Stage" -ErrorAction SilentlyContinue
-    if (-not $stageField) {
-        try {
-            Add-PnPField -List $CaseListTitle -DisplayName "Stage" -InternalName "Stage" `
-                         -Type Choice -Choices "Prototype","Development","Deploy" -AddToDefaultView | Out-Null
-            Write-OK "Stage 欄位已新增（Choice: Prototype/Development/Deploy）"
-        } catch {
-            Write-Err "新增 Stage 欄位失敗：$_"
-        }
-    } else {
-        Write-Skip "Stage 欄位"
-    }
+if (-not $caseList) {
+    New-PnPList -Title $CaseListTitle -Template GenericList -OnQuickLaunch | Out-Null
+    Write-OK "List '$CaseListTitle' 建立"
 } else {
-    Write-Err "找不到 $CaseListTitle list — 請確認 \$CaseListTitle 設定"
+    Write-OK "List '$CaseListTitle' 已存在，將補欄位"
 }
+
+# 38-col canonical schema. Internal name 用 underscore_case 保持英文。
+# 既有 Title 是 SP 內建（List 一定有），跳過。
+$caseFields = @(
+    # Identity & summary (除 Title 外)
+    @{Display="BG (verbatim)"; Internal="BG"; Type="Text"}
+    @{Display="Company"; Internal="Company"; Type="Choice"; Choices=@("PMX","TYM")}
+    @{Display="Unit"; Internal="Unit"; Type="Text"}
+    @{Display="Region"; Internal="Region"; Type="Text"}
+    @{Display="Tools"; Internal="Tools"; Type="Text"}
+    @{Display="Benefits Summary"; Internal="Benefits_Summary"; Type="Text"}
+    @{Display="Stage (verbatim)"; Internal="Stage"; Type="Text"}
+    @{Display="Stage Norm"; Internal="Stage_Norm"; Type="Choice"; Choices=@("Deploy","Development","Prototype","Planning","Stalled","Other")}
+
+    # Problem & Before/After narrative
+    @{Display="Pain Point"; Internal="Pain_Point"; Type="Note"}
+    @{Display="Before — How"; Internal="Before_How"; Type="Note"}
+    @{Display="Before — Pain"; Internal="Before_Pain"; Type="Note"}
+    @{Display="After — How"; Internal="After_How"; Type="Note"}
+    @{Display="After — Outcome"; Internal="After_Outcome"; Type="Note"}
+
+    # IPO engineering view
+    @{Display="Input"; Internal="Input"; Type="Note"}
+    @{Display="Process"; Internal="Process"; Type="Note"}
+    @{Display="Output"; Internal="Output"; Type="Note"}
+    @{Display="Benefits"; Internal="Benefits"; Type="Note"}
+
+    # Story & owner
+    @{Display="Build Story"; Internal="Build_Story"; Type="Note"}
+    @{Display="Owner Name"; Internal="Owner_Name"; Type="Text"}
+    @{Display="Owner Role"; Internal="Owner_Role"; Type="Text"}
+    @{Display="Owner Dept"; Internal="Owner_Dept"; Type="Text"}
+    @{Display="Owner Background"; Internal="Owner_Background"; Type="Note"}
+    @{Display="Owner Photo"; Internal="Owner_Photo"; Type="URL"}
+    @{Display="Owner Email"; Internal="Owner_Email"; Type="Text"}
+    @{Display="Quote"; Internal="Quote"; Type="Note"}
+
+    # V5 Card alignment
+    @{Display="Category Matrix"; Internal="Category_Matrix"; Type="Choice"; Choices=@("個人×RPA","個人×AI","組織×RPA","組織×AI","合併")}
+    @{Display="ECRS"; Internal="ECRS"; Type="Text"}
+    @{Display="Maturity Indicator"; Internal="Maturity_Indicator"; Type="Choice"; Choices=@("🟢 穩定運行","🟡 進行中","灰 6 月未更新")}
+
+    # SP-only adopted
+    @{Display="Reviewer"; Internal="Reviewer"; Type="User"}
+    @{Display="Evidence URL"; Internal="EvidenceUrl"; Type="URL"}
+    @{Display="Source Channel"; Internal="SourceChannel"; Type="Choice"; Choices=@("Interview","Form","Migrated")}
+
+    # Provenance
+    @{Display="Source Meeting"; Internal="Source_Meeting"; Type="Text"}
+    @{Display="Verification Status"; Internal="Verification_Status"; Type="Choice"; Choices=@("Draft","Single-source","Verified","Owner-confirmed")}
+
+    # Lifecycle (Publish_Status axis) — Last_Updated/Updated_By 用 SP 內建 Modified/Editor
+    @{Display="Publish Status"; Internal="Publish_Status"; Type="Choice"; Choices=@("Draft","Active-Internal","Active-Published","Archived")}
+    @{Display="Publish Date"; Internal="Publish_Date"; Type="DateTime"}
+    @{Display="Archive Date"; Internal="Archive_Date"; Type="DateTime"}
+    @{Display="Archive Reason"; Internal="Archive_Reason"; Type="Text"}
+)
+
+foreach ($f in $caseFields) {
+    $existing = Get-PnPField -List $CaseListTitle -Identity $f.Internal -ErrorAction SilentlyContinue
+    if ($existing) {
+        Write-Skip "欄位 $($f.Internal)"
+        continue
+    }
+    try {
+        if ($f.Type -eq "Choice") {
+            Add-PnPField -List $CaseListTitle -DisplayName $f.Display -InternalName $f.Internal `
+                         -Type Choice -Choices $f.Choices -AddToDefaultView | Out-Null
+        } else {
+            Add-PnPField -List $CaseListTitle -DisplayName $f.Display -InternalName $f.Internal `
+                         -Type $f.Type -AddToDefaultView | Out-Null
+        }
+        Write-OK "欄位 $($f.Internal) ($($f.Type))"
+    } catch {
+        Write-Err "新增欄位 $($f.Internal) 失敗：$_"
+    }
+}
+
+# Enable Comments + Likes (D-NEW-05) — needs SP UI manual config or PnP CSOM (PnP no direct cmdlet for Likes)
+Write-Host "  ℹ  Comments + Likes 需手動在 List Settings 啟用：" -ForegroundColor Yellow
+Write-Host "       (a) Advanced settings → Allow comments = Yes" -ForegroundColor Yellow
+Write-Host "       (b) Rating settings → Allow items to be rated = Yes → Likes" -ForegroundColor Yellow
 
 
 # =====================================================================

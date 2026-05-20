@@ -99,6 +99,34 @@
     font-size: 13px;
     opacity: 0.8;
   }
+  .page-nav {
+    margin-top: 18px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .page-nav__tab {
+    padding: 8px 20px;
+    border-radius: var(--radius-pill);
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.35);
+    color: var(--text-on-primary);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: all 0.18s ease;
+  }
+  .page-nav__tab:hover {
+    background: rgba(255,255,255,0.18);
+    border-color: rgba(255,255,255,0.6);
+  }
+  .page-nav__tab.is-active {
+    background: var(--text-on-primary);
+    color: var(--color-primary-dark);
+    border-color: var(--text-on-primary);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  }
   .page-header__meta span::before {
     content: "●";
     color: var(--color-accent);
@@ -495,6 +523,68 @@
     font-weight: 500;
   }
 
+  /* IPO + Benefits 4-col horizontal grid (對齊 PPTX Slide 3 設計) */
+  .ipo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 22px 0;
+  }
+  .ipo-col {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 14px 16px;
+    border-top-width: 4px;
+    border-top-style: solid;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .ipo-col--input { border-top-color: #4A90E2; background: #F4F8FC; }
+  .ipo-col--process { border-top-color: #50C878; background: #F4FAF5; }
+  .ipo-col--output { border-top-color: #9370DB; background: #F8F5FB; }
+  .ipo-col--benefits { border-top-color: var(--color-accent); background: var(--color-accent-light); }
+  .ipo-col__head {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    text-align: center;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed rgba(0,0,0,0.08);
+  }
+  .ipo-col--input .ipo-col__head { color: #4A90E2; }
+  .ipo-col--process .ipo-col__head { color: #50C878; }
+  .ipo-col--output .ipo-col__head { color: #9370DB; }
+  .ipo-col--benefits .ipo-col__head { color: var(--color-accent); }
+  .ipo-col__body {
+    font-size: 12.5px;
+    color: var(--text-primary);
+    line-height: 1.55;
+    flex: 1;
+  }
+  .ipo-col__body ul {
+    margin: 0;
+    padding-left: 16px;
+  }
+  .ipo-col__body li {
+    margin-bottom: 4px;
+    word-break: break-word;
+  }
+  .ipo-col__body p {
+    margin: 0 0 4px;
+    word-break: break-word;
+  }
+  .ipo-col__empty {
+    color: var(--text-muted);
+    font-style: italic;
+    text-align: center;
+    padding: 12px 0;
+    font-size: 12px;
+  }
+
   /* Build Story */
   .build-story {
     background: #F0F4F6;
@@ -570,6 +660,149 @@
   .quote-block::before { content: "“"; font-size: 32px; color: var(--color-primary); line-height: 0; vertical-align: -10px; margin-right: 4px; }
   .quote-block::after { content: "”"; font-size: 32px; color: var(--color-primary); line-height: 0; vertical-align: -10px; margin-left: 4px; }
 
+  /* Interaction bar (Like / Share / Comments toggle) */
+  .interaction-bar {
+    display: flex;
+    gap: 10px;
+    padding: 16px 0 8px;
+    border-top: 1px solid var(--border);
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .ix-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s ease;
+  }
+  .ix-btn:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background: var(--color-primary-light);
+  }
+  .ix-btn.is-active {
+    background: var(--color-accent-light);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+  .ix-btn__count {
+    font-weight: 700;
+    margin-left: 2px;
+  }
+  .ix-toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--color-primary-dark);
+    color: white;
+    padding: 10px 20px;
+    border-radius: var(--radius-pill);
+    font-size: 13px;
+    box-shadow: var(--shadow-modal);
+    opacity: 0;
+    transition: all 0.25s ease;
+    pointer-events: none;
+    z-index: 2000;
+  }
+  .ix-toast.is-show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  .comments-section {
+    margin-top: 16px;
+    display: none;
+  }
+  .comments-section.is-open { display: block; }
+  .comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .comment-form__name {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: inherit;
+    background: var(--bg-card);
+  }
+  .comment-form__text {
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: inherit;
+    background: var(--bg-card);
+    resize: vertical;
+    min-height: 60px;
+  }
+  .comment-form__name:focus, .comment-form__text:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light);
+  }
+  .comment-form__submit {
+    align-self: flex-end;
+    padding: 8px 18px;
+    border-radius: var(--radius-pill);
+    border: none;
+    background: var(--color-primary);
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .comment-form__submit:hover { background: var(--color-primary-dark); }
+  .comment-form__submit:disabled { opacity: 0.5; cursor: not-allowed; }
+  .comment {
+    padding: 12px 14px;
+    background: var(--bg-section-alt);
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+  .comment__head {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+  .comment__name { font-weight: 700; color: var(--text-primary); }
+  .comment__time { color: var(--text-muted); }
+  .comment__text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    white-space: pre-wrap;
+  }
+  .comments-empty {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 16px;
+    font-style: italic;
+  }
+  .demo-notice {
+    background: #FFF7DB;
+    border: 1px solid #F2D970;
+    color: #856404;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    margin-bottom: 10px;
+  }
+
   /* Modal footer */
   .modal__footer {
     border-top: 1px solid var(--border);
@@ -593,18 +826,329 @@
     font-size: 14px;
   }
 
+  /* =========================================================
+     2-Column Layout (left cases / right sticky sidebar)
+     ========================================================= */
+  .layout-2col {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 24px 32px 64px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 32px;
+    align-items: start;
+  }
+  .cases-main { min-width: 0; }
+  .sidebar {
+    position: sticky;
+    top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+  }
+
+  /* Sidebar cards */
+  .sidebar-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    padding: 16px 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .sidebar-card::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+  }
+  .sidebar-funnel::before { background: var(--color-primary); }
+  .sidebar-card--rules::before { background: var(--color-danger); }
+  .sidebar-card--whitelist::before { background: var(--color-success); }
+  .sidebar-card--gate::before { background: var(--color-accent); }
+  .sidebar-card__label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+  }
+  .sidebar-card__list {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .sidebar-card__list li { margin-bottom: 4px; }
+  .sidebar-card__list li strong { color: var(--text-primary); font-weight: 700; }
+  .sidebar-card__title-text {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 8px;
+  }
+  .sidebar-card__meta {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border);
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .sidebar-card__meta strong {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  /* Sidebar mini funnel */
+  .sidebar-funnel__total {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+  }
+  .sidebar-funnel__total strong {
+    color: var(--color-primary-dark);
+    font-size: 20px;
+    font-weight: 700;
+    margin-right: 4px;
+  }
+  .sidebar-funnel__bar {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .funnel-bar {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    transition: all 0.18s ease;
+    position: relative;
+  }
+  .funnel-bar::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    border-radius: 10px 0 0 10px;
+  }
+  .funnel-bar--prototype::before { background: var(--color-accent); }
+  .funnel-bar--development::before { background: #B58A00; }
+  .funnel-bar--deploy::before { background: var(--color-success); }
+  .funnel-bar:hover {
+    transform: translateX(-2px);
+    box-shadow: var(--shadow-card);
+  }
+  .funnel-bar__count {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .funnel-bar--prototype .funnel-bar__count { color: var(--color-accent); }
+  .funnel-bar--development .funnel-bar__count { color: #B58A00; }
+  .funnel-bar--deploy .funnel-bar__count { color: var(--color-success); }
+  .funnel-bar__label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .funnel-bar__breakdown {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .funnel-bar__breakdown em {
+    font-style: normal;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin: 0 2px;
+  }
+  .funnel-bar-gate {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0 6px 18px;
+    font-size: 11px;
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+  .gate-arrow {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .gate-link {
+    background: none;
+    border: none;
+    color: var(--color-accent);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    text-decoration: underline dotted;
+    padding: 0;
+  }
+  .gate-link:hover { color: var(--color-primary-dark); }
+  .gate-text { color: var(--color-accent); }
+
+  .sidebar-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  /* Cases toolbar (filters in left main, no longer modal-bar style) */
+  .cases-toolbar {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .cases-toolbar .filter-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .cases-toolbar .filter-row--search { padding-top: 4px; }
+  .cases-toolbar .filter-bar__search {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: inherit;
+    background: var(--bg-page);
+  }
+  .cases-toolbar .filter-bar__search:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light);
+  }
+
+  /* Stage section (each PDD bucket) */
+  .stage-section {
+    margin-bottom: 32px;
+    scroll-margin-top: 16px;
+  }
+  .stage-section__head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    background: var(--bg-card);
+    border-radius: var(--radius-card);
+    border: 1px solid var(--border);
+    border-left-width: 5px;
+    margin-bottom: 16px;
+  }
+  .stage-section--prototype .stage-section__head { border-left-color: var(--color-accent); }
+  .stage-section--development .stage-section__head { border-left-color: #B58A00; }
+  .stage-section--deploy .stage-section__head { border-left-color: var(--color-success); }
+  .stage-section__num {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-muted);
+    line-height: 1;
+  }
+  .stage-section--prototype .stage-section__num { color: var(--color-accent); }
+  .stage-section--development .stage-section__num { color: #B58A00; }
+  .stage-section--deploy .stage-section__num { color: var(--color-success); }
+  .stage-section__title-wrap { flex: 1; min-width: 0; }
+  .stage-section__title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .stage-section__sub {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin: 2px 0 0;
+  }
+  .stage-section__sub strong { color: var(--color-accent); font-weight: 700; }
+  .stage-section--deploy .stage-section__sub strong { color: var(--color-success); }
+  .stage-section__count {
+    text-align: right;
+    line-height: 1.2;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .stage-section__count em {
+    font-style: normal;
+  }
+  .stage-section__count-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+  }
+  .stage-section .cases-grid {
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .stage-empty {
+    grid-column: 1 / -1;
+    padding: 24px;
+    text-align: center;
+    background: var(--bg-section-alt);
+    border-radius: var(--radius-card);
+    color: var(--text-muted);
+    font-size: 13px;
+    border: 1px dashed var(--border);
+  }
+  .stage-empty strong { color: var(--text-secondary); font-weight: 700; }
+
+  /* Security tag pills (used in sidebar whitelist + ambig markers) */
+  .security-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .security-tag--ok { background: var(--color-success-light); color: var(--color-success); }
+  .security-tag--no { background: var(--color-danger-light); color: var(--color-danger); }
+  .security-tag--ambig { background: #FFF7DB; color: #B58A00; }
+
   /* Responsive */
+  @media (max-width: 1024px) {
+    .layout-2col { grid-template-columns: 1fr; }
+    .sidebar { position: static; max-height: none; overflow: visible; }
+  }
   @media (max-width: 640px) {
     .page-header { padding: 32px 20px 40px; }
     .page-header__title { font-size: 24px; }
-    .cases-grid { padding: 20px 16px 48px; gap: 16px; grid-template-columns: 1fr; }
-    .filter-bar { padding: 20px 16px 0; }
-    .filter-bar__search { width: 100%; margin-left: 0; }
+    .layout-2col { padding: 20px 16px 48px; gap: 20px; }
+    .cases-toolbar { padding: 12px 14px; }
+    .cases-toolbar .filter-bar__search { width: 100%; }
+    .stage-section .cases-grid { grid-template-columns: 1fr; gap: 14px; }
     .ba-grid { grid-template-columns: 1fr; }
     .modal__body { padding: 20px 20px 24px; }
     .modal__title { font-size: 18px; }
     .ipo-section__body { padding-left: 0; }
     .ipo-section--benefits .ipo-section__body { margin-left: 0; }
+    .ipo-grid { grid-template-columns: 1fr 1fr; }
+    .stage-section__head { flex-wrap: wrap; gap: 10px; padding: 12px 14px; }
+    .stage-section__count { text-align: left; }
   }
 
   @media print {
@@ -621,7 +1165,7 @@
     <span class="page-header__eyebrow">Primax · AI Empowerment</span>
     <h1 class="page-header__title">集團 AI 應用案例庫</h1>
     <p class="page-header__subtitle">
-      Group AI / RPA Use Cases — 點擊卡片查看完整 Before/After、IPO 流程、Owner 介紹與第一手分享。
+      Group AI / RPA Use Cases — 從漏斗總覽看案例在哪個階段，點階段卡進入個別案例。
     </p>
     <div class="page-header__meta">
       <span id="meta-count">案例總數：—</span>
@@ -631,21 +1175,150 @@
     <div class="preview-banner" id="preview-banner" style="display:none">
       ⚠️ Internal Preview — 含 Active-Internal 草稿，正式公開請等 Active-Published
     </div>
+    <nav class="page-nav" aria-label="主導覽">
+      <a class="page-nav__tab" href="home.html">📍 首頁</a>
+      <a class="page-nav__tab is-active" href="index.html" aria-current="page">📚 案例庫</a>
+    </nav>
   </div>
 </header>
 
-<div class="filter-bar" id="filter-bar">
-  <div class="filter-row" id="filter-row-bg">
-    <span class="filter-bar__label">部門 / BG：</span>
-  </div>
-  <div class="filter-row" id="filter-row-stage">
-    <span class="filter-bar__label">階段：</span>
-    <input type="search" class="filter-bar__search" id="search-input" placeholder="搜尋案例 / 工具 / 效益 / Owner..." />
-  </div>
-</div>
+<main class="layout-2col">
 
-<main class="cases-grid" id="cases-grid">
-  <div class="empty-state">載入中…</div>
+  <!-- LEFT MAIN: filters + cases grouped by PDD stage -->
+  <div class="cases-main">
+    <div class="cases-toolbar" id="filter-bar">
+      <div class="filter-row" id="filter-row-company"><span class="filter-bar__label">公司：</span></div>
+      <div class="filter-row" id="filter-row-unit"><span class="filter-bar__label">單位：</span></div>
+      <div class="filter-row" id="filter-row-region"><span class="filter-bar__label">區域：</span></div>
+      <div class="filter-row filter-row--search">
+        <input type="search" class="filter-bar__search" id="search-input" placeholder="搜尋案例 / 工具 / 效益 / Owner..." />
+      </div>
+    </div>
+
+    <section class="stage-section stage-section--prototype" id="stage-prototype" data-stage="Prototype">
+      <header class="stage-section__head">
+        <span class="stage-section__num">①</span>
+        <div class="stage-section__title-wrap">
+          <h2 class="stage-section__title">Prototype · 員工試做</h2>
+          <p class="stage-section__sub">User 主導 · AI 助攻 · <strong>尚未過資安線</strong></p>
+        </div>
+        <span class="stage-section__count">
+          <em id="stage-prototype-shown">—</em>/<em id="stage-prototype-total">—</em>
+          <span class="stage-section__count-label">已上架 / 全集團</span>
+        </span>
+      </header>
+      <div class="cases-grid" id="grid-prototype"></div>
+    </section>
+
+    <section class="stage-section stage-section--development" id="stage-development" data-stage="Development">
+      <header class="stage-section__head">
+        <span class="stage-section__num">②</span>
+        <div class="stage-section__title-wrap">
+          <h2 class="stage-section__title">Development · 系統工程化</h2>
+          <p class="stage-section__sub">User × IT 協作 · 帳號 / 後端 / 資安整合中</p>
+        </div>
+        <span class="stage-section__count">
+          <em id="stage-development-shown">—</em>/<em id="stage-development-total">—</em>
+          <span class="stage-section__count-label">已上架 / 全集團</span>
+        </span>
+      </header>
+      <div class="cases-grid" id="grid-development"></div>
+    </section>
+
+    <section class="stage-section stage-section--deploy" id="stage-deploy" data-stage="Deploy">
+      <header class="stage-section__head">
+        <span class="stage-section__num">③</span>
+        <div class="stage-section__title-wrap">
+          <h2 class="stage-section__title">Deploy · 上線維運</h2>
+          <p class="stage-section__sub">IT 主導 · <strong>過資安線 · 全線管控</strong></p>
+        </div>
+        <span class="stage-section__count">
+          <em id="stage-deploy-shown">—</em>/<em id="stage-deploy-total">—</em>
+          <span class="stage-section__count-label">已上架 / 全集團</span>
+        </span>
+      </header>
+      <div class="cases-grid" id="grid-deploy"></div>
+    </section>
+  </div>
+
+  <!-- RIGHT SIDEBAR: classification + standards (sticky) -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-card sidebar-funnel">
+      <div class="sidebar-card__label">📊 集團 PDD 漏斗</div>
+      <div class="sidebar-funnel__total"><strong id="funnel-total">—</strong> 案在跑</div>
+      <div class="sidebar-funnel__bar">
+        <button type="button" class="funnel-bar funnel-bar--prototype" data-scroll="stage-prototype" aria-label="跳至 Prototype 案例區">
+          <div class="funnel-bar__count" id="funnel-prototype-count">—</div>
+          <div class="funnel-bar__label">① Prototype</div>
+          <div class="funnel-bar__breakdown">已上架 <em id="funnel-prototype-ai">—</em> · 草稿 <em id="funnel-prototype-draft">—</em></div>
+        </button>
+        <div class="funnel-bar-gate">
+          <span class="gate-arrow">↓</span>
+          <button type="button" class="gate-link" id="gate-security" aria-label="跳至資安治理說明">⚠ 資安治理 Gate</button>
+        </div>
+        <button type="button" class="funnel-bar funnel-bar--development" data-scroll="stage-development" aria-label="跳至 Development 案例區">
+          <div class="funnel-bar__count" id="funnel-development-count">—</div>
+          <div class="funnel-bar__label">② Development</div>
+          <div class="funnel-bar__breakdown">已上架 <em id="funnel-development-ai">—</em> · 草稿 <em id="funnel-development-draft">—</em></div>
+        </button>
+        <div class="funnel-bar-gate">
+          <span class="gate-arrow">↓</span>
+          <span class="gate-text">⚠ 落地長期營運</span>
+        </div>
+        <button type="button" class="funnel-bar funnel-bar--deploy" data-scroll="stage-deploy" aria-label="跳至 Deploy 案例區">
+          <div class="funnel-bar__count" id="funnel-deploy-count">—</div>
+          <div class="funnel-bar__label">③ Deploy</div>
+          <div class="funnel-bar__breakdown">已上架 <em id="funnel-deploy-ai">—</em> · 草稿 <em id="funnel-deploy-draft">—</em></div>
+        </button>
+      </div>
+      <div class="sidebar-card__meta">
+        <strong id="sec-pending-it">—</strong> 案 IT review 中 · <strong id="sec-pending-owner">—</strong> 案 Owner 待補
+      </div>
+    </div>
+
+    <div class="sidebar-card sidebar-card--rules" id="sec-rules">
+      <div class="sidebar-card__label">🛡 AI 使用三守則</div>
+      <ol class="sidebar-card__list">
+        <li><strong>機密不出網</strong> — 內部資料只走 Azure OpenAI 內網</li>
+        <li><strong>看案例 ≠ 自用授權</strong> — 套用前先確認工具白名單</li>
+        <li><strong>有疑問問 DTO</strong> — 不確定先問再動手</li>
+      </ol>
+    </div>
+
+    <div class="sidebar-card sidebar-card--whitelist" id="sec-whitelist">
+      <div class="sidebar-card__label">✅ 公司工具白名單</div>
+      <div class="sidebar-tags">
+        <span class="security-tag security-tag--ok">Power Platform</span>
+        <span class="security-tag security-tag--ok">M365 Copilot</span>
+        <span class="security-tag security-tag--ok">SharePoint</span>
+        <span class="security-tag security-tag--ok">Excel/VBA</span>
+        <span class="security-tag security-tag--ok">SAP</span>
+        <span class="security-tag security-tag--ok">Profet AI</span>
+        <span class="security-tag security-tag--ok">Azure OpenAI</span>
+      </div>
+      <div class="sidebar-tags" style="margin-top:8px">
+        <span class="security-tag security-tag--no">DeepSeek</span>
+        <span class="security-tag security-tag--no">ChatGPT 外部</span>
+        <span class="security-tag security-tag--no">Claude / Gemini</span>
+        <span class="security-tag security-tag--no">Cursor</span>
+      </div>
+      <div class="sidebar-card__meta">
+        灰區 <span class="security-tag security-tag--ambig">地端 LLM / 自建 Agent</span> 若 IT 未接管 → Pending IT review
+      </div>
+    </div>
+
+    <div class="sidebar-card sidebar-card--gate" id="sec-gate">
+      <div class="sidebar-card__label">⚠ 資安治理 Gate</div>
+      <p class="sidebar-card__title-text">Prototype → Deploy 必經閘門</p>
+      <ul class="sidebar-card__list">
+        <li>帳號管控（誰能用、用哪些資料）</li>
+        <li>資料分級 + DLP 外洩防護</li>
+        <li>後端整合公司 IT 平台</li>
+        <li>稽核軌跡完整可追溯</li>
+      </ul>
+    </div>
+  </aside>
+
 </main>
 
 <div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -657,6 +1330,28 @@
       <div class="modal__tools" id="modal-tools"></div>
     </header>
     <div class="modal__body" id="modal-body"></div>
+    <div style="padding: 0 32px 16px;">
+      <div class="interaction-bar">
+        <button class="ix-btn" id="ix-like" type="button" aria-label="按讚">
+          <span>👍</span><span>讚</span><span class="ix-btn__count" id="ix-like-count">0</span>
+        </button>
+        <button class="ix-btn" id="ix-share" type="button" aria-label="複製連結分享">
+          <span>🔗</span><span>分享連結</span>
+        </button>
+        <button class="ix-btn" id="ix-comments-toggle" type="button" aria-label="顯示評論">
+          <span>💬</span><span>評論</span><span class="ix-btn__count" id="ix-comments-count">0</span>
+        </button>
+      </div>
+      <div class="comments-section" id="comments-section">
+        <div class="demo-notice">⚠️ Demo prototype — 互動資料存在你瀏覽器 localStorage，SP 上線後改存 SharePoint List</div>
+        <form class="comment-form" id="comment-form">
+          <input type="text" class="comment-form__name" id="comment-name" placeholder="你的姓名" required maxlength="30" />
+          <textarea class="comment-form__text" id="comment-text" placeholder="留下你對這個案例的想法、提問、或建議..." required maxlength="500"></textarea>
+          <button type="submit" class="comment-form__submit">送出留言</button>
+        </form>
+        <div id="comments-list"></div>
+      </div>
+    </div>
     <footer class="modal__footer">
       <span class="modal__footer__src">案例編號：<span id="modal-id">—</span> · 來源：<span id="modal-src">—</span></span>
       <span>最後更新：<span id="modal-updated">—</span></span>
@@ -671,15 +1366,22 @@
 let ALL_CASES = [];
 let META = {};
 
-const gridEl = document.getElementById("cases-grid");
-const filterRowBg = document.getElementById("filter-row-bg");
-const filterRowStage = document.getElementById("filter-row-stage");
+const STAGE_KEYS = ["Prototype", "Development", "Deploy"];
+const gridEls = {
+  Prototype: document.getElementById("grid-prototype"),
+  Development: document.getElementById("grid-development"),
+  Deploy: document.getElementById("grid-deploy"),
+};
+const filterRowCompany = document.getElementById("filter-row-company");
+const filterRowUnit = document.getElementById("filter-row-unit");
+const filterRowRegion = document.getElementById("filter-row-region");
 const searchEl = document.getElementById("search-input");
 const metaCount = document.getElementById("meta-count");
 const metaUpdated = document.getElementById("meta-updated");
 const previewBanner = document.getElementById("preview-banner");
 
-const state = { bg: "ALL", stage: "ALL", search: "" };
+// Single-page state — no view switching. Cases auto-group into 3 PDD sections.
+const state = { company: "ALL", unit: "ALL", region: "ALL", search: "" };
 
 async function init() {
   try {
@@ -693,12 +1395,58 @@ async function init() {
       previewBanner.style.display = "inline-block";
       previewBanner.textContent = `⚠️ ${payload.mode === "internal" ? "Internal Preview" : "Admin Full View"} — ${payload.exported}/${payload.total_in_ssot} 案 (含未公開草稿)`;
     }
+    renderFunnel();
     renderFilters();
-    renderCards();
-    checkDeepLink();
+    renderAll();
+    const caseHash = window.location.hash.match(/case=([\w-]+)/);
+    if (caseHash) openModal(caseHash[1]);
   } catch (err) {
-    gridEl.innerHTML = `<div class="empty-state">❌ 載入失敗：${err.message}<br><small>請確認 cases.json 存在</small></div>`;
+    Object.values(gridEls).forEach(g => {
+      if (g) g.innerHTML = `<div class="empty-state">❌ 載入失敗：${err.message}</div>`;
+    });
   }
+}
+
+/* =====================================================================
+   FUNNEL (sidebar) — read directly from pipeline_summary
+   ===================================================================== */
+function stageOf(c) {
+  // Single SoT: Stage_Norm (3 buckets after Glen 2026-05-20 alignment)
+  return c.stage_norm || "Other";
+}
+
+function renderFunnel() {
+  const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  const summary = (META && META.pipeline_summary) || null;
+  if (!summary) return;
+  setText("funnel-total", summary.non_archived_total);
+  const counts = summary.funnel_counts || {};
+  const bd = summary.funnel_breakdown || {};
+  for (const stage of STAGE_KEYS) {
+    const prefix = `funnel-${stage.toLowerCase()}`;
+    setText(`${prefix}-count`, counts[stage] || 0);
+    const b = bd[stage] || {};
+    setText(`${prefix}-ai`, b.active_internal || 0);
+    setText(`${prefix}-draft`, b.draft || 0);
+  }
+  setText("sec-pending-it", summary.pending_it_review);
+  setText("sec-pending-owner", summary.pending_owner_tools);
+}
+
+// Sidebar funnel bar → smooth scroll to stage section
+document.querySelectorAll("[data-scroll]").forEach(el => {
+  el.addEventListener("click", () => {
+    const t = document.getElementById(el.dataset.scroll);
+    if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});
+// Security gate link → smooth scroll to sidebar gate card
+const gateSec = document.getElementById("gate-security");
+if (gateSec) {
+  gateSec.addEventListener("click", () => {
+    const t = document.getElementById("sec-gate");
+    if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
 }
 
 function stageClass(stage) {
@@ -709,56 +1457,88 @@ function stageClass(stage) {
   return "stage-other";
 }
 
-function stageBucket(stage) {
-  if (!stage) return "其他";
-  if (stage.includes("上線") || stage.includes("穩定運行") || stage.includes("Deployment") || stage.includes("已落地") || stage.includes("已完成")) return "已上線";
-  if (stage.includes("MVP")) return "MVP";
-  if (stage.includes("POC") || stage.includes("PoC") || stage.includes("Pilot")) return "POC";
-  if (stage.includes("結案")) return "結案-未確認";
-  if (stage.includes("規劃") || stage.includes("需求") || stage.includes("評估")) return "規劃/評估";
-  if (stage.includes("卡")) return "卡點";
-  return "其他";
+// Prefer stage_norm (canonical 5-bucket from SSOT). Fallback to verbatim parse for older payloads.
+// Hierarchical filter: Company → Unit → Region (cascade, applies across all stages)
+function renderFilters() {
+  renderCompanyChips();
+  renderUnitChips();
+  renderRegionChips();
 }
 
-function renderFilters() {
-  // BG chips
-  const bgs = ["ALL", ...Array.from(new Set(ALL_CASES.map(c => c.bg))).sort()];
-  bgs.forEach(bg => {
-    const chip = document.createElement("button");
-    chip.className = "filter-chip" + (bg === "ALL" ? " is-active" : "");
-    chip.textContent = bg === "ALL" ? `全部 (${ALL_CASES.length})` : bg;
-    chip.dataset.bg = bg;
-    chip.onclick = () => {
-      state.bg = bg;
-      filterRowBg.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("is-active"));
-      chip.classList.add("is-active");
-      renderCards();
-    };
-    filterRowBg.appendChild(chip);
-  });
+function clearChips(row) {
+  Array.from(row.querySelectorAll(".filter-chip")).forEach(c => c.remove());
+}
 
-  // Stage chips
-  const buckets = ["ALL", "已上線", "MVP", "POC", "結案-未確認", "規劃/評估", "卡點", "其他"];
-  buckets.forEach(stage => {
-    const count = stage === "ALL" ? ALL_CASES.length : ALL_CASES.filter(c => stageBucket(c.stage) === stage).length;
-    if (stage !== "ALL" && count === 0) return;
-    const chip = document.createElement("button");
-    chip.className = "filter-chip" + (stage === "ALL" ? " is-active" : "");
-    chip.textContent = `${stage === "ALL" ? "全部" : stage} (${count})`;
-    chip.dataset.stage = stage;
-    chip.onclick = () => {
-      state.stage = stage;
-      filterRowStage.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("is-active"));
-      chip.classList.add("is-active");
-      renderCards();
-    };
-    filterRowStage.insertBefore(chip, searchEl);
+function makeChip(label, count, isActive, onClick) {
+  const chip = document.createElement("button");
+  chip.className = "filter-chip" + (isActive ? " is-active" : "");
+  chip.textContent = count != null ? `${label} (${count})` : label;
+  chip.onclick = onClick;
+  return chip;
+}
+
+// Cascade-filtered pools (each level applies earlier levels).
+// Stage is NOT a filter — cases auto-group into 3 stage sections in renderAll().
+function poolForCompany() { return ALL_CASES; }
+function poolForUnit() { return ALL_CASES.filter(c => state.company === "ALL" || c.company === state.company); }
+function poolForRegion() { return poolForUnit().filter(c => state.unit === "ALL" || c.unit === state.unit); }
+
+function renderCompanyChips() {
+  clearChips(filterRowCompany);
+  const pool = poolForCompany();
+  const values = ["ALL", ...Array.from(new Set(pool.map(c => c.company).filter(Boolean))).sort()];
+  values.forEach(v => {
+    const count = v === "ALL" ? pool.length : pool.filter(c => c.company === v).length;
+    if (v !== "ALL" && count === 0) return;
+    const chip = makeChip(v === "ALL" ? "全部" : v, count, state.company === v, () => {
+      state.company = v;
+      state.unit = "ALL";
+      state.region = "ALL";
+      renderFilters();
+      renderAll();
+    });
+    filterRowCompany.appendChild(chip);
+  });
+}
+
+function renderUnitChips() {
+  clearChips(filterRowUnit);
+  const pool = poolForUnit();
+  const values = ["ALL", ...Array.from(new Set(pool.map(c => c.unit).filter(Boolean))).sort()];
+  values.forEach(v => {
+    const count = v === "ALL" ? pool.length : pool.filter(c => c.unit === v).length;
+    if (v !== "ALL" && count === 0) return;
+    const chip = makeChip(v === "ALL" ? "全部" : v, count, state.unit === v, () => {
+      state.unit = v;
+      state.region = "ALL";
+      renderFilters();
+      renderAll();
+    });
+    filterRowUnit.appendChild(chip);
+  });
+}
+
+function renderRegionChips() {
+  clearChips(filterRowRegion);
+  const pool = poolForRegion();
+  const realRegions = Array.from(new Set(pool.map(c => c.region).filter(r => r && r.trim()))).sort();
+  const values = ["ALL", ...realRegions];
+  values.forEach(v => {
+    const count = v === "ALL" ? pool.length : pool.filter(c => c.region === v).length;
+    if (v !== "ALL" && count === 0) return;
+    const chip = makeChip(v === "ALL" ? "全部" : v, count, state.region === v, () => {
+      state.region = v;
+      renderFilters();
+      renderAll();
+    });
+    filterRowRegion.appendChild(chip);
   });
 }
 
 function matchesFilter(c) {
-  if (state.bg !== "ALL" && c.bg !== state.bg) return false;
-  if (state.stage !== "ALL" && stageBucket(c.stage) !== state.stage) return false;
+  if (state.company !== "ALL" && c.company !== state.company) return false;
+  if (state.unit !== "ALL" && c.unit !== state.unit) return false;
+  if (state.region !== "ALL" && c.region !== state.region) return false;
   if (state.search) {
     const q = state.search.toLowerCase();
     const hay = [c.bg, c.title, c.tools, c.benefits_summary, c.owner_name, c.stage].join(" ").toLowerCase();
@@ -767,39 +1547,60 @@ function matchesFilter(c) {
   return true;
 }
 
-function renderCards() {
+function renderAll() {
+  // Group all Active-Internal cases into 3 stage sections; respect filters.
   const visible = ALL_CASES.filter(matchesFilter);
-  gridEl.innerHTML = "";
-  metaCount.textContent = `案例總數：${visible.length} / ${ALL_CASES.length}`;
-  if (visible.length === 0) {
-    gridEl.innerHTML = '<div class="empty-state">沒有符合條件的案例</div>';
-    return;
+  metaCount.textContent = `案例總數：${visible.length} / ${ALL_CASES.length} 已上架`;
+  const summary = (META && META.pipeline_summary) || null;
+  const totals = summary ? summary.funnel_counts : null;
+  for (const stage of STAGE_KEYS) {
+    const subset = visible.filter(c => stageOf(c) === stage);
+    const grid = gridEls[stage];
+    if (!grid) continue;
+    grid.innerHTML = "";
+    // Update section header counts
+    const shownEl = document.getElementById(`stage-${stage.toLowerCase()}-shown`);
+    const totalEl = document.getElementById(`stage-${stage.toLowerCase()}-total`);
+    if (shownEl) shownEl.textContent = subset.length;
+    if (totalEl) totalEl.textContent = totals ? (totals[stage] || 0) : "—";
+    if (subset.length === 0) {
+      const ail = ALL_CASES.filter(c => stageOf(c) === stage).length;
+      const allInStage = totals ? (totals[stage] || 0) : ail;
+      const pendingNote = stage === "Prototype" && summary
+        ? `（${summary.pending_it_review} 案在 IT review queue 等接管）` : "";
+      grid.innerHTML = `<div class="stage-empty">
+        此階段目前 <strong>0</strong> 案已上架；全集團共 <strong>${allInStage}</strong> 案在此階段${pendingNote}
+      </div>`;
+      continue;
+    }
+    subset.forEach(c => grid.appendChild(buildCard(c)));
   }
-  visible.forEach(c => {
-    const card = document.createElement("button");
-    card.className = "case-card";
-    card.type = "button";
-    card.setAttribute("aria-label", `查看 ${c.bg} ${c.title} 詳情`);
-    const ownerHtml = c.owner_name ? `<div class="case-card__owner">${escape(c.owner_name)}${c.owner_dept ? " · " + escape(c.owner_dept) : ""}</div>` : "";
-    card.innerHTML = `
-      <div class="case-card__header">
-        <span class="case-card__badge">${escape(c.bg)}</span>
-        ${c.stage ? `<span class="stage-badge ${stageClass(c.stage)}">${escape(stageBucket(c.stage))}</span>` : ""}
-      </div>
-      <h3 class="case-card__title">${escape(c.title)}</h3>
-      <div class="case-card__row">
-        <span class="case-card__row-label">Tools</span>
-        <span class="case-card__row-value">${escape(c.tools || "—")}</span>
-      </div>
-      ${ownerHtml}
-      <div class="case-card__benefits">
-        <div class="case-card__benefits-label">效益亮點</div>
-        <div class="case-card__benefits-value">${escape(c.benefits_summary || "—")}</div>
-      </div>
-    `;
-    card.onclick = () => openModal(c.id);
-    gridEl.appendChild(card);
-  });
+}
+
+function buildCard(c) {
+  const card = document.createElement("button");
+  card.className = "case-card";
+  card.type = "button";
+  card.setAttribute("aria-label", `查看 ${c.bg} ${c.title} 詳情`);
+  const ownerHtml = c.owner_name ? `<div class="case-card__owner">${escape(c.owner_name)}${c.owner_dept ? " · " + escape(c.owner_dept) : ""}</div>` : "";
+  card.innerHTML = `
+    <div class="case-card__header">
+      <span class="case-card__badge">${escape(c.bg)}</span>
+      ${c.stage ? `<span class="stage-badge ${stageClass(c.stage)}">${escape(stageOf(c))}</span>` : ""}
+    </div>
+    <h3 class="case-card__title">${escape(c.title)}</h3>
+    <div class="case-card__row">
+      <span class="case-card__row-label">Tools</span>
+      <span class="case-card__row-value">${escape(c.tools || "—")}</span>
+    </div>
+    ${ownerHtml}
+    <div class="case-card__benefits">
+      <div class="case-card__benefits-label">效益亮點</div>
+      <div class="case-card__benefits-value">${escape(c.benefits_summary || "—")}</div>
+    </div>
+  `;
+  card.onclick = () => openModal(c.id);
+  return card;
 }
 
 function escape(s) {
@@ -856,10 +1657,29 @@ function openModal(id) {
     `);
   }
 
-  if (c.input && c.input.length) parts.push(renderSection("②", "Input · 資料來源", renderList(c.input)));
-  if (c.process && c.process.length) parts.push(renderSection("③", "Process · 處理流程", renderList(c.process)));
-  if (c.output && c.output.length) parts.push(renderSection("④", "Output · 產出形式", renderList(c.output)));
-  if (c.benefits && c.benefits.length) parts.push(renderSection("⑤", "Benefits · 實際效益", renderList(c.benefits), "benefits"));
+  // IPO + Benefits as 4-col horizontal grid (對齊 PPTX Slide 3 設計)
+  const hasIPO = (c.input && c.input.length) || (c.process && c.process.length)
+              || (c.output && c.output.length) || (c.benefits && c.benefits.length);
+  if (hasIPO) {
+    const col = (variant, label, items) => {
+      const body = items && items.length
+        ? renderList(items)
+        : '<div class="ipo-col__empty">—</div>';
+      return `
+        <div class="ipo-col ipo-col--${variant}">
+          <div class="ipo-col__head">${label}</div>
+          <div class="ipo-col__body">${body}</div>
+        </div>`;
+    };
+    parts.push(`
+      <div class="ipo-grid">
+        ${col("input", "INPUT · 輸入", c.input)}
+        ${col("process", "PROCESS · 流程處理", c.process)}
+        ${col("output", "OUTPUT · 產出", c.output)}
+        ${col("benefits", "效益評估", c.benefits)}
+      </div>
+    `);
+  }
 
   if (c.build_story) {
     parts.push(`
@@ -927,13 +1747,125 @@ document.addEventListener("keydown", e => {
 
 searchEl.addEventListener("input", () => {
   state.search = searchEl.value.trim();
-  renderCards();
+  renderAll();
 });
 
-function checkDeepLink() {
-  const hash = window.location.hash.match(/case=([\w-]+)/);
-  if (hash) openModal(hash[1]);
+/* =====================================================================
+   INTERACTION — Likes / Share / Comments (localStorage mock)
+   ===================================================================== */
+let currentCaseId = null;
+
+function lsKey(prefix, id) { return `pmx-ai-cases:${prefix}:${id}`; }
+
+function getLikes(id) {
+  const v = localStorage.getItem(lsKey("likes", id));
+  return v ? JSON.parse(v) : { count: 0, liked: false };
 }
+function toggleLike(id) {
+  const cur = getLikes(id);
+  if (cur.liked) { cur.count = Math.max(0, cur.count - 1); cur.liked = false; }
+  else { cur.count += 1; cur.liked = true; }
+  localStorage.setItem(lsKey("likes", id), JSON.stringify(cur));
+  return cur;
+}
+function getComments(id) {
+  const v = localStorage.getItem(lsKey("comments", id));
+  return v ? JSON.parse(v) : [];
+}
+function addComment(id, name, text) {
+  const list = getComments(id);
+  list.push({ name, text, time: new Date().toISOString() });
+  localStorage.setItem(lsKey("comments", id), JSON.stringify(list));
+  return list;
+}
+
+function showToast(msg) {
+  let t = document.getElementById("ix-toast");
+  if (!t) {
+    t = document.createElement("div");
+    t.id = "ix-toast";
+    t.className = "ix-toast";
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.classList.add("is-show");
+  clearTimeout(t._tmr);
+  t._tmr = setTimeout(() => t.classList.remove("is-show"), 2000);
+}
+
+function refreshLikeUI() {
+  if (!currentCaseId) return;
+  const { count, liked } = getLikes(currentCaseId);
+  document.getElementById("ix-like-count").textContent = count;
+  document.getElementById("ix-like").classList.toggle("is-active", liked);
+}
+function refreshCommentsUI() {
+  if (!currentCaseId) return;
+  const list = getComments(currentCaseId);
+  document.getElementById("ix-comments-count").textContent = list.length;
+  const wrap = document.getElementById("comments-list");
+  if (list.length === 0) {
+    wrap.innerHTML = '<div class="comments-empty">還沒有評論，第一個留言吧</div>';
+    return;
+  }
+  wrap.innerHTML = list.slice().reverse().map(c => `
+    <div class="comment">
+      <div class="comment__head">
+        <span class="comment__name">${escape(c.name)}</span>
+        <span class="comment__time">${new Date(c.time).toLocaleString("zh-TW", { hour12: false })}</span>
+      </div>
+      <div class="comment__text">${escape(c.text)}</div>
+    </div>
+  `).join("");
+}
+
+document.getElementById("ix-like").addEventListener("click", () => {
+  if (!currentCaseId) return;
+  toggleLike(currentCaseId);
+  refreshLikeUI();
+});
+document.getElementById("ix-share").addEventListener("click", async () => {
+  if (!currentCaseId) return;
+  const url = `${window.location.origin}${window.location.pathname}#case=${currentCaseId}`;
+  try {
+    if (navigator.share) {
+      await navigator.share({ title: "Primax AI Case", url });
+      showToast("已開啟分享面板");
+    } else {
+      await navigator.clipboard.writeText(url);
+      showToast("✓ 連結已複製到剪貼簿");
+    }
+  } catch (err) {
+    showToast("分享失敗：" + err.message);
+  }
+});
+document.getElementById("ix-comments-toggle").addEventListener("click", () => {
+  document.getElementById("comments-section").classList.toggle("is-open");
+});
+document.getElementById("comment-form").addEventListener("submit", e => {
+  e.preventDefault();
+  if (!currentCaseId) return;
+  const name = document.getElementById("comment-name").value.trim();
+  const text = document.getElementById("comment-text").value.trim();
+  if (!name || !text) return;
+  addComment(currentCaseId, name, text);
+  document.getElementById("comment-text").value = "";
+  localStorage.setItem("pmx-ai-cases:lastname", name);
+  refreshCommentsUI();
+  showToast("✓ 留言已送出");
+});
+
+// Wrap openModal to hook interaction refresh
+const _origOpenModal = openModal;
+openModal = function(id) {
+  _origOpenModal(id);
+  currentCaseId = id;
+  refreshLikeUI();
+  refreshCommentsUI();
+  document.getElementById("comments-section").classList.remove("is-open");
+  const lastName = localStorage.getItem("pmx-ai-cases:lastname");
+  if (lastName) document.getElementById("comment-name").value = lastName;
+};
 
 init();
 </script>

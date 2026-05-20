@@ -98,3 +98,84 @@
 - [ ] 寫 `flows/azure-openai-prompts.md` 反映 D-NEW-04 Azure OpenAI
 - [ ] SP List Comments + Likes 設定（D-NEW-05）
 - [ ] 邀請 BG ambassadors 認領 baseline 案例（D-C4-5）
+
+---
+
+## 2026-05-19 — DP-1: Canonical Schema Lock (V5 38 cols)
+
+### Decision
+SP List canonical schema = **V5 34 cols + 4 SP-only adopted = 38 cols total**。Demo (V5 SSOT Excel) = SP 上線後對外樣貌。
+
+### Rationale
+- Demo 看到的 Before/After 對比、Owner card、Quote testimonial、Build Story 等 V5 故事欄是案例庫對 Vicky / 集團員工的**核心價值**
+- 既有 SP List 13 半中文編碼欄（`OData__x75db__x9ede_` 等）為技術債，不適合扛
+- SP spec 19 英文欄缺 V5 17 個故事欄，要補
+- 三套對齊到 V5 後，前端 schema mapping 簡化，未來 SP / Excel 互通容易
+
+### 38-col composition
+
+| Group | Cols | Source |
+|---|---|---|
+| Identity & summary | 6 | V5 (含 `Stage_Norm` Choice 新加 — Gap 2 resolution) |
+| Before/After narrative | 5 | V5 (核心敘事，SP spec 原缺) |
+| IPO engineering view | 4 | V5 + SP spec naming `*JSON` |
+| Story & owner | 7 | V5 (Owner card + Quote + Build_Story) |
+| V5 card alignment | 3 | V5 (Category_Matrix / ECRS / Maturity_Indicator) |
+| SP-only adopted | 3 | SP spec (`Reviewer` / `EvidenceUrl` / `SourceChannel`) |
+| Provenance | 4 | V5 + SP spec |
+| Lifecycle (Publish_Status axis) | 4 | V5 (Draft / Active-Internal / Active-Published / Archived) |
+
+### Implications
+- **既有 SP `AI案例庫` 13 半中文 schema → DEPRECATED**
+- 新建 `AICases_v2` list 用 canonical 38 cols（Migration Option B parallel + sunset）
+- `backend/sp-list-schema.md` 已更新（v2）
+- `backend/deploy-sharepoint.ps1` Step 5 已擴充（19 個 PnP `Add-PnPField` 命令）
+- `scripts/build_ssot.py` 已加 `Stage_Norm` + 3 個 SP-only 欄
+- `ai-cases-ssot.xlsx` 已從 34→38 cols（2026-05-19 rebuild）
+- `cases.json` 已重新產（schema 自動跟著 SSOT）
+
+### Stage normalization (Gap 2 sibling lock)
+
+| Stage_Norm | n | 含意 |
+|---|---|---|
+| Deploy | 35 | 已上線 / 穩定運行 |
+| Development | 11 | MVP 完成 / Kickoff / 進行中 |
+| Prototype | 21 | POC / 評估 / 測試 / 個人試用 |
+| Planning | 20 | 需求 / 提案 / 規劃 |
+| Stalled | 11 | 卡點 / On Hold / 結案無持續 |
+
+雙軸保留：`Stage` (verbatim 58 種) + `Stage_Norm` (5-bucket)。SP List View 用 `Stage_Norm` filter，detail page 顯示 `Stage` raw 字串保留情境。
+
+### Migration plan
+- Option A 砍重建 / Option B parallel & sunset (建議) / Option C in-place — 詳見 `backend/sp-list-schema.md`
+- Phase 1 工作流：用 `scripts/excel_to_splist.py`（待寫）把 SSOT 98 case 灌入 `AICases_v2`
+
+---
+
+## 2026-05-19 — DP-2: 3-Tier Hierarchy (Company / Unit / Region)
+
+### Decision
+SSOT 38→41 cols，加 Company / Unit / Region 三個 derived 欄位，由 `parse_bg()` 從 BG verbatim 自動解析。前端 filter 改成 3 排階層 chips（公司 → 單位 → 區域），cascade selection。
+
+### Sub-decisions
+- **Company 只 2 值**：`PMX / TYM`（Group / 集團 / DTO 統一歸 PMX，因 PMX 為母公司主導集團議題）
+- **BG / BU 全部放單位層**（iIBG / iBG / CMBU / ISB / SAE / CAE 等都是 Unit）
+- **Region 只認已知地理 region**：HZ / DG / CN / TW / TH / SG / HK / JP / KR / 泰國 / 全集團。業務描述（如「TW 招募」「泰國招聘」「SAE」）保留進 Unit verbatim
+- **Owner override 機制**：parse_bg() 是 auto-fill，Excel 內 Company/Unit/Region 欄位可手動覆寫，rebuild 時不覆蓋已填的值
+
+### Distribution (98 cases)
+
+| Company | n | 比例 |
+|---|---|---|
+| PMX | 67 | 68% |
+| TYM | 31 | 32% |
+
+### Affected files
+- `~/...-data/scripts/build_ssot.py`: +parse_bg() / _COMPANY_ALIAS / _KNOWN_REGIONS / 3 new cols
+- `~/...-data/ai-cases-ssot.xlsx`: 38→41 cols (Company/Unit/Region inserted after BG)
+- `~/...-data/scripts/excel_to_json.py`: WEB_FIELDS += Company/Unit/Region
+- `~/...-cases/cases.json`: regenerated
+- `~/...-cases/index.html`: 4-row filter (Company/Unit/Region/Stage) cascade
+- `~/...-cases/backend/sp-list-schema.md`: Identity section 6→9 cols
+- `~/...-cases/backend/deploy-sharepoint.ps1`: Step 5 caseFields +3 (Company Choice 2 值)
+
