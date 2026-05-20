@@ -286,13 +286,15 @@
     const s = (d && d.pipeline_summary) || null;
     const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
     if (s) {
-      const c = s.funnel_counts || {};
-      setText("cnt-prototype", c.Prototype || 0);
-      setText("cnt-development", c.Development || 0);
-      setText("cnt-deploy", c.Deploy || 0);
-      setText("cta-prototype-count", c.Prototype || 0);
-      setText("cta-development-count", c.Development || 0);
-      setText("cta-deploy-count", c.Deploy || 0);
+      // Use Active-Internal counts so numbers match what main pages display
+      const bd = s.funnel_breakdown || {};
+      const ai = stage => (bd[stage] && bd[stage].active_internal) || 0;
+      setText("cnt-prototype", ai("Prototype"));
+      setText("cnt-development", ai("Development"));
+      setText("cnt-deploy", ai("Deploy"));
+      setText("cta-prototype-count", ai("Prototype"));
+      setText("cta-development-count", ai("Development"));
+      setText("cta-deploy-count", ai("Deploy"));
     }
     setText("updated", (d.generated_at || "").slice(0, 10) || "—");
   } catch (err) {

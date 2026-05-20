@@ -68,15 +68,21 @@ function renderSidebarFunnel() {
   const summary = META && META.pipeline_summary;
   if (!summary) return;
   const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-  setText("funnel-total", summary.non_archived_total);
+  // Main funnel big number = Active-Internal (matches what click-through shows)
+  setText("funnel-total", summary.active_internal_total);
+  setText("funnel-total-pipeline", summary.non_archived_total);
   const counts = summary.funnel_counts || {};
   const bd = summary.funnel_breakdown || {};
   for (const stage of ["Prototype", "Development", "Deploy"]) {
     const prefix = `funnel-${stage.toLowerCase()}`;
-    setText(`${prefix}-count`, counts[stage] || 0);
     const b = bd[stage] || {};
-    setText(`${prefix}-ai`, b.active_internal || 0);
+    // Big number = active_internal (= 子頁實際顯示的)
+    setText(`${prefix}-count`, b.active_internal || 0);
+    // Subtext = pipeline total + draft remainder
+    setText(`${prefix}-total`, counts[stage] || 0);
     setText(`${prefix}-draft`, b.draft || 0);
+    // Backward-compat (some pages may still reference -ai id)
+    setText(`${prefix}-ai`, b.active_internal || 0);
   }
   setText("sec-pending-it", summary.pending_it_review);
   setText("sec-pending-owner", summary.pending_owner_tools);
