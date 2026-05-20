@@ -57,11 +57,7 @@ async function fetchData() {
 function updateMetaBar() {
   const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
   setText("meta-updated", `更新日期：${META.generated_at ? META.generated_at.slice(0,10) : "—"}`);
-  const previewBanner = document.getElementById("preview-banner");
-  if (previewBanner && META.mode && META.mode !== "published") {
-    previewBanner.style.display = "inline-block";
-    previewBanner.textContent = `⚠️ ${META.mode === "internal" ? "Internal Preview" : "Admin Full View"} — ${META.exported}/${META.total_in_ssot} 案 (含未公開草稿)`;
-  }
+  // Preview banner removed: stakeholder deploy no longer surfaces "internal preview / draft count"
 }
 
 /* ---------- sidebar funnel ---------- */
