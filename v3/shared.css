@@ -55,11 +55,12 @@ html, body {
 .page-header {
   background: linear-gradient(135deg, #0D3338 0%, #008C9A 100%);
   color: var(--text-on-primary);
-  padding: 36px 32px 0;
+  padding: 36px 32px 28px;
 }
 .page-header__inner {
   max-width: 1440px;
   margin: 0 auto;
+  padding-left: 40px;
 }
 .page-header__eyebrow {
   display: inline-block;
@@ -88,21 +89,17 @@ html, body {
 }
 .page-header__meta {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 6px;
-  width: fit-content;
-  margin-top: 18px;
+  flex-direction: row;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 14px;
   font-size: 13px;
+  opacity: 0.9;
 }
 .page-header__meta span {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  opacity: 0.95;
 }
 .preview-banner {
   background: rgba(255, 140, 66, 0.15);
