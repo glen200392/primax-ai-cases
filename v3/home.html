@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人機協作生產力專區 · Primax AI Empowerment</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  /* ========================================================
+     v3 Home — 2/3 + 1/3 split layout
+     Left  (2/3): 從想像到行動 hero → 漏斗 → 3 PDD 小卡
+     Right (1/3): AI 守則 / 資安規範 / 公司開放 AI 工具
+                  (用 .sidebar-card 樣式，對齊案例集子頁右欄呈現)
+     ======================================================== */
+
+  .page-header { padding-bottom: 32px; }
+
+  .home-grid {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+  .home-grid__col {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  /* Right col 用較小 gap，跟 cases.html sidebar 一致 */
+  .home-grid__col--right { gap: 14px; }
+
+  /* ---------- Left col ---------- */
+  .hero-img-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    padding: 16px;
+    box-shadow: var(--shadow-card);
+  }
+  .hero-img-wrap img {
+    width: 100%;
+    display: block;
+    border-radius: 8px;
+  }
+  .hero-img-wrap__caption {
+    margin: 12px 4px 0;
+    color: var(--text-secondary);
+    font-size: 13px;
+    text-align: center;
+  }
+
+  .funnel-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    padding: 18px;
+    box-shadow: var(--shadow-card);
+  }
+  .funnel-card__title {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 12px;
+    color: var(--text-primary);
+  }
+  .funnel-card__sub {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0 0 14px;
+  }
+  .funnel-card__img { width: 100%; display: block; border-radius: 8px; }
+  .funnel-live {
+    margin-top: 14px; padding-top: 14px;
+    border-top: 1px dashed var(--border);
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  }
+  .funnel-live__bar {
+    text-align: center; padding: 10px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--bg-page);
+  }
+  .funnel-live__bar--prototype { border-left: 4px solid var(--color-accent); }
+  .funnel-live__bar--development { border-left: 4px solid #B58A00; }
+  .funnel-live__bar--deploy { border-left: 4px solid var(--color-success); }
+  .funnel-live__count { font-size: 26px; font-weight: 700; line-height: 1; }
+  .funnel-live__bar--prototype .funnel-live__count { color: var(--color-accent); }
+  .funnel-live__bar--development .funnel-live__count { color: #B58A00; }
+  .funnel-live__bar--deploy .funnel-live__count { color: var(--color-success); }
+  .funnel-live__label { font-size: 12px; color: var(--text-secondary); font-weight: 600; margin-top: 4px; }
+  .funnel-live__hint { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+  .pdd-mini-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .pdd-mini {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    padding: 18px 18px 16px;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.22s ease;
+    display: flex; flex-direction: column; gap: 4px;
+    position: relative; overflow: hidden;
+    box-shadow: var(--shadow-card);
+  }
+  .pdd-mini::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
+  }
+  .pdd-mini--prototype::before { background: var(--color-accent); }
+  .pdd-mini--development::before { background: #B58A00; }
+  .pdd-mini--deploy::before { background: var(--color-success); }
+  .pdd-mini:hover { transform: translateY(-3px); box-shadow: var(--shadow-card-hover); }
+  .pdd-mini__num {
+    font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.06em;
+  }
+  .pdd-mini__title {
+    font-size: 16px; font-weight: 700; margin: 0; letter-spacing: -0.01em;
+  }
+  .pdd-mini--prototype .pdd-mini__title { color: var(--color-accent); }
+  .pdd-mini--development .pdd-mini__title { color: #B58A00; }
+  .pdd-mini--deploy .pdd-mini__title { color: var(--color-success); }
+  .pdd-mini__sub { font-size: 12px; color: var(--text-secondary); margin: 0; }
+  .pdd-mini__arrow {
+    margin-top: 10px;
+    font-size: 12px; font-weight: 600; color: var(--text-secondary);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .pdd-mini__arrow::after { content: "→"; font-size: 16px; transition: transform 0.2s ease; }
+  .pdd-mini:hover .pdd-mini__arrow::after { transform: translateX(4px); }
+  .pdd-mini__count {
+    font-size: 22px; font-weight: 700; line-height: 1; margin-top: 6px;
+  }
+  .pdd-mini--prototype .pdd-mini__count { color: var(--color-accent); }
+  .pdd-mini--development .pdd-mini__count { color: #B58A00; }
+  .pdd-mini--deploy .pdd-mini__count { color: var(--color-success); }
+  .pdd-mini__count-label { font-size: 11px; color: var(--text-muted); margin-left: 4px; }
+
+  /* ---------- Right col extras (對齊 cases.html sidebar 風格) ---------- */
+  /* 用 shared.css 內既有 .sidebar-card / --rules / --gate / --whitelist 樣式 */
+  /* 補一條 sec-tag-row (給 AI 工具列表用) */
+  .sec-tag-row {
+    display: flex; flex-wrap: wrap; gap: 5px;
+    margin: 6px 0 4px;
+  }
+
+  .footer {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 24px 32px 48px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .footer a { color: var(--color-primary); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .home-grid { grid-template-columns: 1fr; }
+    .pdd-mini-row { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .home-grid { padding: 20px; gap: 18px; }
+    .funnel-live { grid-template-columns: 1fr; }
+  }
+</style>
+<script src="auth-gate.js"></script>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="page-header__inner">
+    <span class="page-header__eyebrow">Primax · AI Empowerment</span>
+    <h1 class="page-header__title">人機協作生產力專區</h1>
+    <p class="page-header__subtitle">從想像到行動 — 看見集團如何用 AI 與自動化改造工作，並守住資安與合規邊界。</p>
+    <nav class="page-nav" aria-label="主導覽">
+      <a class="page-nav__tab is-active" href="home.html" aria-current="page">📍 首頁</a>
+      <a class="page-nav__tab" href="cases.html">📚 案例集</a>
+    </nav>
+  </div>
+</header>
+
+<main class="home-grid">
+
+  <!-- ==================== LEFT 2/3 ==================== -->
+  <div class="home-grid__col home-grid__col--left">
+
+    <!-- 從想像到行動 hero -->
+    <section class="hero-img-wrap" aria-label="從想像到行動五階段流程">
+      <img src="../assets/home_hero_top.png" alt="從想像到行動 — 五階段流程：定場景 → 盤流程 → 清資料 → 試工具 → 建標準" />
+      <p class="hero-img-wrap__caption">五個步驟，從共識開始，讓數據與 AI 驅動營運。每一步都需要 DTO / IT 陪跑。</p>
+    </section>
+
+    <!-- 漏斗 -->
+    <section class="funnel-card" aria-label="AI 落地三階段漏斗">
+      <h2 class="funnel-card__title">如何實踐 AI 與自動化場景</h2>
+      <p class="funnel-card__sub">AI 落地分三階段，每階段 User 與 IT 的分工不同。下面是集團現況。</p>
+      <img class="funnel-card__img" src="../assets/home_funnel.png" alt="AI 落地三階段：Prototype → Development → Deployment，含 User vs IT 分工比例" />
+      <div class="funnel-live">
+        <div class="funnel-live__bar funnel-live__bar--prototype">
+          <div class="funnel-live__count" id="cnt-prototype">—</div>
+          <div class="funnel-live__label">① Prototype</div>
+          <div class="funnel-live__hint">員工試做</div>
+        </div>
+        <div class="funnel-live__bar funnel-live__bar--development">
+          <div class="funnel-live__count" id="cnt-development">—</div>
+          <div class="funnel-live__label">② Development</div>
+          <div class="funnel-live__hint">IT 接管中</div>
+        </div>
+        <div class="funnel-live__bar funnel-live__bar--deploy">
+          <div class="funnel-live__count" id="cnt-deploy">—</div>
+          <div class="funnel-live__label">③ Deploy</div>
+          <div class="funnel-live__hint">已上線</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 PDD 小卡 -->
+    <section class="pdd-mini-row" aria-label="案例階段入口">
+      <a class="pdd-mini pdd-mini--prototype" href="cases-prototype.html">
+        <span class="pdd-mini__num">① PROTOTYPE</span>
+        <h3 class="pdd-mini__title">員工試做</h3>
+        <p class="pdd-mini__sub">User 主導 · 尚未過資安線</p>
+        <div class="pdd-mini__count" id="cta-prototype-count">—<span class="pdd-mini__count-label">案在跑</span></div>
+        <div class="pdd-mini__arrow">看案例</div>
+      </a>
+      <a class="pdd-mini pdd-mini--development" href="cases-development.html">
+        <span class="pdd-mini__num">② DEVELOPMENT</span>
+        <h3 class="pdd-mini__title">IT 接管中</h3>
+        <p class="pdd-mini__sub">User × IT 協作 · 整合中</p>
+        <div class="pdd-mini__count" id="cta-development-count">—<span class="pdd-mini__count-label">案在跑</span></div>
+        <div class="pdd-mini__arrow">看案例</div>
+      </a>
+      <a class="pdd-mini pdd-mini--deploy" href="cases-deploy.html">
+        <span class="pdd-mini__num">③ DEPLOY</span>
+        <h3 class="pdd-mini__title">已上線</h3>
+        <p class="pdd-mini__sub">IT 主導 · 過資安線</p>
+        <div class="pdd-mini__count" id="cta-deploy-count">—<span class="pdd-mini__count-label">案在跑</span></div>
+        <div class="pdd-mini__arrow">看案例</div>
+      </a>
+    </section>
+
+  </div>
+
+  <!-- ==================== RIGHT 1/3 (sidebar-card style 對齊 cases.html) ==================== -->
+  <aside class="home-grid__col home-grid__col--right" aria-label="AI 治理規範">
+
+    <!-- AI 使用守則 -->
+    <div class="sidebar-card sidebar-card--rules">
+      <div class="sidebar-card__label">🛡 AI 使用三守則</div>
+      <ol class="sidebar-card__list">
+        <li><strong>機密不出網</strong> — 走內網 Azure OpenAI</li>
+        <li><strong>看案例 ≠ 自用授權</strong> — 先確認白名單</li>
+        <li><strong>有疑問問 DTO</strong> — 不確定先問再動</li>
+      </ol>
+    </div>
+
+    <!-- 資安治理 Gate -->
+    <div class="sidebar-card sidebar-card--gate">
+      <div class="sidebar-card__label">⚠ 資安治理 Gate</div>
+      <p class="sidebar-card__title-text">Prototype → Deploy 必經閘門</p>
+      <ul class="sidebar-card__list">
+        <li>帳號管控（誰能用、用哪些資料）</li>
+        <li>資料分級 + DLP 外洩防護</li>
+        <li>後端整合公司 IT 平台</li>
+        <li>稽核軌跡完整可追溯</li>
+      </ul>
+    </div>
+
+    <!-- 公司開放 AI 工具列表 -->
+    <div class="sidebar-card sidebar-card--whitelist">
+      <div class="sidebar-card__label">🧰 公司開放 AI 工具</div>
+      <div class="sec-tag-row">
+        <span class="security-tag security-tag--ok">Power Platform</span>
+        <span class="security-tag security-tag--ok">M365 Copilot</span>
+        <span class="security-tag security-tag--ok">SAP</span>
+        <span class="security-tag security-tag--ok">Profet AI</span>
+        <span class="security-tag security-tag--ok">Azure OpenAI</span>
+        <span class="security-tag security-tag--no">外部 AI 一律不可</span>
+      </div>
+      <div class="sidebar-card__meta">
+        其他公開服務（ChatGPT / Claude / Gemini 等）一律不得處理公司資料
+      </div>
+    </div>
+
+  </aside>
+</main>
+
+<footer class="footer">
+  維護：DTO Office · 數字來源：<a href="cases.html">案例集</a>（<span id="updated">—</span>）
+</footer>
+
+<script>
+(async function() {
+  try {
+    const resp = await fetch("../cases.json?v=" + Date.now(), { cache: "no-store" });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const d = await resp.json();
+    const s = (d && d.pipeline_summary) || null;
+    const setText = (id, v) => {
+      const el = document.getElementById(id);
+      if (el) {
+        // pdd-mini__count has nested span, only update text node
+        if (el.classList && el.classList.contains("pdd-mini__count")) {
+          const label = el.querySelector(".pdd-mini__count-label");
+          el.firstChild.nodeValue = v;
+          if (label) el.appendChild(label);
+        } else {
+          el.textContent = v;
+        }
+      }
+    };
+    if (s) {
+      const bd = s.funnel_breakdown || {};
+      const ai = stage => (bd[stage] && bd[stage].active_internal) || 0;
+      setText("cnt-prototype", ai("Prototype"));
+      setText("cnt-development", ai("Development"));
+      setText("cnt-deploy", ai("Deploy"));
+      setText("cta-prototype-count", ai("Prototype"));
+      setText("cta-development-count", ai("Development"));
+      setText("cta-deploy-count", ai("Deploy"));
+    }
+    setText("updated", (d.generated_at || "").slice(0, 10) || "—");
+  } catch (err) {
+    console.warn("Failed to load cases.json:", err);
+  }
+})();
+</script>
+
+</body>
+</html>
