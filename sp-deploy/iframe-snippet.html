@@ -1,0 +1,26 @@
+<!--
+====================================================================
+Primax AI Cases — SP Embed Web Part iframe snippet
+====================================================================
+使用方式：
+  1. 開 SP page (https://tymcloud.sharepoint.com/sites/DTO/SitePages/)
+  2. Edit page → 加 Embed web part
+  3. 把下面 <iframe> 整段貼進 Embed 的 code box
+  4. Apply → Save / Publish page
+
+注意：
+  - iframe src 是 SP 內部路徑 (same origin) → 不會撞 IT external domain 白名單
+  - height="2400px" 是 cases 子頁高度 fallback；首頁約 1600px 就夠，但
+    cases-deploy 案例多時要 2400px 才不被截
+  - 若要動態 resize，未來 Phase 0a-2 加 postMessage 機制
+====================================================================
+-->
+
+<iframe
+  src="https://tymcloud.sharepoint.com/sites/DTO/SiteAssets/primax-ai-cases/v2/home.html"
+  width="100%"
+  height="2400px"
+  frameborder="0"
+  allowfullscreen
+  title="Primax AI Cases Portal">
+</iframe>

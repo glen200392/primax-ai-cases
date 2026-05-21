@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deploy 案例 · Primax AI Cases</title>
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<header class="page-header">
+  <div class="page-header__inner">
+    <span class="page-header__eyebrow">Primax · AI Empowerment</span>
+    <h1 class="page-header__title">③ Deploy · 已上線案例</h1>
+    <p class="page-header__subtitle">IT 主導 · 過資安線 · 全線管控。集團已部署到生產環境、穩定運行的案例。</p>
+    <div class="page-header__meta">
+      <span id="meta-count">Deploy 案例：—</span>
+      <span id="meta-updated">更新日期：—</span>
+    </div>
+    <div class="preview-banner" id="preview-banner" style="display:none"></div>
+    <nav class="page-nav" aria-label="主導覽">
+      <a class="page-nav__tab" href="home.html">📍 首頁</a>
+      <a class="page-nav__tab is-active" href="cases.html" aria-current="page">📚 案例集</a>
+    </nav>
+  </div>
+</header>
+
+<nav class="sub-nav" aria-label="案例集子導覽">
+  <div class="sub-nav__inner">
+    <a class="sub-nav__tab" href="cases.html">📊 案例集首頁</a>
+    <a class="sub-nav__tab" href="cases-prototype.html">① Prototype</a>
+    <a class="sub-nav__tab" href="cases-development.html">② Development</a>
+    <a class="sub-nav__tab is-active" href="cases-deploy.html" aria-current="page">③ Deploy</a>
+  </div>
+</nav>
+
+<main class="layout-2col">
+  <div class="cases-main">
+    <div class="breadcrumb">
+      <a class="breadcrumb__link" href="cases.html">← 案例集首頁</a>
+      <span class="breadcrumb__sep">/</span>
+      <span class="breadcrumb__current">③ Deploy · 上線維運</span>
+    </div>
+
+    <div class="cases-toolbar" id="filter-bar">
+      <div class="filter-row" id="filter-row-company"><span class="filter-bar__label">公司：</span></div>
+      <div class="filter-row" id="filter-row-unit"><span class="filter-bar__label">單位：</span></div>
+      <div class="filter-row" id="filter-row-region"><span class="filter-bar__label">區域：</span></div>
+      <div class="filter-row filter-row--search">
+        <input type="search" class="filter-bar__search" id="search-input" placeholder="搜尋案例 / 工具 / 效益 / Owner..." />
+      </div>
+    </div>
+
+    <section class="stage-section stage-section--deploy">
+      <header class="stage-section__head">
+        <span class="stage-section__num">③</span>
+        <div class="stage-section__title-wrap">
+          <h2 class="stage-section__title">Deploy · 上線維運</h2>
+          <p class="stage-section__sub">IT 主導 · <strong>過資安線 · 全線管控</strong></p>
+        </div>
+      </header>
+      <div class="cases-grid" id="cases-grid"></div>
+    </section>
+  </div>
+
+  <aside class="sidebar" id="sidebar">
+    <button type="button" class="chat-entry-card" id="chat-fab" aria-label="開啟 AI 助手對話">
+      <span class="chat-entry-card__icon">🤖</span>
+      <span class="chat-entry-card__body">
+        <span class="chat-entry-card__title">AI 助手 · 快速找案例</span>
+        <span class="chat-entry-card__sub">用關鍵字 / 工具 / Owner / BG 幫你找</span>
+      </span>
+      <span class="chat-entry-card__arrow">→</span>
+    </button>
+
+    <div class="sidebar-card sidebar-funnel">
+      <div class="sidebar-card__label">📊 集團 PDD 漏斗</div>
+      <div class="sidebar-funnel__total"><strong id="funnel-total">—</strong> 案已上架  ·  全集團 <strong id="funnel-total-pipeline">—</strong> 案 pipeline</div>
+      <div class="sidebar-funnel__bar">
+        <a class="funnel-bar funnel-bar--prototype" href="cases-prototype.html" data-stage="Prototype">
+          <div class="funnel-bar__count" id="funnel-prototype-count">—</div>
+          <div class="funnel-bar__label">① Prototype</div>
+          <div class="funnel-bar__breakdown">全集團 <em id="funnel-prototype-total">—</em> · 含草稿 <em id="funnel-prototype-draft">—</em></div>
+        </a>
+        <div class="funnel-bar-gate"><span class="gate-arrow">↓</span><button type="button" class="gate-link" id="gate-security">⚠ 資安治理 Gate</button></div>
+        <a class="funnel-bar funnel-bar--development" href="cases-development.html" data-stage="Development">
+          <div class="funnel-bar__count" id="funnel-development-count">—</div>
+          <div class="funnel-bar__label">② Development</div>
+          <div class="funnel-bar__breakdown">全集團 <em id="funnel-development-total">—</em> · 含草稿 <em id="funnel-development-draft">—</em></div>
+        </a>
+        <div class="funnel-bar-gate"><span class="gate-arrow">↓</span><span class="gate-text">⚠ 落地長期營運</span></div>
+        <a class="funnel-bar funnel-bar--deploy" href="cases-deploy.html" data-stage="Deploy">
+          <div class="funnel-bar__count" id="funnel-deploy-count">—</div>
+          <div class="funnel-bar__label">③ Deploy</div>
+          <div class="funnel-bar__breakdown">全集團 <em id="funnel-deploy-total">—</em> · 含草稿 <em id="funnel-deploy-draft">—</em></div>
+        </a>
+      </div>
+      <div class="sidebar-card__meta"><strong id="sec-pending-it">—</strong> 案 IT review 中 · <strong id="sec-pending-owner">—</strong> 案 Owner 待補</div>
+    </div>
+
+    <div class="sidebar-card sidebar-card--rules">
+      <div class="sidebar-card__label">🛡 AI 使用三守則</div>
+      <ol class="sidebar-card__list">
+        <li><strong>機密不出網</strong> — 走內網 Azure OpenAI</li>
+        <li><strong>看案例 ≠ 自用授權</strong> — 先確認白名單</li>
+        <li><strong>有疑問問 DTO</strong> — 不確定先問再動</li>
+      </ol>
+    </div>
+
+    <div class="sidebar-card sidebar-card--gate" id="sec-gate">
+      <div class="sidebar-card__label">⚠ 資安治理 Gate</div>
+      <p class="sidebar-card__title-text">Prototype → Deploy 必經閘門</p>
+      <ul class="sidebar-card__list">
+        <li>帳號管控（誰能用、用哪些資料）</li>
+        <li>資料分級 + DLP 外洩防護</li>
+        <li>後端整合公司 IT 平台</li>
+        <li>稽核軌跡完整可追溯</li>
+      </ul>
+    </div>
+  </aside>
+</main>
+
+<aside class="chat-panel" id="chat-panel">
+  <header class="chat-panel__head">
+    <span class="chat-panel__title">快速找案例</span>
+    <button type="button" class="chat-panel__close" id="chat-close">×</button>
+  </header>
+  <div class="chat-panel__body" id="chat-body"></div>
+  <div class="chat-panel__input-row">
+    <input type="text" class="chat-input" id="chat-input" placeholder="輸入關鍵字..." />
+    <button type="button" class="chat-send" id="chat-send">送出</button>
+  </div>
+</aside>
+
+<!-- Modal -->
+<div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true">
+  <div class="modal">
+    <header class="modal__header">
+      <button class="modal__close" id="modal-close">×</button>
+      <div class="modal__badges" id="modal-badges"></div>
+      <h2 class="modal__title" id="modal-title"></h2>
+      <div class="modal__tools" id="modal-tools"></div>
+    </header>
+    <div class="modal__body" id="modal-body"></div>
+    <div style="padding: 0 32px 16px;">
+      <div class="interaction-bar">
+        <button class="ix-btn" id="ix-like" type="button"><span>👍</span><span>讚</span><span class="ix-btn__count" id="ix-like-count">0</span></button>
+        <button class="ix-btn" id="ix-share" type="button"><span>🔗</span><span>分享連結</span></button>
+        <button class="ix-btn" id="ix-comments-toggle" type="button"><span>💬</span><span>評論</span><span class="ix-btn__count" id="ix-comments-count">0</span></button>
+      </div>
+      <div class="comments-section" id="comments-section" style="display:none">
+        <form id="comment-form" style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+          <input type="text" id="comment-name" placeholder="你的姓名" required maxlength="30" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit"/>
+          <textarea id="comment-text" placeholder="留下你的想法..." required maxlength="500" style="padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;min-height:60px;resize:vertical"></textarea>
+          <button type="submit" style="align-self:flex-end;padding:8px 18px;border-radius:var(--radius-pill);border:none;background:var(--color-primary);color:white;font-size:13px;font-weight:600;cursor:pointer">送出留言</button>
+        </form>
+        <div id="comments-list" style="margin-top:12px"></div>
+      </div>
+    </div>
+    <footer class="modal__footer">
+      <span>案例編號：<span id="modal-id">—</span> · 來源：<span id="modal-src">—</span></span>
+      <span>最後更新：<span id="modal-updated">—</span></span>
+    </footer>
+  </div>
+</div>
+<style>.comments-section.is-open { display: block !important; }</style>
+
+<script src="shared.js"></script>
+<script>
+window.renderPage = function() { renderFilters(); renderCasesGrid(); };
+initPage("Deploy");
+</script>
+
+</body>
+</html>
