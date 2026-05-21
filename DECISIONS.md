@@ -179,3 +179,123 @@ SSOT 38→41 cols，加 Company / Unit / Region 三個 derived 欄位，由 `par
 - `~/...-cases/backend/sp-list-schema.md`: Identity section 6→9 cols
 - `~/...-cases/backend/deploy-sharepoint.ps1`: Step 5 caseFields +3 (Company Choice 2 值)
 
+---
+
+## 2026-05-21 — D-C4 Carry-over Lockdown + DP-3~7 Decisions
+
+10 項 pending decisions（5/23 deadline）今天全部拍板。
+
+### D-C4-1: 表單載體 — **Microsoft Forms + Power Automate flow**
+- Why: 員工最熟悉 Forms UI / 可外連分享；flow 用 service account 寫 List 符合 D-NEW-02
+- Implication: 需 Power Automate Premium license (HTTP connector)；對接 D-NEW-04 Azure OpenAI
+- Status: ✅ Locked
+
+### D-C4-2: 送件作為上架前置 — **不強制送件作為 gate；DTO review 為唯一上架閘門**
+- **Glen 修正建議方向**：原 recommendation「強制送件 = 必要條件」過度結構化。送件動作本身不是真實 gate，**DTO review 才是真實品質閘門**。
+- Implication:
+  - Status flow: 任何來源 (Forms / Interview / Baseline import / Migrated) → `Status=Draft` 進審 → DTO review → `Status=Active-Internal` 或 `Active-Published`
+  - 不需要區分「有送件 vs 沒送件」分支邏輯
+  - SP List 上的 SourceChannel 仍記錄來源（Form/Interview/Migrated）但不影響 lifecycle
+- Status: ✅ Locked
+
+### D-C4-3: Benefits 量化規則 — **送件單位自行量化（送件時即必附）**
+- **Glen 修正建議方向**：原 recommendation「Draft 階段選填 / Published 階段必填」放鬆過頭。**送件單位自己提出量化證據，DTO 不替你補**。
+- Implication:
+  - Microsoft Forms 表單欄位 `Benefits 量化` + `EvidenceUrl` 設為**送件必填**（required input）
+  - 送件當下如沒寫量化數字 → Forms 拒收（client-side validation）
+  - DTO review 階段檢查證據是否實在，不檢查「有沒有寫」
+  - 對於既有 baseline 98 case：Active-Internal 13 案要求補齊；Draft 85 案 owner 補完才能升 Active-Internal
+- Implication on `form-channel-spec.md`: 加 Required validation rules
+- Implication on `deploy-sharepoint.ps1`: EvidenceUrl Type=URL，所有 Active-Internal+ 案須有值（List validation）
+- Status: ✅ Locked
+
+### D-C4-4: 送件審核流程 — **Glen + Vicky 二人 review（DTO 邊界 = Glen + Vicky）**
+- **D-NEW-02 open question 同步解答**：DTO team = Glen + Vicky (only)；BG ambassador 不算 DTO 編制
+- Why: Bottleneck 風險低（8 小時/週 cadence 足以處理 20-30 case 週量）+ 品質紀律
+- Implication:
+  - SP List `Contribute` permission = `Glen + Vicky` 兩位
+  - BG ambassador role = 推薦案例 + baseline metadata 認領（D-C4-5），不直接寫 List
+  - Service Account (DP-4) 寫入 List 走「Add Item only」權限，不能改 lifecycle status
+  - Lifecycle status 改動 audit log 記錄 Glen / Vicky username
+- Status: ✅ Locked
+
+### D-C4-5: 既有 98 baseline 補齊 metadata 責任 — **延後決定**
+- **Glen decision**：等後端 pipeline 整理完（Phase 1 schema migration + SP List 上線）再決定誰補。**現在先處理後端 plumbing**。
+- Why: Schema 還未在 SP 落地，前線 ambassador 沒有可寫的目標；先把骨架建好再分工
+- Defer until: Phase 1 完成（migration 跑完 + SP List 6 view 設定好）
+- Re-evaluate by: Phase 2 啟動前
+- Status: ⏸ Deferred to Phase 1 done
+
+---
+
+### DP-3: Phase 1 publish 流程 — **Glen 手動逐案 Active-Published**
+- Why: 第一輪 13 個 Active-Internal 案 + 後續升級案，逐案 review 是品質紀律
+- Implication:
+  - 不寫 batch promote script
+  - Glen 在 SP List 開 Active-Internal view → 逐筆 verify IPO + Owner card + Evidence → 改 Status
+  - Estimated work: ~1 hr for current 13 Active-Internal cases
+- Status: ✅ Locked
+
+### DP-4: Service Account 來源 — **Glen 個人 SA 先走 + 平行 IT 申請新 SA**
+- Why: 不擋 Phase 1-2 timeline；Phase 3 cutover 換新 SA 避免 Glen 離職風險
+- Implication:
+  - Phase 1-2: Glen 個人 Entra App registration（自助 via [aad.portal.azure.com](https://aad.portal.azure.com)）→ Sites.Manage.All 範圍 → Power Automate flow + excel_to_splist.py 用此身分
+  - 同時：Glen 提 IT ticket 申請 `DTO-AICases-SA` service account（無人對應，永久存在）+ App Registration
+  - Phase 3 cutover：flow connection / migration script auth 換綁新 SA
+- Risk: PnP Management Shell ClientId 若被 IT 擋（Gap 10）→ Glen 個人 App Registration 已是 fallback
+- Status: ✅ Locked
+
+### DP-5: 前端 SP 部署路徑 — **v2/ 全組上傳 SP Site Assets + iframe 嵌入 Modern Page**
+- Why: 保留 v2/ 5-page portal UI 結構（PDD 漏斗 / Modal IPO 4 欄 / sidebar chat card / Owner card），SP Modern Page 用 Embed Web Part 嵌 iframe 即可上線
+- Implication:
+  - `deploy-sharepoint.ps1` Step 6 `$FilesToUpload` 擴充：上傳 `v2/home.html` / `v2/cases.html` / `v2/cases-prototype.html` / `v2/cases-development.html` / `v2/cases-deploy.html` / `v2/shared.css` / `v2/shared.js` / `v2/auth-gate.js` (內網不需 password 可移除) / `assets/*` 圖檔
+  - Site Assets 路徑：`<site>/SiteAssets/primax-ai-cases/v2/...`
+  - iframe src 指向 `<site>/SiteAssets/primax-ai-cases/v2/home.html`
+  - v2 `shared.js` 改 fetch 邏輯：優先 `/_api/web/lists/getbytitle('AICases_v2')/items`，fail 時 fallback 到 cases.json
+  - 內網部署 password gate 移除（D-NEW-01 全集團可見已是 SP permission 控制）
+- Phase 1 vs Phase 2 拆分：
+  - Phase 1: 只上傳檔案 + 確認 iframe 能 load 靜態 cases.json
+  - Phase 2: 改 SP REST live fetch + Comments/Likes endpoints
+- Status: ✅ Locked
+
+### DP-6: Phase 1-2 訪談錄音 channel — **不啟用**
+- Why: 簡化 Phase 1-2 channel scope；own-voice-get 是 Glen 個人工具，scale 到 channel 1 萃取需要 Power Automate Desktop 或 cloud Speech-to-Text，IT 依賴沉重
+- Implication:
+  - `flows/extraction-flow.md` Flow 1 (Channel 1 Interview Extraction) Phase 1-2 不 build
+  - Channel 1 限定 docx / md / pdf 為 Phase 1-2 input
+  - D-NEW-03 「不強制 Teams，任何來源都收」原則保留為 architecture-level support，但 phase rollout 限縮
+  - Phase 3 reconsider：屆時若 Azure OpenAI + Speech-to-Text resource 都到位再評估開錄音 channel
+- Status: ✅ Locked (Phase 1-2 only)
+
+### DP-7: Phase 1 vs Phase 2 並行 — **序列：Phase 1 全部完成才 Phase 2**
+- Why: 控制 cognitive load + migration script 風險先收斂 + Glen single-person bandwidth
+- Implication:
+  - Total timeline: ~4 週（Phase 1 2 週 + Phase 2 2 週）+ Phase 3 IT-gated
+  - Phase 1 exit criteria 全達標才動 Phase 2 任何 task
+  - 不啟動 Forms 建表 / flow build / 前端切 REST 等 Phase 2 工作
+- Trade-off accepted: 比並行慢 ~1 週，但確保 Phase 1 schema migration 完全收斂
+- Status: ✅ Locked
+
+---
+
+## Action Items After 2026-05-21 Lockdown
+
+按 priority：
+
+- [ ] **P0 Phase 1 Task 1** — Glen 親自登入 SP 確認 `https://primaxgroup.sharepoint.com/sites/DTO-Office/` 存在 + 既有 AI案例庫 狀態截圖（30 min, Glen-only）
+- [ ] **P0 Phase 1 Task 2** — Glen 申請 Entra App Registration（自助）→ 取得 ClientId + ClientSecret（Glen 個人 SA, DP-4）
+- [ ] **P0 Phase 1 Task 3** — `deploy-sharepoint.ps1` 跑 `AICases_v2` list 建立 + 41 cols 全建（含 Company Choice / Stage_Norm Choice / EvidenceUrl URL）+ AI_Prompts + AI_Events
+- [ ] **P0 Phase 1 Task 4** — 寫 `scripts/excel_to_splist.py`（Gap 8）：SSOT 98 cases → AICases_v2 with `Status=Draft` / `SourceChannel=Migrated`
+- [ ] **P1 Phase 1 Task 5** — Glen 手動把 13 Active-Internal 案逐案 review + 改 `Status=Active-Published`（DP-3）
+- [ ] **P1 Phase 1 Task 6** — SP List Comments + Likes 手動啟用（D-NEW-05）+ 6 standard views 建立
+- [ ] **P1 Phase 1 Task 7** — `deploy-sharepoint.ps1` Step 6 擴充：上傳 v2/ 5 頁 + shared.{css,js} + assets/（DP-5 預先上靜態版）
+
+- [ ] **P2 Phase 2 Task 1**（Phase 1 全完才動）— v2/shared.js 改 SP REST live fetch with cases.json fallback
+- [ ] **P2 Phase 2 Task 2** — Microsoft Forms 依 `docs/form-channel-spec.md` 建表 + Benefits 量化 / EvidenceUrl 都設 Required（D-C4-3）
+- [ ] **P2 Phase 2 Task 3** — Power Automate flow: Forms → SP List Draft + Teams notify Glen+Vicky（D-C4-4 review queue）
+- [ ] **P2 Phase 2 Task 4** — SP Modern Page 建 + Embed Web Part iframe v2/home.html
+
+- [ ] **P3 D-C4-5 Re-evaluation**（Phase 1 完成後）— baseline metadata 補齊責任分工
+
+- [ ] **P3 IT alignment**（Phase 3 prerequisite, parallel track）— 提 IT ticket：DTO-AICases-SA + Azure OpenAI (TW region) + Power Automate Premium
+
