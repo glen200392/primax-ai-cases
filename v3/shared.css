@@ -1182,3 +1182,56 @@ html, body {
   .chat-entry-card__icon { width: 44px; height: 44px; font-size: 24px; }
   .chat-panel { top: 64px; right: 12px; left: 12px; width: auto; max-height: calc(100vh - 80px); }
 }
+
+/* =========================================================
+   v3: Sidebar search card (replaces chat-fab entry button)
+   ========================================================= */
+.sidebar-card--search::before { background: var(--color-primary); }
+.sidebar-search-form {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+.sidebar-search-input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-family: inherit;
+  background: var(--bg-page);
+  color: var(--text-primary);
+}
+.sidebar-search-input::placeholder { color: var(--text-muted); }
+.sidebar-search-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: var(--bg-card);
+  box-shadow: 0 0 0 3px rgba(0, 140, 154, 0.12);
+}
+.sidebar-search-btn {
+  padding: 8px 12px;
+  border: 1px solid var(--color-primary);
+  border-radius: 8px;
+  background: var(--color-primary);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.18s ease;
+}
+.sidebar-search-btn:hover { background: var(--color-primary-dark); }
+.sidebar-search-hint {
+  margin: 8px 0 0;
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* v3: sec-tag-row (used by sidebar-card--whitelist) */
+.sec-tag-row {
+  display: flex; flex-wrap: wrap; gap: 5px;
+  margin: 6px 0 4px;
+}

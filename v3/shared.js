@@ -515,34 +515,25 @@ function handleChatQuery(q) {
   appendChatMsg(html, "bot");
 }
 function initChatWidget() {
-  const entry = document.getElementById("chat-fab");  // entry card in sidebar (id kept for back-compat)
+  // v3: always-visible inline search form in sidebar; submit pops chat-panel as floating overlay
+  const form = document.getElementById("sidebar-search-form");
   const panel = document.getElementById("chat-panel");
   const closeBtn = document.getElementById("chat-close");
-  const input = document.getElementById("chat-input");
-  const sendBtn = document.getElementById("chat-send");
-  if (!entry || !panel) return;
+  const input = document.getElementById("chat-input-inline");
+  if (!form || !panel || !input) return;
 
-  entry.addEventListener("click", () => {
-    panel.classList.add("is-open");
-    entry.classList.add("is-active");
-    setTimeout(() => input && input.focus(), 50);
-  });
-  closeBtn.addEventListener("click", () => {
+  closeBtn && closeBtn.addEventListener("click", () => {
     panel.classList.remove("is-open");
-    entry.classList.remove("is-active");
   });
 
-  // Initial greeting
-  appendChatMsg(`你好 👋 我可以幫你找案例。試試搜尋工具名（如 <strong>Power Automate</strong>）、Owner 姓名、BG（如 <strong>HR</strong>）或關鍵字（如 <strong>對帳</strong>）。`, "bot");
-
-  const submit = () => {
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
     const q = input.value;
-    input.value = "";
+    if (!q.trim()) return;
+    const body = document.getElementById("chat-body");
+    if (body) body.innerHTML = "";
+    panel.classList.add("is-open");
     handleChatQuery(q);
-  };
-  sendBtn.addEventListener("click", submit);
-  input.addEventListener("keydown", e => {
-    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); }
   });
 }
 
