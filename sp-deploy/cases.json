@@ -1,16 +1,16 @@
 {
   "schema_version": "1.1",
-  "generated_at": "2026-05-20T19:01:28",
+  "generated_at": "2026-05-22T15:00:00",
   "mode": "internal",
   "total_in_ssot": 98,
-  "exported": 13,
+  "exported": 12,
   "pipeline_summary": {
-    "non_archived_total": 97,
-    "archived": 1,
+    "non_archived_total": 96,
+    "archived": 2,
     "funnel_counts": {
       "Prototype": 72,
       "Development": 9,
-      "Deploy": 16
+      "Deploy": 15
     },
     "funnel_breakdown": {
       "Prototype": {
@@ -22,66 +22,15 @@
         "draft": 9
       },
       "Deploy": {
-        "active_internal": 7,
+        "active_internal": 6,
         "draft": 9
       }
     },
     "pending_it_review": 20,
     "pending_owner_tools": 54,
-    "active_internal_total": 13
+    "active_internal_total": 12
   },
   "cases": [
-    {
-      "id": "tym-hr-anniversary",
-      "company": "TYM",
-      "unit": "HR",
-      "region": "HZ",
-      "title": "員工入職周年紀念郵件自動化",
-      "tools": "Power Automate + SAP",
-      "benefits_summary": "零人工介入，提升員工體驗與組織溫度",
-      "stage": "穩定運行",
-      "stage_norm": "Deploy",
-      "pain_point": "SAP 統一文案缺乏溫度，員工感知價值低",
-      "before_how": "",
-      "before_pain": "",
-      "after_how": "Power Automate 定時觸發 + 自動計算工齡 + 匹配專屬祝福語模板",
-      "after_outcome": "每日 9:00 自動發送個性化周年祝福；員工感受到組織關懷",
-      "input": [
-        "員工周年名單（SAP）",
-        "工齡數據"
-      ],
-      "process": [
-        "Power Automate 定時觸發",
-        "自動計算工齡",
-        "匹配專屬祝福語模板"
-      ],
-      "output": [
-        "每日 9:00 自動發送",
-        "個性化周年祝福郵件"
-      ],
-      "benefits": [
-        "零人工介入",
-        "提升員工體驗"
-      ],
-      "build_story": "",
-      "owner_name": "Katie Lv 呂麗珊",
-      "owner_role": "",
-      "owner_dept": "TYM HZ HR ECP",
-      "owner_background": "",
-      "owner_photo": "",
-      "owner_email": "",
-      "quote": "",
-      "category_matrix": "個人×RPA",
-      "ecrs": "E",
-      "maturity_indicator": "🟢 穩定運行",
-      "reviewer": "",
-      "evidenceurl": "",
-      "sourcechannel": "Migrated",
-      "bg": "TYM-HR (HZ)",
-      "source_meeting": "案例卡V5.pptx Slide 6; Group HR sharing 2025-07-15",
-      "last_updated": "2026-05-19",
-      "publish_status": "Active-Internal"
-    },
     {
       "id": "tym-hr-shuttle-bus",
       "company": "TYM",
@@ -219,7 +168,7 @@
         "智能分類零誤差"
       ],
       "build_story": "",
-      "owner_name": "Yuming Tang 唐宇明",
+      "owner_name": "Yuming Tang 湯禹銘",
       "owner_role": "",
       "owner_dept": "PMX COE T&D",
       "owner_background": "",
@@ -234,7 +183,7 @@
       "sourcechannel": "Migrated",
       "bg": "PMX-HR (DG)",
       "source_meeting": "案例卡V5.pptx Slide 9; Group HR sharing 2025-07-15",
-      "last_updated": "2026-05-19",
+      "last_updated": "2026-05-22",
       "publish_status": "Active-Internal"
     },
     {
@@ -680,21 +629,21 @@
       "company": "TYM",
       "unit": "F&A",
       "region": "TW",
-      "title": "Call Center 成本差異自動分析",
+      "title": "Cost Center 成本差異自動分析",
       "tools": "Excel VBA + 自動 Highlight",
       "benefits_summary": "技術可行；阻礙：BCO 資料來源與權限不足",
       "stage": "卡點—資料權限",
       "stage_norm": "Prototype",
-      "pain_point": "100+ Call Centers 財務資料分散，BCO 資料 F&A 無法存取，差異分析耗時",
+      "pain_point": "100+ Cost Centers 財務資料分散，BCO 資料 F&A 無法存取，差異分析耗時",
       "before_how": "",
       "before_pain": "",
       "after_how": "自動整併 Budget/Forecast/Actual + 匯率換算 + 自動 Highlight 差異 (>55K) + 自動偵測異常",
-      "after_outcome": "Call Center 差異報表自動產出；Drill-down 費用明細報表",
+      "after_outcome": "Cost Center 差異報表自動產出；Drill-down 費用明細報表",
       "input": [
         "SAP Actual 實際費用",
         "Budget/Forecast 資料",
         "匯率/費用分類",
-        "Call Center Owner/Cost Center Mapping"
+        "Cost Center Owner/Cost Center Mapping"
       ],
       "process": [
         "自動整併 Budget/Forecast/Actual",
@@ -703,7 +652,7 @@
         "自動偵測異常"
       ],
       "output": [
-        "Call Center 差異報表自動產出",
+        "Cost Center 差異報表自動產出",
         "Drill-down 費用明細",
         "異常自動標示"
       ],
@@ -726,7 +675,7 @@
       "sourcechannel": "Migrated",
       "bg": "TYM-F&A",
       "source_meeting": "案例卡V5.pptx Slide 18; F&A 案例.pptx Slide 4",
-      "last_updated": "2026-05-20",
+      "last_updated": "2026-05-22",
       "publish_status": "Active-Internal"
     }
   ]
