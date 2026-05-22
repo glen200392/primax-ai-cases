@@ -1,20 +1,20 @@
 {
   "schema_version": "1.1",
-  "generated_at": "2026-05-20T19:01:28",
+  "generated_at": "2026-05-22T12:30:00",
   "mode": "internal",
-  "total_in_ssot": 98,
-  "exported": 13,
+  "total_in_ssot": 93,
+  "exported": 8,
   "pipeline_summary": {
-    "non_archived_total": 97,
+    "non_archived_total": 92,
     "archived": 1,
     "funnel_counts": {
-      "Prototype": 72,
+      "Prototype": 67,
       "Development": 9,
       "Deploy": 16
     },
     "funnel_breakdown": {
       "Prototype": {
-        "active_internal": 6,
+        "active_internal": 1,
         "draft": 66
       },
       "Development": {
@@ -28,7 +28,7 @@
     },
     "pending_it_review": 20,
     "pending_owner_tools": 54,
-    "active_internal_total": 13
+    "active_internal_total": 8
   },
   "cases": [
     {
@@ -235,281 +235,6 @@
       "bg": "PMX-HR (DG)",
       "source_meeting": "案例卡V5.pptx Slide 9; Group HR sharing 2025-07-15",
       "last_updated": "2026-05-19",
-      "publish_status": "Active-Internal"
-    },
-    {
-      "id": "pmx-hr-attrition",
-      "company": "PMX",
-      "unit": "HR + IT",
-      "region": "TW",
-      "title": "離職行為預測：員工留任早期預警",
-      "tools": "Profet AI (AutoML, 無程式碼)",
-      "benefits_summary": "預估每年節省約 400 萬 NTD",
-      "stage": "結案-未確認運維狀態",
-      "stage_norm": "Prototype",
-      "pain_point": "離職率為落後指標，HR 無法提前感知離職傾向，影響因素眾多，干預措施難以精準執行",
-      "before_how": "",
-      "before_pain": "",
-      "after_how": "Profet AI 無程式碼自動建模 + 85/15 拆分 + 關鍵因子分析 + 即時預測",
-      "after_outcome": "高風險員工早期預警報表；每季自動更新預測；個人化關懷與留任干預",
-      "input": [
-        "542 筆 RD 部門台灣正職員工",
-        "年資/職等/加班/請假次數等特徵",
-        "HR+IT 跨部門協作",
-        "2024/01/01-2025/10/31"
-      ],
-      "process": [
-        "Profet AI 無程式碼自動建模",
-        "85%/15% 拆分 451/91 筆",
-        "關鍵因子—年資、加班最重要",
-        "模擬即時預測"
-      ],
-      "output": [
-        "高風險員工早期預警報表",
-        "節省培訓 64 萬+薪資空窗 336 萬/年",
-        "個人化關懷與留任干預",
-        "每季自動更新"
-      ],
-      "benefits": [
-        "預估每年節省約 400 萬 NTD"
-      ],
-      "build_story": "",
-      "owner_name": "PRIMAX HR/IT 第六組 (Tanya)",
-      "owner_role": "",
-      "owner_dept": "PMX HR + IT",
-      "owner_background": "",
-      "owner_photo": "",
-      "owner_email": "",
-      "quote": "",
-      "category_matrix": "組織×AI",
-      "ecrs": "",
-      "maturity_indicator": "🟡 進行中",
-      "reviewer": "Governance OK 2026-05-20: 公司工具 (APPROVED)",
-      "evidenceurl": "",
-      "sourcechannel": "Migrated",
-      "bg": "PMX-HR + IT",
-      "source_meeting": "案例卡V5.pptx Slide 10; PRIMAX HR/IT 第六組 Workshop 結案報告 2026.01.13",
-      "last_updated": "2026-05-20",
-      "publish_status": "Active-Internal"
-    },
-    {
-      "id": "tym-sae-ts-params",
-      "company": "TYM",
-      "unit": "SAE",
-      "region": "TW",
-      "title": "揚聲器 T/S 參數推薦：系統聲學最佳化",
-      "tools": "Profet AI ML",
-      "benefits_summary": "縮短提案週期；R²=0.9987，MAE=0.29 dB",
-      "stage": "結案-未確認運維狀態",
-      "stage_norm": "Prototype",
-      "pain_point": "揚聲器提案階段須大量試錯反推 T/S 參數，耗時且依賴工程師經驗",
-      "before_how": "",
-      "before_pain": "",
-      "after_how": "Profet AI 訓練 34 個 SPL 頻率預測子模型 + 反推最佳 T/S 參數組合",
-      "after_outcome": "3 組最佳化 T/S 參數推薦；預測曲線與目標差異極小",
-      "input": [
-        "42,336 筆 T/S 參數計算資料",
-        "7 個 T/S 參數輸入特徵",
-        "34 個頻率點 SPL 預測目標",
-        "Full-Range/Woofer/Tweeter"
-      ],
-      "process": [
-        "Profet AI 無程式碼建模",
-        "訓練 34 個 SPL 子模型",
-        "反推最佳 T/S 參數組合",
-        "R²=0.9987, MAE=0.29 dB"
-      ],
-      "output": [
-        "3 組最佳化 T/S 參數推薦",
-        "預測曲線與目標差異極小",
-        "提升研發效率、縮短提案週期"
-      ],
-      "benefits": [
-        "打樣循環 5 次→1 次",
-        "後續可整合公司揚聲器資料庫"
-      ],
-      "build_story": "",
-      "owner_name": "TYM System Acoustic 第四組 (Redi Lei)",
-      "owner_role": "",
-      "owner_dept": "TYM SAE",
-      "owner_background": "",
-      "owner_photo": "",
-      "owner_email": "",
-      "quote": "",
-      "category_matrix": "組織×AI",
-      "ecrs": "",
-      "maturity_indicator": "🟡 進行中",
-      "reviewer": "Governance OK 2026-05-20: 公司工具 (APPROVED)",
-      "evidenceurl": "",
-      "sourcechannel": "Migrated",
-      "bg": "TYM-SAE",
-      "source_meeting": "案例卡V5.pptx Slide 11; Workshop 結案報告 2026.01.13",
-      "last_updated": "2026-05-20",
-      "publish_status": "Active-Internal"
-    },
-    {
-      "id": "pmx-iibg-forcepad",
-      "company": "PMX",
-      "unit": "iIBG",
-      "region": "TW",
-      "title": "Force Pad 震動手感優化：波形參數自動調校",
-      "tools": "Profet AI ML",
-      "benefits_summary": "每專案省 USD$132 + 9 個工作天；ΔV R²=0.90",
-      "stage": "結案-未確認運維狀態",
-      "stage_norm": "Prototype",
-      "pain_point": "震動波形 12 個參數靠 Trial & Error 手調，缺乏 SOP 與量化指標",
-      "before_how": "全人工試錯手調 12 個參數",
-      "before_pain": "",
-      "after_how": "Profet AI 自動建模 + 85/15 拆分 + 重要因子分析",
-      "after_outcome": "ΔV 預測 R²=0.90，測試誤差趨近 0；取代試錯",
-      "input": [
-        "60 筆 Haptic Waveform 測試",
-        "起震波+煞車波各 2 組 12 參數",
-        "ΔV/Fn/RT 目標",
-        "SPACER 硬度等工藝參數"
-      ],
-      "process": [
-        "Profet AI 無程式碼建模",
-        "85/15 拆分 50/10 筆",
-        "重要因子 ΔV_Scale1, Fn_Duration",
-        "X 因子 13→20 提升 ΔV 8.7%"
-      ],
-      "output": [
-        "ΔV R²=0.90, 測試誤差趨近 0",
-        "每專案省 USD$132+9 工作天",
-        "取代試錯"
-      ],
-      "benefits": [
-        "USD$132/專案",
-        "9 工作天/專案",
-        "縮短 DOE 開發時間"
-      ],
-      "build_story": "",
-      "owner_name": "PMX iIBG 第五組 (Ted)",
-      "owner_role": "",
-      "owner_dept": "PMX iIBG",
-      "owner_background": "",
-      "owner_photo": "",
-      "owner_email": "",
-      "quote": "",
-      "category_matrix": "組織×AI",
-      "ecrs": "",
-      "maturity_indicator": "🟡 進行中",
-      "reviewer": "Governance OK 2026-05-20: 公司工具 (APPROVED)",
-      "evidenceurl": "",
-      "sourcechannel": "Migrated",
-      "bg": "PMX-iIBG",
-      "source_meeting": "案例卡V5.pptx Slide 12; Force Pad Workshop 結案報告 2025.12.30",
-      "last_updated": "2026-05-20",
-      "publish_status": "Active-Internal"
-    },
-    {
-      "id": "pmx-isb-motor-noise",
-      "company": "PMX",
-      "unit": "ISB",
-      "region": "TW",
-      "title": "馬達異音檢測：瑕疵智能判別",
-      "tools": "Profet AI ML (分類) + 麥克風 + IMU 感測器",
-      "benefits_summary": "F1=96.7%；省召回 60k RMB/月 (850k RMB/年)",
-      "stage": "結案-未確認運維狀態",
-      "stage_norm": "Prototype",
-      "pain_point": "仰賴「金耳朵」人工聽音判斷，標準不一、無數據履歷",
-      "before_how": "人工「金耳朵」聽音判斷",
-      "before_pain": "",
-      "after_how": "Profet AI 二元分類 (OK/NG) + MFCC/PSD/過零率特徵",
-      "after_outcome": "驗證率 90.5%, F1=96.7%, 漏檢率降 2%",
-      "input": [
-        "755 筆馬達音頻 (廠商A 機型B)",
-        "時域/頻域/時頻域/音色 29 個特徵",
-        "麥克風+IMU 感測器",
-        "2025/09/19-11/29"
-      ],
-      "process": [
-        "Profet AI 分類建模",
-        "100% 建模+87 筆獨立測試集",
-        "MFCC/PSD/過零率",
-        "二元分類 OK/NG"
-      ],
-      "output": [
-        "驗證率 90.5%, F1=96.7%",
-        "漏檢率降 2%, 省召回 60k RMB/月",
-        "金耳朵經驗數位化"
-      ],
-      "benefits": [
-        "年節省召回成本 850k RMB",
-        "提升品質舉證能力"
-      ],
-      "build_story": "",
-      "owner_name": "PMX ISB 第三組 (Randy Huang)",
-      "owner_role": "",
-      "owner_dept": "PMX ISB",
-      "owner_background": "",
-      "owner_photo": "",
-      "owner_email": "",
-      "quote": "",
-      "category_matrix": "組織×AI",
-      "ecrs": "",
-      "maturity_indicator": "🟡 進行中",
-      "reviewer": "Governance OK 2026-05-20: 公司工具 (APPROVED)",
-      "evidenceurl": "",
-      "sourcechannel": "Migrated",
-      "bg": "PMX-ISB",
-      "source_meeting": "案例卡V5.pptx Slide 13; Workshop 結案報告 2026.01.13",
-      "last_updated": "2026-05-20",
-      "publish_status": "Active-Internal"
-    },
-    {
-      "id": "pmx-cmbu-aa-offset",
-      "company": "PMX",
-      "unit": "CMBU",
-      "region": "TW",
-      "title": "AA Offset 參數預測：鏡頭對位最佳化",
-      "tools": "Profet AI ML",
-      "benefits_summary": "省 3-5 天/次試產，1,440,000 NTD/年",
-      "stage": "結案-未確認運維狀態",
-      "stage_norm": "Prototype",
-      "pain_point": "AA 製程完全仰賴 RD 大量 DOE 試錯，每次試產 3-5 天工時+材料成本",
-      "before_how": "RD 大量 DOE 試錯，每次試產 3-5 天",
-      "before_pain": "",
-      "after_how": "Profet AI 自動建模預測 Lens Shift 膠縮 offset",
-      "after_outcome": "預測誤差 ±1 μm；試產前預測取代大量 DOE",
-      "input": [
-        "640 筆 AA 製程歷史",
-        "膠型號/高/長/寬/Lens 重量",
-        "UV 時間/Oven 溫度時間",
-        "3 款膠 × 2 台設備"
-      ],
-      "process": [
-        "Profet AI 自動建模",
-        "85/15 拆分 544/96 筆",
-        "關鍵因子—畫膠長度",
-        "預測 Lens Shift offset"
-      ],
-      "output": [
-        "預測誤差 ±1 μm",
-        "省材料 60k+人工 60k NTD/月",
-        "縮短開發時間"
-      ],
-      "benefits": [
-        "1,440,000 NTD/年"
-      ],
-      "build_story": "",
-      "owner_name": "PMX CMBU (Ryan)",
-      "owner_role": "",
-      "owner_dept": "PMX CMBU",
-      "owner_background": "",
-      "owner_photo": "",
-      "owner_email": "",
-      "quote": "",
-      "category_matrix": "組織×AI",
-      "ecrs": "",
-      "maturity_indicator": "🟡 進行中",
-      "reviewer": "Governance OK 2026-05-20: 公司工具 (APPROVED)",
-      "evidenceurl": "",
-      "sourcechannel": "Migrated",
-      "bg": "PMX-CMBU",
-      "source_meeting": "案例卡V5.pptx Slide 14; AA Offset Workshop 結案報告 2026.01.07",
-      "last_updated": "2026-05-20",
       "publish_status": "Active-Internal"
     },
     {
