@@ -1314,3 +1314,47 @@ html, body {
   display: flex; flex-wrap: wrap; gap: 5px;
   margin: 6px 0 4px;
 }
+
+/* =========================================================
+   Two-tier classification tags + five-band IPO modal
+   (2026-06-10: align modal with L0 case-card 5-layer layout)
+   ========================================================= */
+.ctag--scn { background: #E6F4F5; color: #00707B; }
+.ctag--mod { background: #F1EDFB; color: #5B4A8A; }
+
+.ipo-band { display: flex; gap: 10px; margin: 14px 0; align-items: stretch; }
+.ipo-band__side { flex: 0 0 34px; display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 800; font-size: 11px; letter-spacing: 1px; border-radius: 8px;
+  writing-mode: vertical-rl; text-orientation: mixed; }
+.ipo-band--before .ipo-band__side { background: #D14545; }
+.ipo-band--after  .ipo-band__side { background: #2D9C5A; }
+.ipo-band__cols { flex: 1; display: grid; grid-template-columns: 1fr 1.6fr 1.1fr; align-items: stretch;
+  border: 1px solid var(--line, #E3E7EA); border-radius: 10px; overflow: hidden; }
+.ipo-bcol { display: flex; flex-direction: column; }
+.ipo-bcol + .ipo-bcol { border-left: 1px solid var(--line, #E3E7EA); }
+.ipo-bcol__head { font-size: 11px; font-weight: 800; color: #fff; text-align: center; padding: 5px 4px; }
+.ipo-bcol--input  .ipo-bcol__head { background: #4A90E2; }
+.ipo-bcol--output .ipo-bcol__head { background: #9370DB; }
+.ipo-bcol--process .ipo-bcol__head { background: #E8821E; }  /* PROCESS = 橘黃色系，紅/綠只留給 band 側條 */
+.ipo-bcol__body { flex: 1; padding: 10px 12px; font-size: 12.5px; line-height: 1.6; color: var(--text-secondary, #3D4B52); }
+.ipo-bcol--input  .ipo-bcol__body { background: #F4F8FC; }
+.ipo-bcol--output .ipo-bcol__body { background: #F8F5FB; }
+.ipo-bcol--process .ipo-bcol__body { background: #FFF6EA; }
+.ipo-bcol__body ul { margin: 0; padding-left: 18px; }
+.ipo-bcol__body p { margin: 0 0 6px; }
+.ipo-bcol__note { margin-top: 6px; font-size: 12px; }
+.ipo-transition { text-align: center; font-weight: 800; font-size: 13px; color: var(--primary, #008C9A); margin: 2px 0; }
+
+.benefit-band { display: flex; gap: 12px; align-items: center; background: #FFF1E6; border: 1px solid #FFD9B8;
+  border-radius: 10px; padding: 10px 14px; margin: 12px 0; }
+.benefit-band__label { font-weight: 800; color: #C96A1E; flex: 0 0 auto; font-size: 13px; }
+.benefit-band__body { font-size: 13px; font-weight: 600; color: var(--text-primary, #1F2D33); }
+.note-band { display: flex; gap: 12px; align-items: flex-start; background: #F0F4F6;
+  border-radius: 10px; padding: 10px 14px; margin: 12px 0; }
+.note-band__label { font-weight: 800; color: var(--primary, #008C9A); flex: 0 0 auto; font-size: 13px; }
+.note-band__body { font-size: 13px; color: var(--text-secondary, #3D4B52); line-height: 1.6; }
+
+@media (max-width: 760px) {
+  .ipo-band__cols { grid-template-columns: 1fr; }
+  .ipo-bcol + .ipo-bcol { border-left: none; border-top: 1px solid var(--line, #E3E7EA); }
+}

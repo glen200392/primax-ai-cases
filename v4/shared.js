@@ -10,17 +10,25 @@ let ALL_CASES = [];
 let META = {};
 let CURRENT_STAGE = null;          // null = overview page; else "Prototype"/"Development"/"Deploy"
 let currentCaseId = null;          // for modal interaction
-const state = { company: "ALL", unit: "ALL", region: "ALL", type: "ALL", ecrs: "ALL", search: "" };
+const state = { company: "ALL", unit: "ALL", region: "ALL", type: "ALL", scenario: "ALL", ecrs: "ALL", search: "" };
 
-// Classification tags (type + ECRS) for cards / modal.
+// Classification tags (type + scenario + ECRS) for cards / modal.
+// Two-tier taxonomy (2026-06-10): automation_type (自動化/AI 應用) → scenario_tags (業務場景, multi)
+// + module_tags (tech modules, derived from Tools at export time).
 function ecrsList(c) { return c && c.ecrs ? String(c.ecrs).split(/[,+]/).map(s => s.trim()).filter(Boolean) : []; }  // tolerate legacy "E+S" and new "E,S"
-function classTagsHtml(c) {
+const ECRS_NAME = { E: "刪除", C: "合併", R: "重排", S: "簡化" };  // letter -> 繁中 full name (i18n-translated for display)
+function ecrsLabel(e) { return ECRS_NAME[e] ? `${e}·${T(ECRS_NAME[e])}` : e; }  // chip display "字母·全名" per Glen 2026-06-11
+function scenarioList(c) { return (c && Array.isArray(c.scenario_tags)) ? c.scenario_tags : []; }
+function moduleList(c) { return (c && Array.isArray(c.module_tags)) ? c.module_tags : []; }
+function classTagsHtml(c, maxScn = 2) {
   let h = "";
   if (c.automation_type) {
-    const cls = c.automation_type === "AI" ? "ai" : (c.automation_type === "自動化" ? "auto" : "mix");
-    h += `<span class="ctag ctag--${cls}">${escape(T(c.automation_type))}</span>`;
+    const t = c.automation_type;
+    const cls = (t === "AI" || t === "AI 應用") ? "ai" : (t === "自動化" ? "auto" : "mix");
+    h += `<span class="ctag ctag--${cls}">${escape(T(t))}</span>`;
   }
-  ecrsList(c).forEach(e => h += `<span class="ctag ctag--ecrs">${escape(e)}</span>`);
+  scenarioList(c).slice(0, maxScn).forEach(s => h += `<span class="ctag ctag--scn">${escape(T(s))}</span>`);
+  ecrsList(c).forEach(e => h += `<span class="ctag ctag--ecrs">${escape(ecrsLabel(e))}</span>`);
   return h;
 }
 
@@ -220,13 +228,25 @@ function renderFilters() {
       }));
     });
   }
+  if (row("filter-row-scenario")) {
+    clearChips(row("filter-row-scenario"));
+    const scns = Array.from(new Set(fPool.flatMap(c => scenarioList(c)))).sort();
+    row("filter-row-scenario").style.display = scns.length ? "" : "none";
+    if (scns.length) ["ALL", ...scns].forEach(v => {
+      const count = v === "ALL" ? fPool.length : fPool.filter(c => scenarioList(c).includes(v)).length;
+      if (v !== "ALL" && count === 0) return;
+      row("filter-row-scenario").appendChild(makeChip(v === "ALL" ? T("全部") : T(v), count, state.scenario === v, () => {
+        state.scenario = v; renderFilters(); renderCasesGrid();
+      }));
+    });
+  }
   if (row("filter-row-ecrs")) {
     clearChips(row("filter-row-ecrs"));
     const letters = ["E", "C", "R", "S"].filter(L => fPool.some(c => ecrsList(c).includes(L)));
     row("filter-row-ecrs").style.display = letters.length ? "" : "none";
     if (letters.length) ["ALL", ...letters].forEach(v => {
       const count = v === "ALL" ? fPool.length : fPool.filter(c => ecrsList(c).includes(v)).length;
-      row("filter-row-ecrs").appendChild(makeChip(v === "ALL" ? T("全部") : v, count, state.ecrs === v, () => {
+      row("filter-row-ecrs").appendChild(makeChip(v === "ALL" ? T("全部") : ecrsLabel(v), count, state.ecrs === v, () => {
         state.ecrs = v; renderFilters(); renderCasesGrid();
       }));
     });
@@ -243,12 +263,19 @@ function _ensureClassFilterRows() {
     r.innerHTML = `<span class="filter-bar__label">${T("類型")}：</span>`;
     bar.insertBefore(r, regionRow ? regionRow.nextSibling : null);
   }
+  if (!document.getElementById("filter-row-scenario")) {
+    const r = document.createElement("div");
+    r.className = "filter-row"; r.id = "filter-row-scenario";
+    r.innerHTML = `<span class="filter-bar__label">${T("場景")}：</span>`;
+    const typeRow = document.getElementById("filter-row-type");
+    bar.insertBefore(r, typeRow ? typeRow.nextSibling : null);
+  }
   if (!document.getElementById("filter-row-ecrs")) {
     const r = document.createElement("div");
     r.className = "filter-row"; r.id = "filter-row-ecrs";
     r.innerHTML = `<span class="filter-bar__label">ECRS：</span>`;
-    const typeRow = document.getElementById("filter-row-type");
-    bar.insertBefore(r, typeRow ? typeRow.nextSibling : null);
+    const scnRow = document.getElementById("filter-row-scenario");
+    bar.insertBefore(r, scnRow ? scnRow.nextSibling : null);
   }
 }
 
@@ -258,6 +285,7 @@ function matchesFilter(c) {
   if (state.unit !== "ALL" && c.unit !== state.unit) return false;
   if (state.region !== "ALL" && c.region !== state.region) return false;
   if (state.type !== "ALL" && (c.automation_type || "") !== state.type) return false;
+  if (state.scenario !== "ALL" && !scenarioList(c).includes(state.scenario)) return false;
   if (state.ecrs !== "ALL" && !ecrsList(c).includes(state.ecrs)) return false;
   if (state.search) {
     const q = state.search.toLowerCase();
@@ -320,7 +348,8 @@ function openModal(id) {
     <span class="modal__badge">${escape(c.bg)}</span>
     ${c.stage ? `<span class="modal__badge">${escape(c.stage)}</span>` : ""}
     ${c.category_matrix ? `<span class="modal__badge">${escape(c.category_matrix)}</span>` : ""}
-    ${classTagsHtml(c)}
+    ${classTagsHtml(c, 3)}
+    ${moduleList(c).map(m => `<span class="ctag ctag--mod">${escape(T(m))}</span>`).join("")}
   `;
   setText("modal-title", c.title || "");
   setText("modal-tools", c.tools || "");
@@ -333,39 +362,51 @@ function openModal(id) {
 
   if (c.pain_point) parts.push(renderSection("①", T("痛點與情境"), `<p>${escape(c.pain_point)}</p>`));
 
-  if (c.before_how || c.after_how) {
-    parts.push(`
-      <section class="ba-section">
-        <h4 class="ba-section__title">${T("Before / After 對比")}</h4>
-        <div class="ba-grid">
-          <div class="ba-col ba-col--before">
-            <div class="ba-col__label">${T("Before · 導入前")}</div>
-            ${c.before_how ? `<div class="ba-col__how">${escape(c.before_how)}</div>` : ""}
-            ${c.before_pain ? `<div class="ba-col__pain"><strong>${T("痛點：")}</strong>${escape(c.before_pain)}</div>` : ""}
-          </div>
-          <div class="ba-col ba-col--after">
-            <div class="ba-col__label">${T("After · 導入後")}</div>
-            ${c.after_how ? `<div class="ba-col__how">${escape(c.after_how)}</div>` : ""}
-            ${c.after_outcome ? `<div class="ba-col__outcome"><strong>${T("結果：")}</strong>${escape(c.after_outcome)}</div>` : ""}
-          </div>
+  // ②/③ BEFORE → AFTER：兩條由左到右的 IPO 帶（對齊 L0 案例卡五層結構，2026-06-10）
+  const hasIPO = (c.input && c.input.length) || (c.process && c.process.length)
+              || (c.output && c.output.length) || c.before_how || c.after_how;
+  if (hasIPO) {
+    const bcol = (variant, label, inner) => `
+        <div class="ipo-bcol ipo-bcol--${variant}">
+          <div class="ipo-bcol__head">${label}</div>
+          <div class="ipo-bcol__body">${inner || '<div class="ipo-col__empty">—</div>'}</div>
+        </div>`;
+    const band = (kind, sideLabel, inputHtml, processHtml, outputHtml) => `
+      <section class="ipo-band ipo-band--${kind}">
+        <div class="ipo-band__side">${sideLabel}</div>
+        <div class="ipo-band__cols">
+          ${bcol("input", T("INPUT · 輸入"), inputHtml)}
+          ${bcol("process", T("PROCESS · 流程處理"), processHtml)}
+          ${bcol("output", T("OUTPUT · 產出"), outputHtml)}
         </div>
-      </section>`);
+      </section>`;
+    const inputHtml = (c.input && c.input.length) ? renderList(c.input) : "";
+    const beforeProc = c.before_how ? `<p>${escape(c.before_how)}</p>` : "";
+    const beforeOut = c.before_pain ? `<p><strong>${T("痛點：")}</strong>${escape(c.before_pain)}</p>` : "";
+    const afterProc = (c.process && c.process.length) ? renderList(c.process)
+                    : (c.after_how ? `<p>${escape(c.after_how)}</p>` : "");
+    const afterOut = ((c.output && c.output.length) ? renderList(c.output) : "")
+                   + (c.after_outcome ? `<p class="ipo-bcol__note"><strong>${T("結果：")}</strong>${escape(c.after_outcome)}</p>` : "");
+    parts.push(band("before", `② BEFORE`, inputHtml, beforeProc, beforeOut));
+    if (c.tools) parts.push(`<div class="ipo-transition">⬇ ${T("導入")} ${escape(c.tools)}</div>`);
+    parts.push(band("after", `③ AFTER`, inputHtml, afterProc, afterOut));
   }
 
-  // IPO + Benefits 4-col horizontal grid
-  const hasIPO = (c.input && c.input.length) || (c.process && c.process.length)
-              || (c.output && c.output.length) || (c.benefits && c.benefits.length);
-  if (hasIPO) {
-    const col = (variant, label, items) => {
-      const inner = items && items.length ? renderList(items) : '<div class="ipo-col__empty">—</div>';
-      return `<div class="ipo-col ipo-col--${variant}"><div class="ipo-col__head">${label}</div><div class="ipo-col__body">${inner}</div></div>`;
-    };
+  // ④ 效益評估
+  if (c.benefits && c.benefits.length) {
     parts.push(`
-      <div class="ipo-grid">
-        ${col("input", T("INPUT · 輸入"), c.input)}
-        ${col("process", T("PROCESS · 流程處理"), c.process)}
-        ${col("output", T("OUTPUT · 產出"), c.output)}
-        ${col("benefits", T("效益評估"), c.benefits)}
+      <div class="benefit-band">
+        <div class="benefit-band__label">④ ${T("效益評估")}</div>
+        <div class="benefit-band__body">${c.benefits.map(escape).join("　·　")}</div>
+      </div>`);
+  }
+
+  // ⑤ 負責人心得（金句）
+  if (c.quote) {
+    parts.push(`
+      <div class="note-band">
+        <div class="note-band__label">⑤ ${T("負責人心得")}</div>
+        <div class="note-band__body">「${escape(c.quote)}」${c.owner_name ? " — " + escape(c.owner_name) : ""}</div>
       </div>`);
   }
 
@@ -390,8 +431,6 @@ function openModal(id) {
         </div>
       </div>`);
   }
-
-  if (c.quote) parts.push(`<div class="quote-block">${escape(c.quote)}</div>`);
 
   body.innerHTML = parts.join("");
 
@@ -558,6 +597,7 @@ function tokenize(q) {
 function buildCorpus(c) {
   return [c.bg, c.unit, c.region, c.title, c.tools, c.benefits_summary,
           c.owner_name, c.owner_dept, c.stage, c.stage_norm, c.category_matrix,
+          c.automation_type, scenarioList(c).join(" "), moduleList(c).join(" "),
           (c.input || []).join(" "), (c.process || []).join(" "),
           (c.output || []).join(" "), (c.benefits || []).join(" ")]
     .filter(Boolean).join(" ").toLowerCase();
@@ -645,10 +685,10 @@ function initChatWidget() {
 
 /* ---------- public entry: initPage ---------- */
 function injectAdminLink() {
+  // Show an Admin entry only for DTO admins (UX only; server enforces authz).
   // V4 public build: admin console is not shipped here, so never inject the link.
   return;
   /* eslint-disable no-unreachable */
-  // Show an Admin entry only for DTO admins (UX only; server enforces authz).
   try {
     if (!(window.AICasesAuth && AICasesAuth.state && AICasesAuth.state.isAdmin)) return;
     document.querySelectorAll("nav.page-nav").forEach(nav => {

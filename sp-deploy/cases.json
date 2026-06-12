@@ -189,7 +189,7 @@
     {
       "id": "pmx-hr-attrition",
       "company": "PMX",
-      "unit": "HR + IT",
+      "unit": "HR",
       "region": "TW",
       "title": "離職行為預測：員工留任早期預警",
       "tools": "Profet AI (AutoML, 無程式碼)",
@@ -244,7 +244,7 @@
     {
       "id": "tym-sae-ts-params",
       "company": "TYM",
-      "unit": "SAE",
+      "unit": "R&D",
       "region": "TW",
       "title": "揚聲器 T/S 參數推薦：系統聲學最佳化",
       "tools": "Profet AI ML",
@@ -355,7 +355,7 @@
     {
       "id": "pmx-isb-motor-noise",
       "company": "PMX",
-      "unit": "ISB",
+      "unit": "R&D",
       "region": "TW",
       "title": "馬達異音檢測：瑕疵智能判別",
       "tools": "Profet AI ML (分類) + 麥克風 + IMU 感測器",
@@ -410,7 +410,7 @@
     {
       "id": "pmx-cmbu-aa-offset",
       "company": "PMX",
-      "unit": "CMBU",
+      "unit": "R&D",
       "region": "TW",
       "title": "AA Offset 參數預測：鏡頭對位最佳化",
       "tools": "Profet AI ML",

@@ -406,7 +406,7 @@
     {
       "id": "pmx-iibg-km-instrument-rental",
       "company": "PMX",
-      "unit": "iIBG/RD",
+      "unit": "iIBG",
       "region": "TW",
       "title": "儀器設備借用 AI 輔助系統",
       "tools": "RAG + Azure Microsoft LLM 地端部署",
@@ -444,7 +444,7 @@
     {
       "id": "pmx-iibg-km-test-team",
       "company": "PMX",
-      "unit": "iIBG/RD",
+      "unit": "iIBG",
       "region": "TW",
       "title": "測試團隊知識庫 AI 輔助系統",
       "tools": "RAG + Azure Microsoft LLM 地端部署",
@@ -482,7 +482,7 @@
     {
       "id": "pmx-iibg-km-design-guideline",
       "company": "PMX",
-      "unit": "iIBG/RD",
+      "unit": "iIBG",
       "region": "TW",
       "title": "研發 Design Guideline 知識庫 AI 輔助系統",
       "tools": "RAG + Azure Microsoft LLM 地端部署",
@@ -520,7 +520,7 @@
     {
       "id": "pmx-iibg-workflow-packaging-inspection",
       "company": "PMX",
-      "unit": "iIBG/RD",
+      "unit": "iIBG",
       "region": "TW",
       "title": "AI 包裝圖樣檢測",
       "tools": "電腦視覺 + Azure AI 地端部署",
@@ -558,7 +558,7 @@
     {
       "id": "pmx-iibg-workflow-keyboard-multilang-print",
       "company": "PMX",
-      "unit": "iIBG/RD",
+      "unit": "iIBG",
       "region": "TW",
       "title": "AI 鍵盤多語系印刷檢測",
       "tools": "電腦視覺 + Azure AI 地端部署",
@@ -596,7 +596,7 @@
     {
       "id": "pmx-iibg-workflow-rfq-quick-decision",
       "company": "PMX",
-      "unit": "iIBG/RD",
+      "unit": "iIBG",
       "region": "TW",
       "title": "AI RFQ 快速定案輔助系統",
       "tools": "LLM Agent + 內部 RFQ 知識庫",
@@ -634,7 +634,7 @@
     {
       "id": "pmx-iibg-workflow-ebom-to-erfq",
       "company": "PMX",
-      "unit": "iIBG/RD",
+      "unit": "iIBG",
       "region": "TW",
       "title": "AI 自動 eBOM 轉 eRFQ 系統",
       "tools": "LLM + ERP/PLM 系統整合",
@@ -672,7 +672,7 @@
     {
       "id": "pmx-iibg-workflow-test-plan-auto-gen",
       "company": "PMX",
-      "unit": "iIBG/RD",
+      "unit": "iIBG",
       "region": "TW",
       "title": "AI 自動產生測試計劃系統",
       "tools": "LLM Agent + 測試 SOP 知識庫",
@@ -710,7 +710,7 @@
     {
       "id": "pmx-iibg-workflow-erfq-chatbot",
       "company": "PMX",
-      "unit": "iIBG/RD",
+      "unit": "iIBG",
       "region": "TW",
       "title": "eRFQ AI Chat Bot 系統",
       "tools": "LLM Chatbot + eRFQ 系統整合",

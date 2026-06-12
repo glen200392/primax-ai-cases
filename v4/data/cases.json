@@ -76,7 +76,16 @@
       "maturity_indicator": "🟢 穩定運行",
       "bg": "TYM-HR (HZ)",
       "last_updated": "2026-06-07",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Internal",
+      "automation_type": "自動化",
+      "scenario_tags": [
+        "異常偵測與預警",
+        "報表與數據統計",
+        "行政庶務"
+      ],
+      "module_tags": [
+        "RPA 流程"
+      ]
     },
     {
       "id": "pmx-hr-sap-attendance",
@@ -122,7 +131,16 @@
       "maturity_indicator": "🟢 穩定運行",
       "bg": "PMX-HR (DG)",
       "last_updated": "2026-06-07",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Internal",
+      "automation_type": "自動化",
+      "scenario_tags": [
+        "對帳與查核",
+        "報表與數據統計"
+      ],
+      "module_tags": [
+        "RPA 流程",
+        "Excel 自動化"
+      ]
     },
     {
       "id": "pmx-hr-training-signin",
@@ -166,7 +184,15 @@
       "maturity_indicator": "🟢 穩定運行",
       "bg": "PMX-HR (DG)",
       "last_updated": "2026-06-07",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Internal",
+      "automation_type": "自動化",
+      "scenario_tags": [
+        "招募與訓練",
+        "行政庶務"
+      ],
+      "module_tags": [
+        "RPA 流程"
+      ]
     },
     {
       "id": "tym-fa-scheduling-report",
@@ -216,7 +242,16 @@
       "maturity_indicator": "🟢 穩定運行",
       "bg": "TYM-F&A",
       "last_updated": "2026-06-07",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Internal",
+      "automation_type": "自動化",
+      "scenario_tags": [
+        "報表與數據統計",
+        "資料整合與清洗"
+      ],
+      "module_tags": [
+        "排程任務",
+        "Excel 自動化"
+      ]
     },
     {
       "id": "tym-fa-pbc",
@@ -264,7 +299,15 @@
       "maturity_indicator": "🟢 穩定運行",
       "bg": "TYM-F&A",
       "last_updated": "2026-06-07",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Internal",
+      "automation_type": "自動化",
+      "scenario_tags": [
+        "對帳與查核",
+        "資料整合與清洗"
+      ],
+      "module_tags": [
+        "Excel 自動化"
+      ]
     },
     {
       "id": "tym-fa-procurement",
@@ -311,7 +354,15 @@
       "maturity_indicator": "🟢 穩定運行",
       "bg": "TYM-F&A",
       "last_updated": "2026-06-07",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Internal",
+      "automation_type": "自動化",
+      "scenario_tags": [
+        "異常偵測與預警",
+        "報表與數據統計"
+      ],
+      "module_tags": [
+        "Excel 自動化"
+      ]
     },
     {
       "id": "tym-fa-callcenter",
@@ -359,12 +410,19 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "TYM-F&A",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Internal",
+      "automation_type": "自動化",
+      "scenario_tags": [
+        "報表與數據統計"
+      ],
+      "module_tags": [
+        "Excel 自動化"
+      ]
     },
     {
       "id": "pmx-iibg-km-instrument-rental",
       "company": "PMX",
-      "unit": "iIBG/RD",
+      "unit": "iIBG",
       "region": "TW",
       "title": "儀器設備借用 AI 輔助系統",
       "tools": "RAG + Azure Microsoft LLM 地端部署",
@@ -391,12 +449,20 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-iIBG",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Internal",
+      "automation_type": "AI 應用",
+      "scenario_tags": [
+        "知識問答與檢索"
+      ],
+      "module_tags": [
+        "RAG 知識庫",
+        "LLM 應用"
+      ]
     },
     {
       "id": "pmx-iibg-km-test-team",
       "company": "PMX",
-      "unit": "iIBG/RD",
+      "unit": "iIBG",
       "region": "TW",
       "title": "測試團隊知識庫 AI 輔助系統",
       "tools": "RAG + Azure Microsoft LLM 地端部署",
@@ -423,12 +489,20 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-iIBG",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Internal",
+      "automation_type": "AI 應用",
+      "scenario_tags": [
+        "知識問答與檢索"
+      ],
+      "module_tags": [
+        "RAG 知識庫",
+        "LLM 應用"
+      ]
     },
     {
       "id": "pmx-iibg-km-design-guideline",
       "company": "PMX",
-      "unit": "iIBG/RD",
+      "unit": "iIBG",
       "region": "TW",
       "title": "研發 Design Guideline 知識庫 AI 輔助系統",
       "tools": "RAG + Azure Microsoft LLM 地端部署",
@@ -455,12 +529,20 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-iIBG",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Internal",
+      "automation_type": "AI 應用",
+      "scenario_tags": [
+        "知識問答與檢索"
+      ],
+      "module_tags": [
+        "RAG 知識庫",
+        "LLM 應用"
+      ]
     },
     {
       "id": "pmx-iibg-workflow-packaging-inspection",
       "company": "PMX",
-      "unit": "iIBG/RD",
+      "unit": "iIBG",
       "region": "TW",
       "title": "AI 包裝圖樣檢測",
       "tools": "電腦視覺 + Azure AI 地端部署",
@@ -487,12 +569,19 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-iIBG",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Internal",
+      "automation_type": "AI 應用",
+      "scenario_tags": [
+        "品質與視覺檢測"
+      ],
+      "module_tags": [
+        "電腦視覺"
+      ]
     },
     {
       "id": "pmx-iibg-workflow-keyboard-multilang-print",
       "company": "PMX",
-      "unit": "iIBG/RD",
+      "unit": "iIBG",
       "region": "TW",
       "title": "AI 鍵盤多語系印刷檢測",
       "tools": "電腦視覺 + Azure AI 地端部署",
@@ -519,12 +608,20 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-iIBG",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Internal",
+      "automation_type": "AI 應用",
+      "scenario_tags": [
+        "對帳與查核",
+        "品質與視覺檢測"
+      ],
+      "module_tags": [
+        "電腦視覺"
+      ]
     },
     {
       "id": "pmx-iibg-workflow-rfq-quick-decision",
       "company": "PMX",
-      "unit": "iIBG/RD",
+      "unit": "iIBG",
       "region": "TW",
       "title": "AI RFQ 快速定案輔助系統",
       "tools": "LLM Agent + 內部 RFQ 知識庫",
@@ -551,12 +648,22 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-iIBG",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Internal",
+      "automation_type": "AI 應用",
+      "scenario_tags": [
+        "報價與詢價",
+        "知識問答與檢索"
+      ],
+      "module_tags": [
+        "RAG 知識庫",
+        "LLM Agent",
+        "LLM 應用"
+      ]
     },
     {
       "id": "pmx-iibg-workflow-ebom-to-erfq",
       "company": "PMX",
-      "unit": "iIBG/RD",
+      "unit": "iIBG",
       "region": "TW",
       "title": "AI 自動 eBOM 轉 eRFQ 系統",
       "tools": "LLM + ERP/PLM 系統整合",
@@ -583,12 +690,19 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-iIBG",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Internal",
+      "automation_type": "AI 應用",
+      "scenario_tags": [
+        "報價與詢價"
+      ],
+      "module_tags": [
+        "LLM 應用"
+      ]
     },
     {
       "id": "pmx-iibg-workflow-test-plan-auto-gen",
       "company": "PMX",
-      "unit": "iIBG/RD",
+      "unit": "iIBG",
       "region": "TW",
       "title": "AI 自動產生測試計劃系統",
       "tools": "LLM Agent + 測試 SOP 知識庫",
@@ -615,12 +729,21 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-iIBG",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Internal",
+      "automation_type": "AI 應用",
+      "scenario_tags": [
+        "知識問答與檢索"
+      ],
+      "module_tags": [
+        "RAG 知識庫",
+        "LLM Agent",
+        "LLM 應用"
+      ]
     },
     {
       "id": "pmx-iibg-workflow-erfq-chatbot",
       "company": "PMX",
-      "unit": "iIBG/RD",
+      "unit": "iIBG",
       "region": "TW",
       "title": "eRFQ AI Chat Bot 系統",
       "tools": "LLM Chatbot + eRFQ 系統整合",
@@ -647,7 +770,16 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-iIBG",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Internal",
+      "automation_type": "AI 應用",
+      "scenario_tags": [
+        "報價與詢價",
+        "知識問答與檢索"
+      ],
+      "module_tags": [
+        "Chatbot",
+        "LLM 應用"
+      ]
     },
     {
       "id": "pmx-it-teams-chatbot-approval",
@@ -679,7 +811,16 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-IT",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Internal",
+      "automation_type": "AI 應用",
+      "scenario_tags": [
+        "知識問答與檢索",
+        "流程簽核與BPM"
+      ],
+      "module_tags": [
+        "Chatbot",
+        "BPM 整合"
+      ]
     },
     {
       "id": "pmx-it-bpm-anomaly-inspection",
@@ -711,7 +852,16 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-IT",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Internal",
+      "automation_type": "AI 應用",
+      "scenario_tags": [
+        "異常偵測與預警",
+        "流程簽核與BPM"
+      ],
+      "module_tags": [
+        "LLM Agent",
+        "BPM 整合"
+      ]
     },
     {
       "id": "pmx-it-payment-redgreen-light",
@@ -743,7 +893,14 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-IT",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Internal",
+      "automation_type": "AI 應用",
+      "scenario_tags": [
+        "流程簽核與BPM"
+      ],
+      "module_tags": [
+        "BPM 整合"
+      ]
     },
     {
       "id": "pmx-it-bpm-ai-cert-recognition",
@@ -775,7 +932,16 @@
       "maturity_indicator": "🟢 穩定運行",
       "bg": "PMX-IT",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Internal",
+      "automation_type": "AI 應用",
+      "scenario_tags": [
+        "文件辨識與處理",
+        "流程簽核與BPM"
+      ],
+      "module_tags": [
+        "AI OCR",
+        "BPM 整合"
+      ]
     }
   ],
   "build": "github-pages-v4-public"
