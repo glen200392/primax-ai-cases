@@ -22,3 +22,6 @@ preview-data/*.local.json
 
 # doc-generation screenshots (intermediate)
 _docshots/
+
+# archived / superseded explorations (kept on disk for reference, not version-controlled)
+_archive/
