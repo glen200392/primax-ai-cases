@@ -76,7 +76,7 @@
       "maturity_indicator": "🟢 穩定運行",
       "bg": "TYM-HR (HZ)",
       "last_updated": "2026-06-07",
-      "publish_status": "Active-Internal",
+      "publish_status": "Active-Published",
       "automation_type": "自動化",
       "scenario_tags": [
         "異常偵測與預警",
@@ -131,7 +131,7 @@
       "maturity_indicator": "🟢 穩定運行",
       "bg": "PMX-HR (DG)",
       "last_updated": "2026-06-07",
-      "publish_status": "Active-Internal",
+      "publish_status": "Active-Published",
       "automation_type": "自動化",
       "scenario_tags": [
         "對帳與查核",
@@ -184,7 +184,7 @@
       "maturity_indicator": "🟢 穩定運行",
       "bg": "PMX-HR (DG)",
       "last_updated": "2026-06-07",
-      "publish_status": "Active-Internal",
+      "publish_status": "Active-Published",
       "automation_type": "自動化",
       "scenario_tags": [
         "招募與訓練",
@@ -242,7 +242,7 @@
       "maturity_indicator": "🟢 穩定運行",
       "bg": "TYM-F&A",
       "last_updated": "2026-06-07",
-      "publish_status": "Active-Internal",
+      "publish_status": "Active-Published",
       "automation_type": "自動化",
       "scenario_tags": [
         "報表與數據統計",
@@ -299,7 +299,7 @@
       "maturity_indicator": "🟢 穩定運行",
       "bg": "TYM-F&A",
       "last_updated": "2026-06-07",
-      "publish_status": "Active-Internal",
+      "publish_status": "Active-Published",
       "automation_type": "自動化",
       "scenario_tags": [
         "對帳與查核",
@@ -354,7 +354,7 @@
       "maturity_indicator": "🟢 穩定運行",
       "bg": "TYM-F&A",
       "last_updated": "2026-06-07",
-      "publish_status": "Active-Internal",
+      "publish_status": "Active-Published",
       "automation_type": "自動化",
       "scenario_tags": [
         "異常偵測與預警",
@@ -449,7 +449,7 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-iIBG",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal",
+      "publish_status": "Draft",
       "automation_type": "AI 應用",
       "scenario_tags": [
         "知識問答與檢索"
@@ -489,7 +489,7 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-iIBG",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal",
+      "publish_status": "Draft",
       "automation_type": "AI 應用",
       "scenario_tags": [
         "知識問答與檢索"
@@ -529,7 +529,7 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-iIBG",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal",
+      "publish_status": "Draft",
       "automation_type": "AI 應用",
       "scenario_tags": [
         "知識問答與檢索"
@@ -569,7 +569,7 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-iIBG",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal",
+      "publish_status": "Draft",
       "automation_type": "AI 應用",
       "scenario_tags": [
         "品質與視覺檢測"
@@ -608,7 +608,7 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-iIBG",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal",
+      "publish_status": "Draft",
       "automation_type": "AI 應用",
       "scenario_tags": [
         "對帳與查核",
@@ -648,7 +648,7 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-iIBG",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal",
+      "publish_status": "Draft",
       "automation_type": "AI 應用",
       "scenario_tags": [
         "報價與詢價",
@@ -690,7 +690,7 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-iIBG",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal",
+      "publish_status": "Draft",
       "automation_type": "AI 應用",
       "scenario_tags": [
         "報價與詢價"
@@ -729,7 +729,7 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-iIBG",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal",
+      "publish_status": "Draft",
       "automation_type": "AI 應用",
       "scenario_tags": [
         "知識問答與檢索"
@@ -770,7 +770,7 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-iIBG",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal",
+      "publish_status": "Draft",
       "automation_type": "AI 應用",
       "scenario_tags": [
         "報價與詢價",
@@ -811,7 +811,7 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-IT",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal",
+      "publish_status": "Draft",
       "automation_type": "AI 應用",
       "scenario_tags": [
         "知識問答與檢索",
@@ -852,7 +852,7 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-IT",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal",
+      "publish_status": "Draft",
       "automation_type": "AI 應用",
       "scenario_tags": [
         "異常偵測與預警",
@@ -893,7 +893,7 @@
       "maturity_indicator": "🟡 進行中",
       "bg": "PMX-IT",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal",
+      "publish_status": "Draft",
       "automation_type": "AI 應用",
       "scenario_tags": [
         "流程簽核與BPM"
@@ -932,7 +932,7 @@
       "maturity_indicator": "🟢 穩定運行",
       "bg": "PMX-IT",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal",
+      "publish_status": "Draft",
       "automation_type": "AI 應用",
       "scenario_tags": [
         "文件辨識與處理",

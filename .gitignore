@@ -3,6 +3,7 @@
 .idea/
 *.log
 *.bak
+*.bak.*
 *.tmp
 *.tmp.html
 node_modules/
@@ -18,3 +19,6 @@ bash.exe.stackdump
 
 # local-only previews
 preview-data/*.local.json
+
+# doc-generation screenshots (intermediate)
+_docshots/

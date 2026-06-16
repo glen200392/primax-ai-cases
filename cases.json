@@ -82,7 +82,7 @@
       "bg": "TYM-HR (HZ)",
       "source_meeting": "案例卡V5.pptx Slide 7; Group HR sharing 2025-07-15",
       "last_updated": "2026-06-07",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Published"
     },
     {
       "id": "pmx-hr-sap-attendance",
@@ -134,7 +134,7 @@
       "bg": "PMX-HR (DG)",
       "source_meeting": "案例卡V5.pptx Slide 8; Group HR sharing 2025-07-15",
       "last_updated": "2026-06-07",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Published"
     },
     {
       "id": "pmx-hr-training-signin",
@@ -184,7 +184,7 @@
       "bg": "PMX-HR (DG)",
       "source_meeting": "案例卡V5.pptx Slide 9; Group HR sharing 2025-07-15",
       "last_updated": "2026-06-07",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Published"
     },
     {
       "id": "tym-fa-scheduling-report",
@@ -240,7 +240,7 @@
       "bg": "TYM-F&A",
       "source_meeting": "案例卡V5.pptx Slide 15; F&A - 效率提升案例.pptx Slide 1; G2-S4/G3-S4 集團 deck",
       "last_updated": "2026-06-07",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Published"
     },
     {
       "id": "tym-fa-pbc",
@@ -294,7 +294,7 @@
       "bg": "TYM-F&A",
       "source_meeting": "案例卡V5.pptx Slide 16; F&A 案例.pptx Slide 2",
       "last_updated": "2026-06-07",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Published"
     },
     {
       "id": "tym-fa-procurement",
@@ -347,7 +347,7 @@
       "bg": "TYM-F&A",
       "source_meeting": "案例卡V5.pptx Slide 17; F&A 案例.pptx Slide 3",
       "last_updated": "2026-06-07",
-      "publish_status": "Active-Internal"
+      "publish_status": "Active-Published"
     },
     {
       "id": "tym-fa-callcenter",
@@ -439,7 +439,7 @@
       "bg": "PMX-iIBG",
       "source_meeting": "AI座談會 2026-05-13 Slide 4 / Slide 13",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Draft"
     },
     {
       "id": "pmx-iibg-km-test-team",
@@ -477,7 +477,7 @@
       "bg": "PMX-iIBG",
       "source_meeting": "AI座談會 2026-05-13 Slide 4 / Slide 13",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Draft"
     },
     {
       "id": "pmx-iibg-km-design-guideline",
@@ -515,7 +515,7 @@
       "bg": "PMX-iIBG",
       "source_meeting": "AI座談會 2026-05-13 Slide 4 / Slide 13",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Draft"
     },
     {
       "id": "pmx-iibg-workflow-packaging-inspection",
@@ -553,7 +553,7 @@
       "bg": "PMX-iIBG",
       "source_meeting": "AI座談會 2026-05-13 Slide 4 / Slide 13",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Draft"
     },
     {
       "id": "pmx-iibg-workflow-keyboard-multilang-print",
@@ -591,7 +591,7 @@
       "bg": "PMX-iIBG",
       "source_meeting": "AI座談會 2026-05-13 Slide 4 / Slide 13",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Draft"
     },
     {
       "id": "pmx-iibg-workflow-rfq-quick-decision",
@@ -629,7 +629,7 @@
       "bg": "PMX-iIBG",
       "source_meeting": "AI座談會 2026-05-13 Slide 4 / Slide 13",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Draft"
     },
     {
       "id": "pmx-iibg-workflow-ebom-to-erfq",
@@ -667,7 +667,7 @@
       "bg": "PMX-iIBG",
       "source_meeting": "AI座談會 2026-05-13 Slide 4 / Slide 13",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Draft"
     },
     {
       "id": "pmx-iibg-workflow-test-plan-auto-gen",
@@ -705,7 +705,7 @@
       "bg": "PMX-iIBG",
       "source_meeting": "AI座談會 2026-05-13 Slide 4 / Slide 13",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Draft"
     },
     {
       "id": "pmx-iibg-workflow-erfq-chatbot",
@@ -743,7 +743,7 @@
       "bg": "PMX-iIBG",
       "source_meeting": "AI座談會 2026-05-13 Slide 4 / Slide 13",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Draft"
     },
     {
       "id": "pmx-it-teams-chatbot-approval",
@@ -781,7 +781,7 @@
       "bg": "PMX-IT",
       "source_meeting": "AI座談會 2026-05-13 Slide 9 / Slide 13",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Draft"
     },
     {
       "id": "pmx-it-bpm-anomaly-inspection",
@@ -819,7 +819,7 @@
       "bg": "PMX-IT",
       "source_meeting": "AI座談會 2026-05-13 Slide 9 / Slide 13",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Draft"
     },
     {
       "id": "pmx-it-payment-redgreen-light",
@@ -857,7 +857,7 @@
       "bg": "PMX-IT",
       "source_meeting": "AI座談會 2026-05-13 Slide 9 / Slide 13",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Draft"
     },
     {
       "id": "pmx-it-bpm-ai-cert-recognition",
@@ -895,7 +895,7 @@
       "bg": "PMX-IT",
       "source_meeting": "AI座談會 2026-05-13 Slide 9 / Slide 13",
       "last_updated": "2026-05-22",
-      "publish_status": "Active-Internal"
+      "publish_status": "Draft"
     }
   ]
 }
