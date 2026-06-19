@@ -222,7 +222,7 @@ window.renderPage = function() {
     const k = stage.toLowerCase();
     const aiEl = document.getElementById(`entry-${k}-ai`);
     const totalEl = document.getElementById(`entry-${k}-total`);
-    if (aiEl) aiEl.textContent = (bd && bd[stage]) ? bd[stage].active_internal : 0;
+    if (aiEl) aiEl.textContent = (bd && bd[stage]) ? bd[stage].published : 0;
     if (totalEl) totalEl.textContent = counts[stage] || 0;
   });
 };

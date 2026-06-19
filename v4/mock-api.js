@@ -75,7 +75,11 @@
     stages.forEach(st => {
       const inS = pool.filter(c => c.stage_norm === st);
       counts[st] = inS.length;
-      bd[st] = { active_internal: inS.filter(c => live(c.publish_status)).length, draft: inS.filter(c => c.publish_status === "Draft").length };
+      bd[st] = {
+        active_internal: inS.filter(c => live(c.publish_status)).length,
+        published: inS.filter(c => c.publish_status === "Active-Published").length,
+        draft: inS.filter(c => c.publish_status === "Draft").length
+      };
     });
     return {
       non_archived_total: pool.length,
@@ -83,7 +87,8 @@
       funnel_counts: counts, funnel_breakdown: bd,
       pending_it_review: pool.filter(c => c.stage_norm === "Prototype" && c.publish_status === "Draft").length,
       pending_owner_tools: 0,
-      active_internal_total: pool.filter(c => live(c.publish_status)).length
+      active_internal_total: pool.filter(c => live(c.publish_status)).length,
+      active_published_total: pool.filter(c => c.publish_status === "Active-Published").length
     };
   }
 

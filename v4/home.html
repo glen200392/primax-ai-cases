@@ -304,10 +304,11 @@
     };
     if (s) {
       const bd = s.funnel_breakdown || {};
-      const ai = stage => (bd[stage] && bd[stage].active_internal) || 0;
-      setText("cnt-prototype", ai("Prototype"));
-      setText("cnt-development", ai("Development"));
-      setText("cnt-deploy", ai("Deploy"));
+      // Headline count = Active-Published (matches what the stage sub-page lists on click-through)
+      const pub = stage => (bd[stage] && bd[stage].published) || 0;
+      setText("cnt-prototype", pub("Prototype"));
+      setText("cnt-development", pub("Development"));
+      setText("cnt-deploy", pub("Deploy"));
     }
     setText("updated", (d.generated_at || "").slice(0, 10) || "—");
   } catch (err) {
