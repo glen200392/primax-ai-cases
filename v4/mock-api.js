@@ -340,7 +340,7 @@
   // V4 public build: DEMO banner removed (per Glen). __demoReset() still
   // available from the console for resetting the local sample data.
   window.__demoReset = function () {
-    [LS.cases, LS.comments, LS.likes, LS.subs, LS.seeded].forEach(k => localStorage.removeItem(k));
+    [LS.cases, LS.comments, LS.likes, LS.subs, LS.seedver].forEach(k => localStorage.removeItem(k));
     location.reload();
   };
 })();
