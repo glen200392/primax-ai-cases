@@ -13,7 +13,7 @@
 
   const LS = {
     cases: "demo:cases", comments: "demo:comments",
-    likes: "demo:likes", subs: "demo:submissions", seeded: "demo:seeded", site: "demo:site"
+    likes: "demo:likes", subs: "demo:submissions", seedver: "demo:seedver", site: "demo:site"
   };
 
   // Editable site content (CMS). Mirrors the text currently shown on the reader pages.
@@ -47,23 +47,37 @@
   const today = () => new Date().toISOString().slice(0, 10);
   const err = (code, message, extra) => { const e = new Error(message); e.code = code; e.status = (code === "validation" ? 400 : 409); e.data = { error: Object.assign({ code, message }, extra || {}) }; return e; };
 
+  // Cheap content fingerprint so the cached seed refreshes whenever the deployed
+  // data/cases.json changes (id / publish_status / last_updated). Without this the
+  // first-ever seed would be cached in localStorage forever and never pick up updates.
+  function _fingerprint(seed) {
+    const s = seed.map(c => `${c.id}:${c.publish_status || ""}:${c.last_updated || ""}`).join("|");
+    let h = 0;
+    for (let i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0;
+    return seed.length + ":" + h;
+  }
+
   async function ensureSeeded() {
-    if (localStorage.getItem(LS.seeded)) return;
-    let seed = [];
+    let seed = [], fp = null;
     try {
       const r = await fetch((cfg.previewDataUrl || "data/cases.json") + "?v=" + Date.now(), { cache: "no-store" });
-      if (r.ok) { const d = await r.json(); seed = (d && d.cases) || []; }
-    } catch (e) { /* empty seed */ }
+      if (r.ok) { const d = await r.json(); seed = (d && d.cases) || []; fp = _fingerprint(seed); }
+    } catch (e) { /* offline */ }
+    // Offline (couldn't fetch): keep whatever is cached, if any.
+    if (fp === null) { if (localStorage.getItem(LS.cases)) return; fp = "empty"; }
+    // Cache is current for this data version → nothing to do.
+    if (localStorage.getItem(LS.seedver) === fp && localStorage.getItem(LS.cases)) return;
+    // (Re)seed cases from the snapshot; preserve user-local likes/comments/submissions.
     seed.forEach(c => MULTI.forEach(k => c[k] = arr(c[k])));
     write(LS.cases, seed);
-    write(LS.comments, []);
-    write(LS.likes, []);
-    write(LS.subs, [
+    if (!localStorage.getItem(LS.comments)) write(LS.comments, []);
+    if (!localStorage.getItem(LS.likes)) write(LS.likes, []);
+    if (!localStorage.getItem(LS.subs)) write(LS.subs, [
       { id: 1, title: "（範例送件）會議記錄自動摘要", bg: "PMX-DTO", stage: "Prototype",
         tools: "Copilot", pain_point: "手動整理會議記錄耗時", submitter_name: "示範員工",
         review_status: "Pending", created_at: now() }
     ]);
-    localStorage.setItem(LS.seeded, "1");
+    localStorage.setItem(LS.seedver, fp);
   }
 
   const live = s => s === "Active-Internal" || s === "Active-Published";
