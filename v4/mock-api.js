@@ -92,7 +92,9 @@
       bd[st] = {
         active_internal: inS.filter(c => live(c.publish_status)).length,
         published: inS.filter(c => c.publish_status === "Active-Published").length,
-        draft: inS.filter(c => c.publish_status === "Draft").length
+        draft: inS.filter(c => c.publish_status === "Draft").length,
+        published_ai: inS.filter(c => c.publish_status === "Active-Published" && c.automation_type === "AI 應用").length,
+        published_automation: inS.filter(c => c.publish_status === "Active-Published" && c.automation_type === "自動化").length
       };
     });
     return {

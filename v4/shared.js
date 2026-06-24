@@ -829,3 +829,25 @@ async function initPage(stageOrNull) {
     if (grid) grid.innerHTML = `<div class="empty-state">❌ ${T("載入失敗")}：${escape(err.message)}<br><small>${T("請確認資料來源或稍後再試")}</small></div>`;
   }
 }
+
+/* ---------- layout toggle (原版 / 看板版) : board view adds stage type breakdown + (cases) block swap ---------- */
+(function initLayoutToggle() {
+  function apply(mode) {
+    document.body.classList.toggle("layout-board", mode === "board");
+    document.querySelectorAll(".layout-toggle__btn").forEach(function (b) {
+      b.classList.toggle("is-active", b.dataset.layout === mode);
+    });
+  }
+  function init() {
+    var mode = localStorage.getItem("aicases:layout") === "board" ? "board" : "classic";
+    apply(mode);
+    document.querySelectorAll(".layout-toggle__btn").forEach(function (b) {
+      b.addEventListener("click", function () {
+        localStorage.setItem("aicases:layout", b.dataset.layout);
+        apply(b.dataset.layout);
+      });
+    });
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();

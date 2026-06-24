@@ -215,21 +215,37 @@
       <h2 class="funnel-card__title">如何實踐 AI 與自動化場景</h2>
       <p class="funnel-card__sub">AI 落地分三階段，每階段 User 與 IT 的分工不同。點下方數字即可看對應階段案例。</p>
       <img class="funnel-card__img" src="assets/home_funnel.png" alt="AI 落地三階段 — User 與 IT 的分工協作：① Prototype（User 主導 80% / IT 助攻 20%，需求確認與概念驗證）→ ② Development（User 10% × IT 90%，系統工程化）→ ③ Deployment（IT 主導 100%，上線維運合規）；中間關卡：資安可管可控 → 可規模化 → 落地營運／長期發展" />
+      <div class="layout-toggle" role="group" aria-label="版面切換">
+        <button type="button" class="layout-toggle__btn is-active" data-layout="classic">原版</button>
+        <button type="button" class="layout-toggle__btn" data-layout="board">看板版</button>
+      </div>
       <div class="funnel-live">
         <a class="funnel-live__bar funnel-live__bar--prototype" href="cases-prototype.html" aria-label="查看 Prototype 員工試做案例">
           <div class="funnel-live__count" id="cnt-prototype">—</div>
+          <div class="type-bd">
+            <span class="type-bd__item"><em class="type-bd__num" id="cnt-prototype-ai-n" data-no-i18n>—</em> <span class="type-bd__lab">AI</span></span>
+            <span class="type-bd__item"><em class="type-bd__num" id="cnt-prototype-auto-n" data-no-i18n>—</em> <span class="type-bd__lab">自動化</span></span>
+          </div>
           <div class="funnel-live__label">① Prototype</div>
           <div class="funnel-live__hint">員工試做 · User 主導</div>
           <div class="funnel-live__cta">看案例</div>
         </a>
         <a class="funnel-live__bar funnel-live__bar--development" href="cases-development.html" aria-label="查看 Development IT 接管中案例">
           <div class="funnel-live__count" id="cnt-development">—</div>
+          <div class="type-bd">
+            <span class="type-bd__item"><em class="type-bd__num" id="cnt-development-ai-n" data-no-i18n>—</em> <span class="type-bd__lab">AI</span></span>
+            <span class="type-bd__item"><em class="type-bd__num" id="cnt-development-auto-n" data-no-i18n>—</em> <span class="type-bd__lab">自動化</span></span>
+          </div>
           <div class="funnel-live__label">② Development</div>
           <div class="funnel-live__hint">IT 接管中 · User × IT</div>
           <div class="funnel-live__cta">看案例</div>
         </a>
         <a class="funnel-live__bar funnel-live__bar--deploy" href="cases-deploy.html" aria-label="查看 Deploy 已上線案例">
           <div class="funnel-live__count" id="cnt-deploy">—</div>
+          <div class="type-bd">
+            <span class="type-bd__item"><em class="type-bd__num" id="cnt-deploy-ai-n" data-no-i18n>—</em> <span class="type-bd__lab">AI</span></span>
+            <span class="type-bd__item"><em class="type-bd__num" id="cnt-deploy-auto-n" data-no-i18n>—</em> <span class="type-bd__lab">自動化</span></span>
+          </div>
           <div class="funnel-live__label">③ Deploy</div>
           <div class="funnel-live__hint">已上線 · IT 主導</div>
           <div class="funnel-live__cta">看案例</div>
@@ -309,6 +325,12 @@
       setText("cnt-prototype", pub("Prototype"));
       setText("cnt-development", pub("Development"));
       setText("cnt-deploy", pub("Deploy"));
+      const aiOf = stage => (bd[stage] && bd[stage].published_ai) || 0;
+      const autoOf = stage => (bd[stage] && bd[stage].published_automation) || 0;
+      [["prototype","Prototype"],["development","Development"],["deploy","Deploy"]].forEach(([k, St]) => {
+        setText("cnt-" + k + "-ai-n", aiOf(St));
+        setText("cnt-" + k + "-auto-n", autoOf(St));
+      });
     }
     setText("updated", (d.generated_at || "").slice(0, 10) || "—");
   } catch (err) {

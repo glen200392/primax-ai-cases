@@ -55,6 +55,11 @@
   <!-- LEFT MAIN -->
   <div class="cases-main">
 
+    <div class="layout-toggle" role="group" aria-label="版面切換">
+      <button type="button" class="layout-toggle__btn is-active" data-layout="classic">原版</button>
+      <button type="button" class="layout-toggle__btn" data-layout="board">看板版</button>
+    </div>
+
     <section data-section="cases-recent">
     <div class="section-title-row">
       <h2>🆕 最近更新 Top 3</h2>
@@ -77,6 +82,10 @@
           <span class="stage-entry__count" id="entry-prototype-ai">—</span>
           <span class="stage-entry__count-label">已上架 / 全集團 <em id="entry-prototype-total">—</em></span>
         </div>
+        <div class="type-bd">
+          <span class="type-bd__item"><em class="type-bd__num" id="entry-prototype-ai-n" data-no-i18n>—</em> <span class="type-bd__lab">AI</span></span>
+          <span class="type-bd__item"><em class="type-bd__num" id="entry-prototype-auto-n" data-no-i18n>—</em> <span class="type-bd__lab">自動化</span></span>
+        </div>
         <div class="stage-entry__arrow">進入案例</div>
       </a>
       <a class="stage-entry stage-entry--development" href="cases-development.html">
@@ -87,6 +96,10 @@
           <span class="stage-entry__count" id="entry-development-ai">—</span>
           <span class="stage-entry__count-label">已上架 / 全集團 <em id="entry-development-total">—</em></span>
         </div>
+        <div class="type-bd">
+          <span class="type-bd__item"><em class="type-bd__num" id="entry-development-ai-n" data-no-i18n>—</em> <span class="type-bd__lab">AI</span></span>
+          <span class="type-bd__item"><em class="type-bd__num" id="entry-development-auto-n" data-no-i18n>—</em> <span class="type-bd__lab">自動化</span></span>
+        </div>
         <div class="stage-entry__arrow">進入案例</div>
       </a>
       <a class="stage-entry stage-entry--deploy" href="cases-deploy.html">
@@ -96,6 +109,10 @@
         <div class="stage-entry__counts">
           <span class="stage-entry__count" id="entry-deploy-ai">—</span>
           <span class="stage-entry__count-label">已上架 / 全集團 <em id="entry-deploy-total">—</em></span>
+        </div>
+        <div class="type-bd">
+          <span class="type-bd__item"><em class="type-bd__num" id="entry-deploy-ai-n" data-no-i18n>—</em> <span class="type-bd__lab">AI</span></span>
+          <span class="type-bd__item"><em class="type-bd__num" id="entry-deploy-auto-n" data-no-i18n>—</em> <span class="type-bd__lab">自動化</span></span>
         </div>
         <div class="stage-entry__arrow">進入案例</div>
       </a>
@@ -224,6 +241,10 @@ window.renderPage = function() {
     const totalEl = document.getElementById(`entry-${k}-total`);
     if (aiEl) aiEl.textContent = (bd && bd[stage]) ? bd[stage].published : 0;
     if (totalEl) totalEl.textContent = counts[stage] || 0;
+    const aiN = document.getElementById(`entry-${k}-ai-n`);
+    const autoN = document.getElementById(`entry-${k}-auto-n`);
+    if (aiN) aiN.textContent = (bd && bd[stage]) ? (bd[stage].published_ai || 0) : 0;
+    if (autoN) autoN.textContent = (bd && bd[stage]) ? (bd[stage].published_automation || 0) : 0;
   });
 };
 initPage(null);  // null = overview page
