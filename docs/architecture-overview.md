@@ -4,6 +4,8 @@
 > **Status**: Locked architecture v1 (post 2026-05-21 decision lockdown)
 > **Reads with**: `DECISIONS.md` / `deployment-plan.md` / `backend/sp-list-schema.md`
 
+> ⚠️ **2026-06-24 DEPRECATION**：本文件描述的 **DP-5 前端部署路徑（v2/ 5-page portal + SharePoint iframe + SP REST fallback）已停用**。最終架構改採 **.NET8 + SQL Server + IIS + Entra**（見 `primax-ai-cases-it-deploy` repo）。本 repo `v2/`、`v3/`、`backend/` 已移除，現行前端唯一活躍版本為 `v4/`。下文 F-layer / SP 部署 / iframe / `backend/` 相關段落僅供歷史參照，不代表現況。詳見 `DECISIONS.md` 2026-06-24 條目。
+
 本文件回答三個問題：
 1. **這個系統由哪幾層組成？**（layers）
 2. **內容怎麼從 raw input 走到員工看到？**（E2E data flow）
