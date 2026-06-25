@@ -299,3 +299,15 @@ SSOT 38→41 cols，加 Company / Unit / Region 三個 derived 欄位，由 `par
 
 - [ ] **P3 IT alignment**（Phase 3 prerequisite, parallel track）— 提 IT ticket：DTO-AICases-SA + Azure OpenAI (TW region) + Power Automate Premium
 
+---
+
+## 2026-06-24 — DP-5 淘汰：前端部署路徑改採 .NET8 後端
+
+> ⚠️ **本條取代 DP-5（前端 SP 部署路徑 / v2/ + iframe）。** 上方 DP-5 段落保留作歷史脈絡，不再為現行計畫。
+
+### D-NEW-DEP-01: SharePoint iframe 路線停用
+- **Decision**: 放棄 DP-5「v2/ 全組上傳 SharePoint Site Assets + iframe 嵌入 Modern Page」路線。最終部署架構改採 **.NET8 + SQL Server + IIS + Entra**（見 `primax-ai-cases-it-deploy` repo；2026-06-18 確認 SPFx / SP-iframe 未採納）。
+- **Why**: 內網最終定案走自建後端（admin 後台 + Entra SSO + 3 角色授權 + SQL 持久化）。iframe 跨 origin 互動限制與 SP REST fallback 的複雜度不再需要。
+- **影響**: 本 repo `v2/`、`v3/`、`backend/`（`deploy-sharepoint.ps1` / `sp-list-schema.md`）已於 2026-06-24 移除。現行前端唯一活躍版本為 `v4/`（root `index.html` → `v4/home.html`）。DP-5 以下所有 P1/P2 Phase tasks（SP 上傳 / `shared.js` dual-source fetch / Modern Page iframe）一併作廢。
+- **歷史保留**: DP-5 原文（本檔 DP-5 段落）不刪，供「為何曾有 5 頁 portal」之追溯。
+
