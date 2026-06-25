@@ -19,12 +19,7 @@ window.AICasesConfig = {
   previewMode:     false,
   previewDataUrl:  "data/cases.json",
 
-  previewReaderPassword: "DTO",   // reader gate password (change here if needed).
-
-  // Presentation layout (reversible). "board" = only the dashboard view
-  // (swapped blocks + per-stage AI/自動化 counts); the 原版/看板版 toggle is hidden.
-  // "toggle" = let users switch; "classic" = original layout only. Change here.
-  layoutMode: "board"
+  previewReaderPassword: "DTO"   // reader gate password (change here if needed).
 };
 
 /* Local-only demo switch (localhost + ?demo=1, persisted for the session).

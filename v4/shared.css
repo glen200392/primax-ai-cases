@@ -1359,19 +1359,8 @@ html, body {
   .ipo-bcol + .ipo-bcol { border-left: none; border-top: 1px solid var(--line, #E3E7EA); }
 }
 
-/* ===== layout toggle: 原版 / 看板版 (board view) ===== */
-.layout-toggle { display: inline-flex; margin: 0 0 20px; border: 1px solid var(--color-border, #d8dee2); border-radius: 999px; overflow: hidden; }
-.layout-toggle__btn { -webkit-appearance: none; appearance: none; border: 0; background: #fff; color: var(--color-muted, #4F6670); padding: 7px 18px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background .15s, color .15s; }
-.layout-toggle__btn:hover { background: #f0f4f5; }
-.layout-toggle__btn.is-active, .layout-toggle__btn.is-active:hover { background: var(--color-accent, #008C9A); color: #fff; }
-/* stage type breakdown (AI / 自動化) - hidden in classic, shown in board */
-.type-bd { display: none; gap: 16px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--color-border, #e2e8ea); }
+/* ===== stage type breakdown (AI / 自動化) under each stage entry ===== */
+.type-bd { display: flex; gap: 16px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--color-border, #e2e8ea); }
 .type-bd__item { font-size: 12px; color: var(--color-muted, #4F6670); display: inline-flex; align-items: baseline; gap: 5px; }
 .type-bd__num { font-size: 16px; font-weight: 700; font-style: normal; color: var(--color-ink, #1F2D33); }
-body.layout-board .type-bd { display: flex; }
 .funnel-live__bar .type-bd { justify-content: center; margin-top: 8px; padding-top: 8px; }
-/* cases page: swap recent <-> stages in board view */
-body.layout-board .cases-main { display: flex; flex-direction: column; }
-body.layout-board .cases-main .layout-toggle { order: -2; }
-body.layout-board .cases-main [data-section="cases-stages"] { order: -1; }
-body.layout-board .cases-main [data-section="cases-recent"] { order: 0; }
