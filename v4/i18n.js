@@ -41,6 +41,7 @@ window.AICasesI18n = (function () {
     "已上線": { "zh-Hans": "已上线", "en": "Live" },
     "IT 主導 · 過資安線 · 全線管控": { "zh-Hans": "IT 主导 · 过资安线 · 全线管控", "en": "IT-led · security-passed · fully managed" },
     "進入案例": { "zh-Hans": "进入案例", "en": "Enter →" },
+    "自動化": { "zh-Hans": "自动化", "en": "Automation" },
     // search widget
     "🤖 AI 助手 · 快速找案例": { "zh-Hans": "🤖 AI 助手 · 快速找案例", "en": "🤖 AI Assistant · Find Cases" },
     "工具 / BG / Owner / 關鍵字 ...": { "zh-Hans": "工具 / BG / Owner / 关键字 ...", "en": "Tool / BG / Owner / keyword ..." },
@@ -203,6 +204,7 @@ window.AICasesI18n = (function () {
     "a.page-nav__tab", "a.sub-nav__tab",
     ".section-title-row h2",
     ".stage-entry__title", ".stage-entry__sub", ".stage-entry__arrow",
+    ".type-bd__lab",
     ".sidebar-card__label", ".sidebar-card__title-text", ".sidebar-card__list li", ".sidebar-card__meta",
     ".sidebar-search-hint",
     ".security-tag--no",

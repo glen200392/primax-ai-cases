@@ -82,6 +82,11 @@
 
   const live = s => s === "Active-Internal" || s === "Active-Published";
 
+  // automation_type buckets — mirror AutoTypeVals in ApiEndpoints.cs.
+  // "AI" is a legacy alias for "AI 應用"; "混合" (mixed) counts toward BOTH buckets.
+  const isAiType = t => t === "AI 應用" || t === "AI" || t === "混合";
+  const isAutoType = t => t === "自動化" || t === "混合";
+
   function summary(all) {
     const pool = all.filter(c => c.publish_status !== "Archived");
     const stages = ["Prototype", "Development", "Deploy"];
@@ -92,7 +97,9 @@
       bd[st] = {
         active_internal: inS.filter(c => live(c.publish_status)).length,
         published: inS.filter(c => c.publish_status === "Active-Published").length,
-        draft: inS.filter(c => c.publish_status === "Draft").length
+        draft: inS.filter(c => c.publish_status === "Draft").length,
+        published_ai: inS.filter(c => c.publish_status === "Active-Published" && isAiType(c.automation_type)).length,
+        published_automation: inS.filter(c => c.publish_status === "Active-Published" && isAutoType(c.automation_type)).length
       };
     });
     return {

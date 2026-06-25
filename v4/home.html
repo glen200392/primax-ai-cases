@@ -218,18 +218,30 @@
       <div class="funnel-live">
         <a class="funnel-live__bar funnel-live__bar--prototype" href="cases-prototype.html" aria-label="查看 Prototype 員工試做案例">
           <div class="funnel-live__count" id="cnt-prototype">—</div>
+          <div class="type-bd">
+            <span class="type-bd__item"><em class="type-bd__num" id="cnt-prototype-ai-n" data-no-i18n>—</em> <span class="type-bd__lab">AI</span></span>
+            <span class="type-bd__item"><em class="type-bd__num" id="cnt-prototype-auto-n" data-no-i18n>—</em> <span class="type-bd__lab">自動化</span></span>
+          </div>
           <div class="funnel-live__label">① Prototype</div>
           <div class="funnel-live__hint">員工試做 · User 主導</div>
           <div class="funnel-live__cta">看案例</div>
         </a>
         <a class="funnel-live__bar funnel-live__bar--development" href="cases-development.html" aria-label="查看 Development IT 接管中案例">
           <div class="funnel-live__count" id="cnt-development">—</div>
+          <div class="type-bd">
+            <span class="type-bd__item"><em class="type-bd__num" id="cnt-development-ai-n" data-no-i18n>—</em> <span class="type-bd__lab">AI</span></span>
+            <span class="type-bd__item"><em class="type-bd__num" id="cnt-development-auto-n" data-no-i18n>—</em> <span class="type-bd__lab">自動化</span></span>
+          </div>
           <div class="funnel-live__label">② Development</div>
           <div class="funnel-live__hint">IT 接管中 · User × IT</div>
           <div class="funnel-live__cta">看案例</div>
         </a>
         <a class="funnel-live__bar funnel-live__bar--deploy" href="cases-deploy.html" aria-label="查看 Deploy 已上線案例">
           <div class="funnel-live__count" id="cnt-deploy">—</div>
+          <div class="type-bd">
+            <span class="type-bd__item"><em class="type-bd__num" id="cnt-deploy-ai-n" data-no-i18n>—</em> <span class="type-bd__lab">AI</span></span>
+            <span class="type-bd__item"><em class="type-bd__num" id="cnt-deploy-auto-n" data-no-i18n>—</em> <span class="type-bd__lab">自動化</span></span>
+          </div>
           <div class="funnel-live__label">③ Deploy</div>
           <div class="funnel-live__hint">已上線 · IT 主導</div>
           <div class="funnel-live__cta">看案例</div>
@@ -309,6 +321,12 @@
       setText("cnt-prototype", pub("Prototype"));
       setText("cnt-development", pub("Development"));
       setText("cnt-deploy", pub("Deploy"));
+      const aiOf = stage => (bd[stage] && bd[stage].published_ai) || 0;
+      const autoOf = stage => (bd[stage] && bd[stage].published_automation) || 0;
+      [["prototype","Prototype"],["development","Development"],["deploy","Deploy"]].forEach(([k, St]) => {
+        setText("cnt-" + k + "-ai-n", aiOf(St));
+        setText("cnt-" + k + "-auto-n", autoOf(St));
+      });
     }
     setText("updated", (d.generated_at || "").slice(0, 10) || "—");
   } catch (err) {
