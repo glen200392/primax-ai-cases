@@ -830,21 +830,30 @@ async function initPage(stageOrNull) {
   }
 }
 
-/* ---------- layout toggle (原版 / 看板版) : board view adds stage type breakdown + (cases) block swap ---------- */
-(function initLayoutToggle() {
-  function apply(mode) {
-    document.body.classList.toggle("layout-board", mode === "board");
-    document.querySelectorAll(".layout-toggle__btn").forEach(function (b) {
-      b.classList.toggle("is-active", b.dataset.layout === mode);
-    });
-  }
+/* ---------- layout presentation (config.layoutMode: "board" | "classic" | "toggle") ----------
+   "board"  : only the dashboard view (block swap + per-stage AI/自動化 counts); toggle hidden.
+   "classic": original layout only; toggle hidden.
+   "toggle" : user switches 原版/看板版 (persisted in localStorage; default 原版). */
+(function initLayout() {
+  function setBoard(on) { document.body.classList.toggle("layout-board", on); }
   function init() {
-    var mode = localStorage.getItem("aicases:layout") === "board" ? "board" : "classic";
-    apply(mode);
+    var mode = (window.AICasesConfig && window.AICasesConfig.layoutMode) || "toggle";
+    var toggle = document.querySelector(".layout-toggle");
+    if (mode !== "toggle") {
+      setBoard(mode === "board");
+      if (toggle) toggle.style.display = "none";   // fixed presentation: hide the switch
+      return;
+    }
+    var saved = localStorage.getItem("aicases:layout") === "board" ? "board" : "classic";
+    setBoard(saved === "board");
     document.querySelectorAll(".layout-toggle__btn").forEach(function (b) {
+      b.classList.toggle("is-active", b.dataset.layout === saved);
       b.addEventListener("click", function () {
         localStorage.setItem("aicases:layout", b.dataset.layout);
-        apply(b.dataset.layout);
+        setBoard(b.dataset.layout === "board");
+        document.querySelectorAll(".layout-toggle__btn").forEach(function (x) {
+          x.classList.toggle("is-active", x.dataset.layout === b.dataset.layout);
+        });
       });
     });
   }
